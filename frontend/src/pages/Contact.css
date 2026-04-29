@@ -1,0 +1,123 @@
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 100px;
+  align-items: flex-start;
+}
+
+.contact-desc {
+  font-size: 18px;
+  margin-top: 30px;
+  max-width: 450px;
+}
+
+.contact-methods {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.method-item h4 {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.method-item p, .method-item a {
+  font-size: 20px;
+  color: var(--text-primary);
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+/* Form Styles */
+.premium-form {
+  background: var(--bg-secondary);
+  padding: 60px;
+  box-shadow: 20px 20px 60px rgba(0,0,0,0.03);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+
+.form-group input, .form-group textarea {
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 10px 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--accent);
+}
+
+.btn-full {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.contact-map {
+  margin-top: 100px;
+}
+
+.map-placeholder {
+  height: 400px;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-info {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  background: #fff;
+  padding: 40px 80px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 992px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-form {
+    padding: 30px;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

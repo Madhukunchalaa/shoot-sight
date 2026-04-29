@@ -1,0 +1,87 @@
+.experience-outer {
+  overflow: hidden;
+}
+
+.experience-inner {
+  display: flex;
+  width: 300vw;
+  height: 100vh;
+  background: var(--bg-secondary);
+}
+
+.experience-step {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 10vw;
+  gap: 5vw;
+}
+
+.step-intro {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: var(--bg-color);
+}
+
+.step-title {
+  font-size: clamp(60px, 8vw, 100px);
+  line-height: 1;
+  margin-bottom: 30px;
+}
+
+.step-desc {
+  max-width: 400px;
+}
+
+.step-content {
+  flex: 1;
+  max-width: 500px;
+}
+
+.step-num {
+  font-family: var(--font-serif);
+  font-size: 80px;
+  color: var(--accent);
+  opacity: 0.2;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.step-heading {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.step-image {
+  flex: 1.5;
+  height: 60vh;
+  overflow: hidden;
+}
+
+.step-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  /* On mobile, horizontal scroll might be frustrating, but let's keep it for now as "impressive" feature */
+  .experience-inner {
+    width: 400vw;
+  }
+  .experience-step {
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+    gap: 20px;
+  }
+  .step-image {
+    height: 30vh;
+    width: 100%;
+  }
+  .step-heading {
+    font-size: 32px;
+  }
+}
