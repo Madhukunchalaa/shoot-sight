@@ -17,12 +17,11 @@
   align-items: center;
 }
 
-.logo-text {
-  font-family: var(--font-serif);
-  font-size: 24px;
-  letter-spacing: 4px;
-  color: var(--text-primary);
-  font-weight: 700;
+.navbar-logo {
+  height: 80px; /* Increased size significantly */
+  width: auto;
+  object-fit: contain;
+  filter: none; /* Restore original colors (Black & Red) */
 }
 
 .nav-links {
@@ -31,20 +30,23 @@
 }
 
 .nav-item {
-  color: var(--text-primary);
+  color: var(--text-primary); /* Back to Black */
   text-decoration: none;
   font-family: var(--font-sans);
-  font-size: 12px; /* Slightly larger */
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  opacity: 0.8; /* Increased from 0.6 */
-  font-weight: 500; /* Bolder */
-  transition: opacity 0.3s ease;
+  opacity: 0.8;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .nav-item:hover {
   opacity: 1;
+  color: var(--accent);
 }
+
+
 
 @media (max-width: 768px) {
   .nav-links {

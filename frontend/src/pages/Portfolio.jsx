@@ -3,17 +3,31 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import './Portfolio.css';
 
+// Import client images
+import img1 from '../assets/img1.webp';
+import img2 from '../assets/img2.webp';
+import img3 from '../assets/img3.webp';
+import img4 from '../assets/img4.webp';
+import img5 from '../assets/img5.webp';
+import img6 from '../assets/img6.webp';
+import img7 from '../assets/img7.webp';
+import img8 from '../assets/img8.webp';
+import img9 from '../assets/img9.webp';
+
 const Portfolio = () => {
   const [filter, setFilter] = useState('All');
   const container = useRef();
 
   const items = [
-    { id: 1, title: 'Ethereal Morning', cat: 'Wedding', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070' },
-    { id: 2, title: 'Urban Romance', cat: 'Pre-wedding', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069' },
-    { id: 3, title: 'The Silent Vow', cat: 'Candid', img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070' },
-    { id: 4, title: 'Golden Legacy', cat: 'Wedding', img: 'https://images.unsplash.com/photo-1460364155352-f5ee23a6b721?q=80&w=2070' },
-    { id: 5, title: 'Shadow & Light', cat: 'Candid', img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070' },
-    { id: 6, title: 'Desert Dream', cat: 'Pre-wedding', img: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=2070' },
+    { id: 1, title: 'Ethereal Morning', cat: 'Wedding', img: img1 },
+    { id: 2, title: 'Urban Romance', cat: 'Pre-wedding', img: img2 },
+    { id: 3, title: 'The Silent Vow', cat: 'Candid', img: img3 },
+    { id: 4, title: 'Golden Legacy', cat: 'Wedding', img: img4 },
+    { id: 5, title: 'Shadow & Light', cat: 'Candid', img: img5 },
+    { id: 6, title: 'Desert Dream', cat: 'Pre-wedding', img: img6 },
+    { id: 7, title: 'Floral Whisper', cat: 'Wedding', img: img7 },
+    { id: 8, title: 'Velvet Evening', cat: 'Candid', img: img8 },
+    { id: 9, title: 'Azure Coast', cat: 'Pre-wedding', img: img9 },
   ];
 
   const filteredItems = filter === 'All' ? items : items.filter(i => i.cat === filter);

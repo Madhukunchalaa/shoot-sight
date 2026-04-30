@@ -1,66 +1,125 @@
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import './Contact.css';
 
 const Contact = () => {
+  const container = useRef();
+
+  useGSAP(() => {
+    // 1. Entrance Stagger
+    gsap.from('.contact-reveal', {
+      y: 50,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.2,
+      ease: 'power4.out'
+    });
+
+    // 2. Parallax background text
+    gsap.to('.bg-contact-text', {
+      x: 100,
+      scrollTrigger: {
+        trigger: '.contact-page-stylish',
+        scrub: 1
+      }
+    });
+
+    // 3. Form input focus effect
+    const inputs = document.querySelectorAll('.journal-input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', () => {
+        gsap.to(input.nextElementSibling, { scaleX: 1, duration: 0.5, ease: 'power2.out' });
+      });
+      input.addEventListener('blur', () => {
+        if (!input.value) {
+          gsap.to(input.nextElementSibling, { scaleX: 0, duration: 0.5, ease: 'power2.in' });
+        }
+      });
+    });
+  }, { scope: container });
+
   return (
-    <div className="contact-page section-padding container">
-      <div className="contact-grid">
-        <div className="contact-info">
-          <span className="subtitle-accent">GET IN TOUCH</span>
-          <h1 className="section-title-large">Let's Capture <br />Your <i>Story</i></h1>
-          <p className="contact-desc">
-            Whether it's a destination wedding or an intimate elopement, we'd love to hear your vision.
-          </p>
+    <div ref={container} className="contact-page-stylish">
+      <div className="bg-contact-text">START A CONVERSATION // START A CONVERSATION</div>
+      
+      <div className="container section-padding">
+        <header className="contact-header contact-reveal">
+          <span className="subtitle-accent">05 // CONTACT</span>
+          <h1 className="contact-main-title">
+            Begin the <i>Narrative</i>
+          </h1>
+        </header>
 
-          <div className="contact-methods">
-            <div className="method-item">
-              <h4>Inquiries</h4>
-              <p>hello@shootatsight.com</p>
+        <div className="contact-stylish-grid">
+          {/* LEFT: INFO */}
+          <div className="contact-info-block contact-reveal">
+            <div className="info-section">
+              <h3 className="info-label">Direct</h3>
+              <a href="mailto:hello@shootatsight.com" className="info-link">hello@shootatsight.com</a>
+              <a href="tel:+917989776255" className="info-link">+91 7989776255</a>
             </div>
-            <div className="method-item">
-              <h4>WhatsApp</h4>
-              <a href="https://wa.me/917989776255" target="_blank" rel="noreferrer">+91 7989776255</a>
+
+            <div className="info-section">
+              <h3 className="info-label">WhatsApp</h3>
+              <a href="https://wa.me/917989776255" target="_blank" rel="noreferrer" className="info-link-accent">Message the Studio</a>
             </div>
-            <div className="method-item">
-              <h4>Social</h4>
-              <a href="#instagram">@shootatsight</a>
+
+            <div className="info-section">
+              <h3 className="info-label">Studio Location</h3>
+              <p className="info-text">Jubilee Hills, <br />Hyderabad, India</p>
+            </div>
+
+            <div className="info-social-links">
+              <a href="#">Instagram</a>
+              <a href="#">Pinterest</a>
+              <a href="#">Vimeo</a>
             </div>
           </div>
-        </div>
 
-        <div className="contact-form-wrapper">
-          <form className="premium-form">
-            <div className="form-row">
-              <div className="form-group">
-                <label>Full Name</label>
-                <input type="text" placeholder="Your name" />
+          {/* RIGHT: THE INQUIRY JOURNAL (FORM) */}
+          <div className="contact-form-block contact-reveal">
+            <form className="journal-form">
+              <div className="journal-field">
+                <input type="text" className="journal-input" placeholder="Your Name" required />
+                <div className="input-line"></div>
               </div>
-              <div className="form-group">
-                <label>Email Address</label>
-                <input type="email" placeholder="email@example.com" />
+
+              <div className="journal-field">
+                <input type="email" className="journal-input" placeholder="Email Address" required />
+                <div className="input-line"></div>
               </div>
-            </div>
-            <div className="form-group">
-              <label>Event Date</label>
-              <input type="date" />
-            </div>
-            <div className="form-group">
-              <label>Tell us your story</label>
-              <textarea placeholder="Tell us more about your event..." rows="5"></textarea>
-            </div>
-            <button type="submit" className="btn-premium btn-full">Send Inquiry</button>
-          </form>
+
+              <div className="journal-field">
+                <input type="text" className="journal-input" placeholder="Event Location" required />
+                <div className="input-line"></div>
+              </div>
+
+              <div className="journal-field">
+                <textarea className="journal-input" placeholder="Tell us your vision..." rows="4"></textarea>
+                <div className="input-line"></div>
+              </div>
+
+              <div className="form-footer">
+                <p className="form-note">By submitting, you agree to our artistic vision and processing timeline.</p>
+                <button type="submit" className="btn-journal">
+                  <span>Send Inquiry</span>
+                  <div className="btn-circle"></div>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
 
-      <div className="contact-map section-padding">
-        <div className="map-placeholder">
-          {/* In a real scenario, embed Google Maps here */}
-          <div className="map-info">
-            <h3>Our Studio</h3>
-            <p>Jubilee Hills, Hyderabad, India</p>
-          </div>
+      {/* Decorative Signature Section */}
+      <section className="contact-bottom-signature container">
+        <div className="signature-divider"></div>
+        <div className="signature-flex">
+          <p>SHOOT @ SIGHT // DIGITAL JOURNAL</p>
+          <p>EST. 2018</p>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

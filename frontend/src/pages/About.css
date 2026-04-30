@@ -1,81 +1,218 @@
-.about-hero {
-  min-height: 60vh;
+.about-page-stylish {
+  background: var(--bg-color);
+  overflow-x: hidden;
+}
+
+/* Section 1: Manifesto Hero */
+.about-manifesto-hero {
+  position: relative;
+  height: 100vh;
   display: flex;
   align-items: center;
-}
-
-.about-hero-content {
-  max-width: 800px;
-}
-
-.lead-text {
-  font-size: 22px;
-  margin-top: 30px;
-  color: var(--text-primary);
-  opacity: 0.8;
-  line-height: 1.5;
-}
-
-.story-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
-  align-items: center;
-}
-
-.story-img {
-  aspect-ratio: 4/5;
   overflow: hidden;
 }
 
-.story-img img {
+.bg-text-outline {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-family: var(--font-serif);
+  font-size: 250px;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0,0,0,0.05);
+  font-weight: 900;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.manifesto-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.manifesto-title {
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 8vw, 120px);
+  line-height: 0.9;
+  margin-top: 20px;
+  color: var(--text-primary);
+}
+
+.manifesto-title .italic-accent {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.manifesto-lead {
+  font-size: 20px;
+  margin-top: 40px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 600px;
+}
+
+/* Section 2: Vision Reveal */
+.about-vision-reveal {
+  position: relative;
+  padding-bottom: 150px;
+}
+
+.manifesto-img-wrapper {
+  position: relative;
+  width: 70%;
+  height: 800px;
+  overflow: hidden;
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+.manifesto-img-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.story-text h2 {
-  font-size: 48px;
-  margin-bottom: 30px;
+.vision-tag {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 25px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-weight: 700;
 }
 
-.story-stat {
-  display: flex;
-  gap: 50px;
-  margin-top: 50px;
+.vision-text-overlap {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: var(--bg-color);
+  padding: 80px;
+  max-width: 500px;
+  box-shadow: 40px 40px 100px rgba(0,0,0,0.1);
+  z-index: 3;
 }
 
-.stat-num {
-  display: block;
+.vision-text-overlap h2 {
   font-family: var(--font-serif);
-  font-size: 40px;
+  font-size: 42px;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.vision-text-overlap h2 i {
   color: var(--accent);
 }
 
-.stat-label {
+/* Section 3: Process Grid */
+.about-process-grid {
+  background: var(--bg-secondary);
+}
+
+.process-header {
+  margin-bottom: 80px;
+  text-align: center;
+}
+
+.title-line {
+  width: 60px;
+  height: 2px;
+  background: var(--accent);
+  margin: 30px auto 0;
+}
+
+.process-grid-stylish {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.process-card {
+  background: var(--bg-color);
+  padding: 60px 40px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.process-card:hover {
+  transform: translateY(-10px);
+}
+
+.process-num {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  color: rgba(0,0,0,0.05);
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-weight: 900;
+}
+
+.process-card h3 {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+/* Section 4: Stats Minimal */
+.about-stats-minimal {
+  padding: 100px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stat-box h4 {
+  font-family: var(--font-serif);
+  font-size: 64px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.stat-box p {
   font-family: var(--font-sans);
   font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  font-weight: 700;
   opacity: 0.6;
 }
 
-.process-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 60px;
-  margin-top: 80px;
+/* Section 5: Signature */
+.signature-content {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.process-item h3 {
-  font-size: 28px;
-  margin-bottom: 15px;
+.quote {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-style: italic;
+  line-height: 1.4;
+  margin-bottom: 40px;
+  color: var(--text-primary);
+}
+
+.signature-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
   color: var(--accent);
+  font-weight: 700;
 }
 
-@media (max-width: 768px) {
-  .story-grid, .process-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+@media (max-width: 992px) {
+  .vision-text-overlap { position: relative; top: 0; transform: none; padding: 40px; width: 100%; margin-top: -40px; }
+  .manifesto-img-wrapper { width: 100%; height: 500px; }
+  .process-grid-stylish { grid-template-columns: 1fr; }
+  .stats-row { flex-direction: column; gap: 60px; text-align: center; }
+  .bg-text-outline { font-size: 100px; }
 }

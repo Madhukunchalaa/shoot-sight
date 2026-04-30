@@ -3,6 +3,11 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import './PortfolioPreview.css';
 
+// Import client images
+import img1 from '../assets/img1.webp';
+import img2 from '../assets/img2.webp';
+import img3 from '../assets/img3.webp';
+
 const PortfolioPreview = () => {
   const container = useRef();
 
@@ -46,9 +51,9 @@ const PortfolioPreview = () => {
   }, { scope: container });
 
   const items = [
-    { id: 1, title: 'Summer Eternal', cat: 'Wedding Story', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069' },
-    { id: 2, title: 'Golden Hour', cat: 'Pre-wedding', img: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=2070' },
-    { id: 3, title: 'Modern Muse', cat: 'Candid Narrative', img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070' },
+    { id: 1, title: 'Summer Eternal', cat: 'Wedding Story', img: img1 },
+    { id: 2, title: 'Golden Hour', cat: 'Pre-wedding', img: img2 },
+    { id: 3, title: 'Modern Muse', cat: 'Candid Narrative', img: img3 },
   ];
 
   return (
@@ -77,7 +82,7 @@ const PortfolioPreview = () => {
         </div>
         
         <div className="view-all-wrapper">
-          <a href="#portfolio" className="btn-premium">View Full Archive</a>
+          <a href="/portfolio" className="btn-premium">View Full Archive</a>
         </div>
       </div>
     </section>
