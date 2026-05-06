@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
-  --bg-color: #ffffff;
-  --bg-secondary: #f4f4f4;
-  --text-primary: #000000;
-  --text-secondary: #222222; /* Darker secondary text */
-  --accent: #e63946; /* Matching the red '@' in the logo for brand unity */
-  --font-serif: 'Playfair Display', serif;
+  --bg-color: #fdf8f3;      /* Soft Cream Background */
+  --bg-secondary: #dcd0c0;  /* Muted Tan Header/Sections */
+  --text-primary: #3c3024;  /* Deep Earthy Brown Text */
+  --text-secondary: #5e4d3b; /* Medium Brown Text */
+  --accent: #8d6e63;        /* Warm Accent Brown */
+  --accent-light: #bcaaa4;   /* For lighter accents */
+  --font-serif: 'Playfair Display', serif; 
   --font-sans: 'Inter', sans-serif;
   --transition-smooth: cubic-bezier(0.76, 0, 0.24, 1);
 }
@@ -167,10 +168,17 @@ html.lenis, html.lenis body {
 
 /* Typography */
 h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  font-weight: 700; /* Bolder headings for high contrast */
+  font-family: var(--font-sans);
+  font-weight: 800; /* Extra bold for that corporate look */
   line-height: 1.1;
   color: var(--text-primary);
+  text-transform: uppercase; /* Matching Arvind's bold headers */
+  letter-spacing: -1px;
+}
+
+h1 i, h2 i, h3 i, h4 i {
+  color: var(--accent); /* Warm Brown for accented headings */
+  font-style: normal;
 }
 
 p {

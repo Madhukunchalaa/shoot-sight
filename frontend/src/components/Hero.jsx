@@ -1,94 +1,153 @@
-import { useRef, useState, useEffect } from 'react';
-import { useGSAP } from '@gsap/react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import img1 from '../assets/hero_detail.png';
-import img2 from '../assets/hero_carousel_1.png';
-import img3 from '../assets/hero_carousel_2.png';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
+// Import Real Professional Assets
+import hero1 from '../assets/SAS_4201.jpg';
+import hero2 from '../assets/2S9A3065.jpg';
+import hero3 from '../assets/DSC06362.jpg';
+import hero4 from '../assets/NGD_4849-2.jpg';
+
+gsap.registerPlugin(ScrollTrigger);
+
 const Hero = () => {
-  const container = useRef();
-  const [index, setIndex] = useState(0);
-  const images = [img1, img2, img3];
-  const total = images.length;
+  const containerRef = useRef(null);
+  const textRef = useRef(null);
 
-  useGSAP(() => {
-    // Entrance Animation
-    const tl = gsap.timeline();
-    
-    tl.fromTo('.hero-title .char', 
-      { y: 100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, stagger: 0.02, ease: 'power4.out' }
-    );
+  const slides = [
+    {
+      left: hero1,
+      right: hero2,
+      t1: "TIMELESS",
+      t2: "MOMENTS"
+    },
+    {
+      left: hero3,
+      right: hero4,
+      t1: "ETERNAL",
+      t2: "LEGACIES"
+    },
+    {
+      left: hero4,
+      right: hero1,
+      t1: "PURE",
+      t2: "EMOTIONS"
+    }
+  ];
 
-    tl.fromTo(['.hero-subtitle', '.hero-action'],
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out' },
-      "-=0.5"
-    );
-
-    // Carousel Logic
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % total);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, { scope: container });
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Crossfade Animation
-    gsap.fromTo('.hero-img-slide',
-      { opacity: 0, scale: 1.2 },
-      { opacity: 1, scale: 1.1, duration: 2, ease: 'power2.inOut' }
-    );
-  }, [index]);
+    const ctx = gsap.context(() => {
+      // Entrance
+      const tl = gsap.timeline();
+      tl.from(".hero-side", {
+        width: 0,
+        duration: 1.8,
+        stagger: 0.3,
+        ease: "expo.inOut"
+      })
+      .from(".center-line", {
+        height: 0,
+        duration: 1,
+        ease: "power2.inOut"
+      }, "-=1");
 
-  const renderTitle = (text) => {
-    return text.split('').map((char, i) => (
-      <span key={i} className="char" style={{ display: 'inline-block' }}>
-        {char === ' ' ? '\u00A0' : char}
-      </span>
-    ));
-  };
+      // 2. Section Pinning & Layered Scroll
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        scrub: true
+      });
+
+      // Continuous Parallax
+      gsap.to(".side-img-container.left", {
+        y: -150,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1
+        }
+      });
+
+      gsap.to(".side-img-container.right", {
+        y: 100,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1
+        }
+      });
+    }, containerRef);
+
+    // Auto Carousel Logic with Text Sync
+    const interval = setInterval(() => {
+      gsap.to(".hero-center-title", {
+        opacity: 0,
+        y: -20,
+        duration: 0.8,
+        onComplete: () => {
+          setCurrentIndex((prev) => (prev + 1) % slides.length);
+          gsap.fromTo(".hero-center-title", 
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
+          );
+        }
+      });
+    }, 5000);
+
+    return () => {
+      ctx.revert();
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <section ref={container} className="hero">
-      <div className="hero-bg">
-        {images.map((img, i) => (
-          i === index && (
-            <img 
-              key={i}
-              src={img} 
-              alt="Cinematic Narrative" 
-              className="hero-img hero-img-slide"
-            />
-          )
-        ))}
-        <div className="overlay"></div>
-      </div>
-      <div className="hero-content container">
-        <h1 className="hero-title">
-          <div className="line">{renderTitle("THE ART OF")}</div>
-          <div className="line">{renderTitle("STORYTELLING")}</div>
-        </h1>
-        <p className="hero-subtitle">
-          Capturing the soul of every moment. An editorial digital journal by Shoot @ Sight.
-        </p>
-        <div className="hero-action">
-          <a href="#work" className="btn-premium">Explore Journal</a>
-        </div>
-      </div>
-      
-      {/* Carousel Dots */}
-      <div className="carousel-indicators">
-        {images.map((_, i) => (
+    <section ref={containerRef} className="hero-dual-reveal">
+      <div className="hero-side left-side">
+        {slides.map((slide, i) => (
           <div 
             key={i} 
-            className={`indicator ${i === index ? 'active' : ''}`}
-            onClick={() => setIndex(i)}
-          ></div>
+            className={`side-img-container left ${i === currentIndex ? 'active' : ''}`}
+          >
+            <img src={slide.left} alt="Professional Photography" className="side-img" />
+          </div>
         ))}
+        <div className="side-overlay"></div>
       </div>
+
+      <div className="hero-side right-side">
+        {slides.map((slide, i) => (
+          <div 
+            key={i} 
+            className={`side-img-container right ${i === currentIndex ? 'active' : ''}`}
+          >
+            <img src={slide.right} alt="Professional Photography" className="side-img" />
+          </div>
+        ))}
+        <div className="side-overlay"></div>
+      </div>
+
+      <div className="center-line"></div>
+
+      <div className="hero-center-content" ref={textRef}>
+        <h1 className="hero-center-title">
+          <span className="brand-main">{slides[currentIndex].t1}</span>
+          <span className="brand-accent"><i>{slides[currentIndex].t2}</i></span>
+        </h1>
+        <p className="hero-tagline-luxury">SHOOT @ SIGHT // PRESERVING THE UNSPOKEN</p>
+      </div>
+
+      <div className="hero-corner-detail top-left">EST. 2026 / CINEMA</div>
+      <div className="hero-corner-detail top-right">HYDERABAD - GLOBAL</div>
+      <div className="hero-corner-detail bottom-left">BOUTIQUE STUDIO</div>
+      <div className="hero-corner-detail bottom-right">SCROLL TO BEGIN</div>
     </section>
   );
 };

@@ -53,7 +53,7 @@ const PortfolioPreview = () => {
   const items = [
     { id: 1, title: 'Summer Eternal', cat: 'Wedding Story', img: img1 },
     { id: 2, title: 'Golden Hour', cat: 'Pre-wedding', img: img2 },
-    { id: 3, title: 'Modern Muse', cat: 'Candid Narrative', img: img3 },
+    { id: 3, title: 'Modern Muse', cat: 'Boutique Story', img: img3 },
   ];
 
   return (
@@ -62,7 +62,7 @@ const PortfolioPreview = () => {
       <div className="container">
         <div className="portfolio-header">
           <span className="subtitle-accent">01 // SELECTED WORKS</span>
-          <h2 className="section-title-large">Editorial <br /><i>Narratives</i></h2>
+          <h2 className="section-title-large">Selected <br /><i>Collections</i></h2>
         </div>
         
         <div className="portfolio-stack">

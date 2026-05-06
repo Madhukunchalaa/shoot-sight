@@ -1,5 +1,7 @@
 import Hero from '../components/Hero';
-import PortfolioPreview from '../components/PortfolioPreview';
+import OurStory from '../components/OurStory';
+import Services from '../components/Services';
+import RecentShoots from '../components/RecentShoots';
 import Experience from '../components/Experience';
 import { Link } from 'react-router-dom';
 
@@ -7,8 +9,9 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <PortfolioPreview />
-      <Experience />
+      <OurStory />
+      <RecentShoots />
+      <Services />
       
       <section className="section-padding container journal-section">
         <div className="section-header-centered">
@@ -34,7 +37,7 @@ const Home = () => {
         <div className="container">
           <div className="cta-content">
             <h2 className="cta-title">Let's create <br />something <i>eternal</i>.</h2>
-            <p>Now booking editorial narratives for 2026/27.</p>
+            <p>Now booking luxury wedding experiences for 2026/27.</p>
             <div className="cta-actions">
               <Link to="/contact" className="btn-premium">Start a Conversation</Link>
             </div>
@@ -42,6 +45,9 @@ const Home = () => {
         </div>
         <div className="cta-bg-text">CONTACT</div>
       </section>
+
+      {/* Experience section moved to the bottom, right above the footer */}
+      <Experience />
     </>
   );
 };

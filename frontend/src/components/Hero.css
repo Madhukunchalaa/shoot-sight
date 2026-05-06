@@ -1,103 +1,139 @@
-.hero {
-  position: relative;
+.hero-dual-reveal {
   height: 100vh;
   width: 100%;
-  overflow: hidden;
   display: flex;
-  align-items: center;
-}
-
-.hero-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 120%; /* For parallax room */
-  z-index: -1;
-}
-
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.3); /* Lighter white tint for dark text visibility */
-}
-
-.hero-content {
   position: relative;
-  z-index: 1;
-  perspective: 1000px;
-}
-
-.hero-title {
-  color: var(--text-primary); /* Switch to black */
-  font-size: clamp(48px, 8vw, 120px);
-  margin-bottom: 20px;
-  /* Removed heavy shadow for a cleaner journal look */
-}
-
-.hero-title .line:last-child {
-  color: var(--accent); /* Brand Red for "STORYTELLING" */
-}
-
-.line {
   overflow: hidden;
-  display: block;
-  line-height: 0.9;
+  background: var(--text-primary);
 }
 
-.char {
-  display: inline-block;
-  transform-origin: bottom;
+.hero-side {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero-subtitle {
-  font-size: 20px;
-  max-width: 600px;
-  margin-bottom: 40px;
-  font-weight: 500;
-  color: var(--text-secondary); /* Darker grey */
-  opacity: 0.9;
-}
-
-
-
-.hero-img-slide {
+.side-img-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 1;
+}
+
+.side-img-container.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.side-img {
+  width: 100%;
+  height: 130%; /* For parallax */
   object-fit: cover;
-}
-
-.carousel-indicators {
   position: absolute;
-  bottom: 40px;
-  right: 5%;
-  display: flex;
-  gap: 15px;
+  top: -15%;
+}
+
+.side-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(60, 48, 36, 0.3), rgba(60, 48, 36, 0.1));
+  z-index: 5;
+}
+
+.center-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  height: 60%;
+  background: rgba(255,255,255,0.2);
+  z-index: 6;
+}
+
+.hero-center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 10;
+  text-align: center;
+  width: 100%;
 }
 
-.indicator {
-  width: 40px;
-  height: 2px;
-  background: rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
+.hero-center-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.75;
 }
 
-.indicator.active {
-  background: var(--accent);
-  width: 60px;
+.brand-main {
+  font-size: clamp(40px, 10vw, 100px); /* Reduced Size */
+  font-weight: 900;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 4px; /* Increased Spacing */
+  text-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
+.brand-accent {
+  font-size: clamp(30px, 8vw, 80px); /* Reduced Size */
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.brand-accent i {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  color: #d4af37; /* Champagne Gold */
+  margin-left: 10px;
+  text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.hero-tagline-luxury {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 6px;
+  color: #fdf8f3; /* Soft Cream */
+  margin-top: 40px;
+  opacity: 0.8;
+}
+
+.hero-corner-detail {
+  position: absolute;
+  padding: 40px 60px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #fdf8f3; /* Soft Cream */
+  opacity: 0.6;
+  z-index: 11;
+}
+
+.top-left { top: 0; left: 0; }
+.top-right { top: 0; right: 0; }
+.bottom-left { bottom: 0; left: 0; }
+.bottom-right { bottom: 0; right: 0; }
+
+@media (max-width: 768px) {
+  .hero-dual-reveal {
+    flex-direction: column;
+  }
+  .hero-side {
+    width: 100%;
+    height: 50%;
+  }
+  .center-line {
+    display: none;
+  }
+}
