@@ -3,11 +3,6 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import './PortfolioPreview.css';
 
-// Import client images
-import img1 from '../assets/img1.webp';
-import img2 from '../assets/img2.webp';
-import img3 from '../assets/img3.webp';
-
 const PortfolioPreview = () => {
   const container = useRef();
 
@@ -51,9 +46,9 @@ const PortfolioPreview = () => {
   }, { scope: container });
 
   const items = [
-    { id: 1, title: 'Summer Eternal', cat: 'Wedding Story', img: img1 },
-    { id: 2, title: 'Golden Hour', cat: 'Pre-wedding', img: img2 },
-    { id: 3, title: 'Modern Muse', cat: 'Boutique Story', img: img3 },
+    { id: 1, title: 'Summer Eternal', cat: 'Wedding Story',   img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/kiran_tejaswini/DSC03133.webp' },
+    { id: 2, title: 'Golden Hour',    cat: 'Pre-wedding',     img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC7759.webp' },
+    { id: 3, title: 'Modern Muse',    cat: 'Boutique Story',  img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ragini/_I3A7475.webp' },
   ];
 
   return (

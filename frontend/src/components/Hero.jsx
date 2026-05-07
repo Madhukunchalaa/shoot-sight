@@ -3,11 +3,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
-// Import Real Professional Assets
-import hero1 from '../assets/SAS_4201.jpg';
-import hero2 from '../assets/2S9A3065.jpg';
-import hero3 from '../assets/DSC06362.jpg';
-import hero4 from '../assets/NGD_4849-2.jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,20 +12,20 @@ const Hero = () => {
 
   const slides = [
     {
-      left: hero1,
-      right: hero2,
+      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC7505.webp',
+      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ragini/_I3A7475.webp',
       t1: "TIMELESS",
       t2: "MOMENTS"
     },
     {
-      left: hero3,
-      right: hero4,
+      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/kiran_tejaswini/NGD_9302.webp',
+      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/naveen%20and%20kate/_UNI9421.webp',
       t1: "ETERNAL",
       t2: "LEGACIES"
     },
     {
-      left: hero4,
-      right: hero1,
+      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/aishwarya_akshay/KRP_8887.webp',
+      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/srinidhi_ramya/DSC01641.webp',
       t1: "PURE",
       t2: "EMOTIONS"
     }
@@ -116,7 +111,14 @@ const Hero = () => {
             key={i} 
             className={`side-img-container left ${i === currentIndex ? 'active' : ''}`}
           >
-            <img src={slide.left} alt="Professional Photography" className="side-img" />
+            <img
+              src={slide.left}
+              alt="Professional Photography"
+              className="side-img"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              fetchpriority={i === 0 ? 'high' : 'low'}
+            />
           </div>
         ))}
         <div className="side-overlay"></div>
@@ -128,7 +130,14 @@ const Hero = () => {
             key={i} 
             className={`side-img-container right ${i === currentIndex ? 'active' : ''}`}
           >
-            <img src={slide.right} alt="Professional Photography" className="side-img" />
+            <img
+              src={slide.right}
+              alt="Professional Photography"
+              className="side-img"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              fetchpriority={i === 0 ? 'high' : 'low'}
+            />
           </div>
         ))}
         <div className="side-overlay"></div>

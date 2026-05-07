@@ -3,31 +3,20 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import './Portfolio.css';
 
-// Import client images
-import img1 from '../assets/img1.webp';
-import img2 from '../assets/img2.webp';
-import img3 from '../assets/img3.webp';
-import img4 from '../assets/img4.webp';
-import img5 from '../assets/img5.webp';
-import img6 from '../assets/img6.webp';
-import img7 from '../assets/img7.webp';
-import img8 from '../assets/img8.webp';
-import img9 from '../assets/img9.webp';
-
 const Portfolio = () => {
   const [filter, setFilter] = useState('All');
   const container = useRef();
 
   const items = [
-    { id: 1, title: 'Ethereal Morning', cat: 'Wedding', img: img1 },
-    { id: 2, title: 'Urban Romance', cat: 'Pre-wedding', img: img2 },
-    { id: 3, title: 'The Silent Vow', cat: 'Candid', img: img3 },
-    { id: 4, title: 'Golden Legacy', cat: 'Wedding', img: img4 },
-    { id: 5, title: 'Shadow & Light', cat: 'Candid', img: img5 },
-    { id: 6, title: 'Desert Dream', cat: 'Pre-wedding', img: img6 },
-    { id: 7, title: 'Floral Whisper', cat: 'Wedding', img: img7 },
-    { id: 8, title: 'Velvet Evening', cat: 'Candid', img: img8 },
-    { id: 9, title: 'Azure Coast', cat: 'Pre-wedding', img: img9 },
+    { id: 1, title: 'Ethereal Morning',  cat: 'Wedding',     img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/naveen%20and%20kate/_UNI9421.webp' },
+    { id: 2, title: 'Urban Romance',     cat: 'Pre-wedding', img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/aishwarya_akshay/KRP_7791.webp' },
+    { id: 3, title: 'The Silent Vow',    cat: 'Candid',      img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/kiran_tejaswini/NGD_9302.webp' },
+    { id: 4, title: 'Golden Legacy',     cat: 'Wedding',     img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/raghudixith_varijashree/NGD_6719.webp' },
+    { id: 5, title: 'Shadow & Light',    cat: 'Candid',      img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ragini/_I3A6939.webp' },
+    { id: 6, title: 'Desert Dream',      cat: 'Pre-wedding', img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC2178%20-%20Copy.webp' },
+    { id: 7, title: 'Floral Whisper',    cat: 'Wedding',     img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/pavithra_arun/DSC00529.webp' },
+    { id: 8, title: 'Velvet Evening',    cat: 'Candid',      img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/srinidhi_ramya/DSC01641.webp' },
+    { id: 9, title: 'Azure Coast',       cat: 'Pre-wedding', img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/priyanka%20and%20niranjan/DSC_0347.webp' },
   ];
 
   const filteredItems = filter === 'All' ? items : items.filter(i => i.cat === filter);

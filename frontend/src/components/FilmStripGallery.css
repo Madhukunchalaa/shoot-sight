@@ -1,0 +1,521 @@
+/* ═══════════════════════════════════════════════════════════════════
+   FILM STRIP GALLERY — Cinematic horizontal scroll section
+   Palette: near-black warm film stock · muted gold · ivory cream
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Local design tokens ──────────────────────────────────────────── */
+.fsg {
+  --film-bg:        #0d0703;
+  --film-strip:     #160c06;
+  --film-border:    #0e0804;
+  --film-perf-bg:   #100805;
+  --film-perf-hole: #040200;
+  --gold:           #c9a96e;
+  --gold-dim:       rgba(201, 169, 110, 0.52);
+  --gold-faint:     rgba(201, 169, 110, 0.18);
+  --cream:          #f0e8d8;
+  --cream-dim:      rgba(240, 232, 216, 0.62);
+  --perf-h:         36px;
+  --card-w:         480px;
+  --card-h:         clamp(500px, 65vh, 660px);
+  --strip-gap:      26px;
+}
+
+/* ── Section shell ────────────────────────────────────────────────── */
+.fsg {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--film-bg);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  scrollbar-width: none;
+}
+
+.fsg::-webkit-scrollbar {
+  display: none;
+}
+
+.fsg:active {
+  cursor: grabbing;
+}
+
+/* Left + right edge fade — film comes from and vanishes into darkness */
+.fsg::before,
+.fsg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 220px;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.fsg::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--film-bg) 0%, transparent 100%);
+}
+
+.fsg::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--film-bg) 0%, transparent 100%);
+}
+
+/* ── Grain overlay ────────────────────────────────────────────────── */
+.fsg__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.052;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  animation: fsgGrain 0.75s steps(2) infinite;
+  will-change: transform;
+}
+
+@keyframes fsgGrain {
+  0%   { transform: translate3d(0,    0,    0); }
+  50%  { transform: translate3d(-7px, 5px,  0); }
+  100% { transform: translate3d(5px,  -4px, 0); }
+}
+
+/* ── Corner editorial labels ─────────────────────────────────────── */
+.fsg__corner {
+  position: absolute;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: var(--font-sans, sans-serif);
+  font-size: 7.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--gold-dim);
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.fsg__corner--tl { top: 22px; left: 26px; }
+.fsg__corner--tr { top: 22px; right: 26px; text-align: right; }
+.fsg__corner--bl { bottom: 22px; left: 26px; }
+.fsg__corner--br { bottom: 22px; right: 26px; text-align: right; }
+
+/* ── Fixed section title ─────────────────────────────────────────── */
+.fsg__title {
+  position: absolute;
+  top: 50%;
+  left: 52px;
+  transform: translateY(-50%);
+  z-index: 15;
+  pointer-events: none;
+}
+
+.fsg__title-label {
+  display: block;
+  font-family: var(--font-sans, sans-serif);
+  font-size: 8.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--gold-dim);
+  margin-bottom: 14px;
+}
+
+.fsg__title-heading {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: clamp(30px, 3.2vw, 52px);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--cream);
+  text-transform: none;
+  letter-spacing: -0.3px;
+}
+
+.fsg__title-heading em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+}
+
+/* ── Progress line ───────────────────────────────────────────────── */
+.fsg__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gold-faint);
+  z-index: 16;
+}
+
+.fsg__progress-bar {
+  height: 100%;
+  background: var(--gold);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* ── Film track (the GPU-translated element) ─────────────────────── */
+.fsg__track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ── Perforation strips ──────────────────────────────────────────── */
+/*
+  SVG tile: 48 × 36 px dark background, single 14×24 rx-3 punched hole.
+  background-repeat: repeat-x tiles it across any width automatically.
+*/
+.fsg__perf {
+  flex-shrink: 0;
+  height: var(--perf-h);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='36'%3E%3Crect width='48' height='36' fill='%23100805'/%3E%3Crect x='17' y='6' width='14' height='24' rx='3' fill='%23040200'/%3E%3C/svg%3E");
+  background-size: 48px 36px;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+.fsg__perf--top  { border-bottom: 1px solid rgba(201, 169, 110, 0.06); }
+.fsg__perf--bottom { border-top:  1px solid rgba(201, 169, 110, 0.06); }
+
+/* ── Film strip body ─────────────────────────────────────────────── */
+.fsg__strip {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--strip-gap);
+  /* 58px top padding gives room for the frame badges above cards */
+  padding: 58px 80px 30px;
+  background: var(--film-strip);
+}
+
+/* ── Film leader / trailer ───────────────────────────────────────── */
+.fsg__leader {
+  flex-shrink: 0;
+  width: 160px;
+  height: var(--card-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gold-faint);
+}
+
+.fsg__leader--end {
+  width: 110px;
+}
+
+.fsg__leader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.fsg__leader-brand {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 7.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--gold-dim);
+}
+
+.fsg__leader-id {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 7px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(201, 169, 110, 0.28);
+}
+
+.fsg__leader-bars {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+}
+
+.fsg__leader-bar {
+  width: 3px;
+  background: var(--gold-dim);
+}
+
+.fsg__leader-bar--0 { height: 30px; opacity: 0.65; }
+.fsg__leader-bar--1 { height: 18px; opacity: 0.38; }
+.fsg__leader-bar--2 { height: 10px; opacity: 0.2;  }
+
+/* ── Individual film card ────────────────────────────────────────── */
+.fsg__card {
+  position: relative;
+  flex-shrink: 0;
+  width:  var(--card-w);
+  height: var(--card-h);
+  /* 10px dark film-border framing (top + sides; image flush bottom) */
+  padding: 10px 10px 0;
+  background: var(--film-border);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.6),
+    0  6px 20px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(201, 169, 110, 0.05);
+  will-change: transform, opacity;
+}
+
+/* ── Frame badge (sits above the card in the strip padding) ──────── */
+.fsg__frame {
+  position: absolute;
+  top: -26px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  pointer-events: none;
+}
+
+.fsg__frame-label {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 5.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: rgba(201, 169, 110, 0.35);
+  line-height: 1;
+}
+
+.fsg__frame-num {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--gold-dim);
+  line-height: 1;
+}
+
+/* ── Image wrapper ───────────────────────────────────────────────── */
+.fsg__img-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.fsg__card-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Bottom gradient vignette for metadata legibility */
+.fsg__vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent    35%,
+    rgba(10, 5, 2, 0.42)  62%,
+    rgba(10, 5, 2, 0.84)  84%,
+    rgba(8,  4, 1, 0.94) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Metadata overlay ────────────────────────────────────────────── */
+.fsg__meta {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  right: 10px;
+  padding: 0 16px 20px;
+  pointer-events: none;
+}
+
+/* All reveal children start hidden; GSAP animates them in */
+.fsg__meta-reveal {
+  display: block;
+  will-change: transform, opacity;
+  /* JS sets initial state: { y:9, opacity:0 } */
+}
+
+.fsg__meta-cat {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 7px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--gold-dim);
+  margin-bottom: 7px;
+}
+
+.fsg__meta-couple {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: clamp(16px, 1.5vw, 21px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.2;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+}
+
+.fsg__meta-caption {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 10px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream-dim);
+  line-height: 1.65;
+  margin-bottom: 11px;
+}
+
+.fsg__meta-loc {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans, sans-serif);
+  font-size: 7.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: rgba(201, 169, 110, 0.48);
+}
+
+.fsg__dot {
+  color: rgba(201, 169, 110, 0.28);
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE  (< 768 px) — native CSS horizontal scroll carousel
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  .fsg {
+    height: auto;
+    overflow: visible;
+    cursor: default;
+    padding: 56px 0 48px;
+  }
+
+  .fsg:active { cursor: default; }
+
+  .fsg::before,
+  .fsg::after { display: none; }
+
+  .fsg__grain { display: none; }
+
+  .fsg__corner { display: none; }
+
+  .fsg__progress { display: none; }
+
+  /* Title flows in normal document flow */
+  .fsg__title {
+    position: static;
+    transform: none;
+    padding: 0 20px 28px;
+  }
+
+  .fsg__title-heading {
+    font-size: clamp(28px, 9vw, 42px);
+  }
+
+  /* Track becomes a normal block */
+  .fsg__track {
+    position: static !important; /* defeat any GSAP inline style */
+    transform: none !important;
+    width: 100% !important;
+    height: auto;
+  }
+
+  .fsg__perf { display: none; }
+
+  /* Strip: native horizontal scroll with snap */
+  .fsg__strip {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    height: auto;
+    gap: 14px;
+    padding: 30px 20px 24px;
+    background: var(--film-strip);
+  }
+
+  .fsg__strip::-webkit-scrollbar { display: none; }
+
+  /* Leader cards */
+  .fsg__leader {
+    flex-shrink: 0;
+    width: 80px;
+    height: 90vw;
+    scroll-snap-align: start;
+  }
+
+  .fsg__leader--end { width: 60px; }
+
+  /* Film cards */
+  .fsg__card {
+    flex-shrink: 0;
+    width: 76vw;
+    height: 96vw;
+    scroll-snap-align: center;
+    /* Reset GSAP-injected transforms on mobile */
+    transform: none !important;
+    opacity: 1    !important;
+  }
+
+  .fsg__frame { top: -22px; }
+
+  /* Always show metadata on mobile */
+  .fsg__meta-reveal {
+    transform: none    !important;
+    opacity:   1       !important;
+  }
+
+  .fsg__meta-couple { font-size: 18px; }
+}
+
+/* ── Tablet portrait (768 – 1023 px) slight tweaks ─────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .fsg {
+    --card-w: 320px;
+    --card-h: clamp(380px, 55vh, 520px);
+  }
+
+  .fsg__strip {
+    padding: 52px 50px 28px;
+  }
+
+  .fsg__title {
+    left: 36px;
+  }
+}
+
+/* ── 4K / large screens ─────────────────────────────────────────── */
+@media (min-width: 1800px) {
+  .fsg {
+    --card-w: 460px;
+    --card-h: clamp(520px, 56vh, 680px);
+  }
+
+  .fsg__strip {
+    gap: 34px;
+  }
+}

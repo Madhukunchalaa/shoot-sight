@@ -22,8 +22,7 @@
 /* FULL VISIBLE STATE (On Scroll) */
 .nav-full-visible {
   padding: 15px 0;
-  background: rgba(253, 248, 243, 0.9); /* Luxury Frosted Cream */
-  backdrop-filter: blur(20px);
+  background: rgba(253, 248, 243, 0.97);
   border-bottom: 1px solid rgba(60, 48, 36, 0.05);
   box-shadow: 0 10px 40px rgba(0,0,0,0.05);
 }

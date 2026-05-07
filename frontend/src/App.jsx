@@ -6,13 +6,11 @@ import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import SmoothScroll from './components/SmoothScroll';
 import './App.css';
 
 function App() {
   return (
     <>
-      <SmoothScroll />
       <Navbar />
       <main>
         <Routes>
