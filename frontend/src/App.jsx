@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import ShootDetail from './pages/ShootDetail';
 import Portfolio from './pages/Portfolio';
@@ -11,12 +11,14 @@ import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
 function App() {
+  const location = useLocation();
+
   return (
     <>
       <ScrollToTop />
       <Navbar />
       <main>
-        <Routes>
+        <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
           <Route path="/shoot/:id" element={<ShootDetail />} />
           <Route path="/portfolio" element={<Portfolio />} />

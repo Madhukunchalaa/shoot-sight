@@ -24,8 +24,8 @@ const Hero = () => {
       t2: "WITNESSED"
     },
     {
-      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/pavithra%20and%20arun/DSC00571.webp',
-      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/srinidhi_ramya/DSC00868.webp',
+      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/tejaswini%20and%20kiran/NGD_9347.webp',
+      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/paris/_DSC2506%20-%20Copy.webp',
       t1: "YOUR STORY",
       t2: "TOLD GENTLY"
     }

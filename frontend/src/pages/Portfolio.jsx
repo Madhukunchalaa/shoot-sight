@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import clientsData from '../data/clients-gallery.json';
+import galleryData from '../data/gallery-images.json';
 import './Portfolio.css';
 
 const Portfolio = () => {
@@ -8,15 +10,24 @@ const Portfolio = () => {
   const container = useRef();
 
   const items = [
-    { id: 1, title: 'Ethereal Morning',  cat: 'Wedding',     img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/naveen%20and%20kate/_UNI9421.webp' },
-    { id: 2, title: 'Urban Romance',     cat: 'Pre-wedding', img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/aishwarya_akshay/KRP_7791.webp' },
-    { id: 3, title: 'The Silent Vow',    cat: 'Candid',      img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/kiran_tejaswini/NGD_9302.webp' },
-    { id: 4, title: 'Golden Legacy',     cat: 'Wedding',     img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/raghudixith_varijashree/NGD_6719.webp' },
-    { id: 5, title: 'Shadow & Light',    cat: 'Candid',      img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ragini/_I3A6939.webp' },
-    { id: 6, title: 'Desert Dream',      cat: 'Pre-wedding', img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC2178%20-%20Copy.webp' },
-    { id: 7, title: 'Floral Whisper',    cat: 'Wedding',     img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/pavithra_arun/DSC00529.webp' },
-    { id: 8, title: 'Velvet Evening',    cat: 'Candid',      img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/srinidhi_ramya/DSC01641.webp' },
-    { id: 9, title: 'Azure Coast',       cat: 'Pre-wedding', img: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/priyanka%20and%20niranjan/DSC_0347.webp' },
+    { id: 1,  title: 'Where Two Worlds Became One',     cat: 'Wedding',     img: clientsData.find(c => c.id === 'naveen-and-kate').images[0] },
+    { id: 2,  title: 'City of Light, City of Love',     cat: 'Pre-wedding', img: clientsData.find(c => c.id === 'paris').images[3] },
+    { id: 3,  title: 'She Was the Room',                cat: 'Candid',      img: clientsData.find(c => c.id === 'ragini').images[3] },
+    { id: 4,  title: 'A Promise in Golden Hour',        cat: 'Wedding',     img: clientsData.find(c => c.id === 'aishwarya-and-akshay').images[0] },
+    { id: 5,  title: 'Heritage & Heart',                cat: 'Pre-wedding', img: galleryData[2].url },
+    { id: 6,  title: 'The Quiet Between Vows',          cat: 'Candid',      img: clientsData.find(c => c.id === 'kiran-and-tejaswini').images[0] },
+    { id: 7,  title: 'Sacred & Celebrated',             cat: 'Wedding',     img: clientsData.find(c => c.id === 'pavithra-and-arun').images[7] },
+    { id: 8,  title: 'Two Strangers, One Story',        cat: 'Pre-wedding', img: clientsData.find(c => c.id === 'raghu-dixith-and-varijashree').images[1] },
+    { id: 9,  title: 'Candlelight & Courage',           cat: 'Candid',      img: clientsData.find(c => c.id === 'srinidhi-and-ramya').images[4] },
+    { id: 10, title: 'Beneath the Ancient Sun',         cat: 'Wedding',     img: galleryData[0].url },
+    { id: 11, title: 'Letters Never Sent',              cat: 'Pre-wedding', img: clientsData.find(c => c.id === 'priyanka-and-niranjan').images[5] },
+    { id: 12, title: 'Still Waters, Still in Love',     cat: 'Candid',      img: galleryData[8].url },
+    { id: 13, title: 'The Day Everything Changed',      cat: 'Wedding',     img: clientsData.find(c => c.id === 'naveen-and-kate').images[3] },
+    { id: 14, title: 'Paris Was Their Witness',         cat: 'Pre-wedding', img: clientsData.find(c => c.id === 'paris').images[5] },
+    { id: 15, title: 'Joy Unfiltered',                  cat: 'Candid',      img: clientsData.find(c => c.id === 'aishwarya-and-akshay').images[11] },
+    { id: 16, title: 'Dancing Barefoot on Forever',     cat: 'Wedding',     img: galleryData[3].url },
+    { id: 17, title: 'A Glance Worth a Thousand Words', cat: 'Pre-wedding', img: clientsData.find(c => c.id === 'ragini').images[6] },
+    { id: 18, title: 'The Smile Before the Vow',        cat: 'Candid',      img: clientsData.find(c => c.id === 'kiran-and-tejaswini').images[7] },
   ];
 
   const filteredItems = filter === 'All' ? items : items.filter(i => i.cat === filter);
