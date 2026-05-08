@@ -3,6 +3,11 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import './Blog.css';
 
+import img1 from '../assets/_DSC3521 - Copy.webp';
+import img2 from '../assets/_DSC0075 - Copy.webp';
+import img3 from '../assets/_DSC2178 - Copy.webp';
+import img4 from '../assets/SAS_4201.webp';
+
 const Blog = () => {
   const container = useRef();
   
@@ -13,7 +18,7 @@ const Blog = () => {
       date: 'April 24, 2026',
       cat: 'Artistry',
       excerpt: 'Exploring the technical and emotional aspects of low-light candid photography in high-end weddings.',
-      img: 'https://images.unsplash.com/photo-1522673607200-1648832cee98?q=80&w=2070',
+      img: img1,
       featured: true
     },
     {
@@ -22,7 +27,7 @@ const Blog = () => {
       date: 'March 15, 2026',
       cat: 'Behind the Lens',
       excerpt: 'How to transition from a simple photoshoot to a magazine-style visual narrative.',
-      img: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070'
+      img: img2
     },
     {
       id: 3,
@@ -30,7 +35,7 @@ const Blog = () => {
       date: 'February 28, 2026',
       cat: 'Technical',
       excerpt: 'A deep dive into our lossless processing engine and why 4K image quality matters.',
-      img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069'
+      img: img3
     },
     {
       id: 4,
@@ -38,7 +43,7 @@ const Blog = () => {
       date: 'January 10, 2026',
       cat: 'Monochrome',
       excerpt: 'Why stripping away color can often reveal the truest essence of a shared glance.',
-      img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070'
+      img: img4
     }
   ];
 

@@ -1,74 +1,176 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './ShootDetail.css';
+
+// Import local assets
+import hero1 from '../assets/SAS_4201.webp';
+import hero2 from '../assets/2S9A3065.webp';
+import gal1 from '../assets/DSC06362.webp';
+import gal2 from '../assets/NGD_4849-2.webp';
+import gal3 from '../assets/NGD_4961.webp';
+import gal4 from '../assets/_DSC3521 - Copy.webp';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ShootDetail = () => {
   const { id } = useParams();
+  const container = useRef();
 
-  // In the future, this data will come from your Admin Dashboard/Database
+  // Mock data representing different couples
   const shootData = {
-    'naveen-swetha': { title: "Naveen & Swetha", date: "Jan 2026", location: "Hyderabad", desc: "A soulful celebration of love and culture.", hero: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070" },
-    'rahul-pooja': { title: "Rahul & Pooja", date: "Feb 2026", location: "Bangalore", desc: "A modern pre-wedding story captured at dusk.", hero: "https://images.unsplash.com/photo-1522673607200-1648832cee98?q=80&w=2070" },
-    // Add more as needed...
+    'naveen-swetha': { 
+      title: "Naveen & Swetha", 
+      date: "Jan 2026", 
+      location: "Hyderabad", 
+      desc: "A soulful celebration of love and culture. Every glance captured the essence of two families becoming one under the golden evening sky. The focus was on raw, unposed emotions and the delicate details of their heritage.", 
+      hero: hero1,
+      gallery: [gal1, gal2, gal3, gal4]
+    },
+    'rahul-pooja': { 
+      title: "Rahul & Pooja", 
+      date: "Feb 2026", 
+      location: "Bangalore", 
+      desc: "A modern pre-wedding story captured at dusk. We focused on the architecture, the dramatic light, and the quiet, intimate moments between the chaos of the city.", 
+      hero: hero2,
+      gallery: [gal4, gal3, gal2, gal1]
+    },
+    'vikram-anjali': { 
+      title: "Vikram & Anjali", 
+      date: "Mar 2026", 
+      location: "Ooty", 
+      desc: "A misty, cinematic affair in the hills. The weather provided a natural softbox, allowing us to capture incredibly moody and romantic portraits that feel like stills from a film.", 
+      hero: gal1,
+      gallery: [hero1, hero2, gal3, gal4]
+    },
+    'arjun-sneha': { 
+      title: "Arjun & Sneha", 
+      date: "Apr 2026", 
+      location: "Paris", 
+      desc: "A classic destination story. From the cobblestone streets to the grand architecture, their love story was documented with an editorial, high-fashion approach.", 
+      hero: gal4,
+      gallery: [gal2, gal1, hero1, hero2]
+    }
   };
 
   const shoot = shootData[id] || shootData['naveen-swetha'];
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const tl = gsap.timeline();
-    tl.from(".detail-hero-img", { scale: 1.2, duration: 2, ease: "power2.out" })
-      .from(".detail-content-box", { y: 100, opacity: 0, duration: 1, ease: "power3.out" }, "-=1");
+    const ctx = gsap.context(() => {
+      // Title Entrance
+      gsap.from(".exhibition-title-line", {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "power3.out",
+        delay: 0.2
+      });
+
+      // Hero Image Reveal
+      gsap.from(".exhibition-hero-img-wrapper", {
+        scale: 0.95,
+        opacity: 0,
+        duration: 1.5,
+        ease: "power2.out",
+        delay: 0.5
+      });
+
+      // Gallery Scroll reveal
+      gsap.utils.toArray('.exhibition-gallery-item').forEach(item => {
+        gsap.from(item, {
+          y: 100,
+          opacity: 0,
+          duration: 1.5,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%"
+          }
+        });
+      });
+    }, container);
+
+    return () => ctx.revert();
   }, [id]);
 
   return (
-    <div className="shoot-detail-page">
-      <div className="detail-hero">
-        <img src={shoot.hero} alt={shoot.title} className="detail-hero-img" />
-        <div className="detail-hero-overlay"></div>
-        <div className="detail-hero-text">
-          <span className="detail-location">{shoot.location}</span>
-          <h1 className="detail-title">{shoot.title}</h1>
+    <div ref={container} className="shoot-exhibition-page">
+      
+      {/* Minimalist Header */}
+      <header className="exhibition-header container">
+        <div className="exhibition-meta exhibition-title-line">
+          <span>{shoot.location}</span>
+          <span className="meta-dot">•</span>
+          <span>{shoot.date}</span>
         </div>
-      </div>
+        <h1 className="exhibition-title exhibition-title-line">
+          {shoot.title}
+        </h1>
+      </header>
 
-      <section className="detail-info section-padding container">
-        <div className="detail-grid">
-          <div className="detail-main">
-            <h2 className="detail-heading">The Story</h2>
-            <p className="detail-desc">{shoot.desc}</p>
+      {/* Hero Feature */}
+      <section className="exhibition-hero container">
+        <div className="exhibition-hero-img-wrapper">
+          <img src={shoot.hero} alt={shoot.title} />
+        </div>
+      </section>
+
+      {/* The Narrative Split */}
+      <section className="exhibition-narrative container section-padding">
+        <div className="narrative-grid">
+          <div className="narrative-label">
+            <h2>The Story</h2>
           </div>
-          <div className="detail-meta">
-            <div className="meta-item">
-              <span>DATE</span>
-              <p>{shoot.date}</p>
-            </div>
-            <div className="meta-item">
-              <span>CATEGORY</span>
-              <p>Luxury Wedding</p>
+          <div className="narrative-content">
+            <p className="narrative-text">{shoot.desc}</p>
+            <div className="narrative-tags">
+              <span className="n-tag">Editorial</span>
+              <span className="n-tag">Documentary</span>
+              <span className="n-tag">Cinematic</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Gallery Placeholder - Ready for Admin Uploads */}
-      <section className="detail-gallery container">
-        <div className="gallery-grid">
-          <div className="gallery-item large">
-            <img src="https://images.unsplash.com/photo-1519225495810-753b35a962bb?q=80&w=2070" alt="Gallery 1" />
+      {/* The Gallery Asymmetric Collage */}
+      <section className="exhibition-gallery-collage container">
+        <div className="collage-grid-vintage">
+          <div className="collage-cell cell-tall exhibition-gallery-item">
+            <div className="gallery-img-wrapper">
+              <img src={shoot.gallery[0]} alt="Story Frame 1" />
+            </div>
+            <div className="gallery-caption">Frame 01 // Intentionality</div>
           </div>
-          <div className="gallery-item">
-            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1974" alt="Gallery 2" />
+
+          <div className="collage-cell cell-wide exhibition-gallery-item">
+            <div className="gallery-img-wrapper">
+              <img src={shoot.gallery[1]} alt="Story Frame 2" />
+            </div>
+            <div className="gallery-caption">Frame 02 // Atmosphere</div>
           </div>
-          <div className="gallery-item">
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070" alt="Gallery 3" />
+
+          <div className="collage-cell cell-square exhibition-gallery-item">
+            <div className="gallery-img-wrapper">
+              <img src={shoot.gallery[2]} alt="Story Frame 3" />
+            </div>
+            <div className="gallery-caption">Frame 03 // Composition</div>
+          </div>
+
+          <div className="collage-cell cell-portrait exhibition-gallery-item">
+            <div className="gallery-img-wrapper">
+              <img src={shoot.gallery[3]} alt="Story Frame 4" />
+            </div>
+            <div className="gallery-caption">Frame 04 // Legacy</div>
           </div>
         </div>
       </section>
 
-      <div className="detail-footer section-padding container">
-        <Link to="/" className="btn-boutique-discover">BACK TO CAPTURES</Link>
+      {/* Footer Navigation */}
+      <div className="exhibition-footer section-padding container text-center">
+        <Link to="/portfolio" className="btn-premium">Return to Archives</Link>
       </div>
     </div>
   );

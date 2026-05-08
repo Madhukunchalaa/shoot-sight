@@ -52,7 +52,7 @@ const Experience = () => {
         <div className="experience-layer intro-layer">
           <div className="layer-content-centered">
             <span className="subtitle-accent">02 // THE EXPERIENCE</span>
-            <h2 className="stack-main-title">How We <br /><i>Manifest</i> Magic</h2>
+            <h2 className="section-title-large">How We <br /><i>Manifest</i> Magic</h2>
             <div className="scroll-indicator-boutique">
               <span className="line"></span>
               <span className="txt">SCROLL TO UNVEIL</span>

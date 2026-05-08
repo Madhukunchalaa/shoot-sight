@@ -1,22 +1,23 @@
 .boutique-footer {
-  background: #fdf8f3;
-  padding: 100px 0 50px 0;
-  color: var(--text-primary);
-  border-top: 1px solid rgba(60, 48, 36, 0.05);
+  background: #111111; /* Very dark rich grey */
+  padding: 100px 0 40px 0;
+  color: #ffffff;
   position: relative;
   z-index: 10;
+  overflow: hidden;
 }
 
 .footer-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 }
 
 .footer-logo {
-  height: 100px;
+  height: 80px;
   margin-bottom: 20px;
   opacity: 0.9;
+  filter: invert(1); /* Turns the dark logo white */
 }
 
 .footer-slogan {
@@ -29,7 +30,7 @@
 
 .footer-nav {
   display: flex;
-  gap: 80px;
+  gap: 100px; /* Wider gap for elegance */
 }
 
 .footer-col h4 {
@@ -37,7 +38,8 @@
   font-size: 10px;
   letter-spacing: 3px;
   margin-bottom: 25px;
-  opacity: 0.4;
+  color: var(--accent-light); /* Warm accent for headings */
+  opacity: 0.8;
 }
 
 .footer-col a {
@@ -47,21 +49,40 @@
   letter-spacing: 1px;
   margin-bottom: 12px;
   text-decoration: none;
-  color: var(--text-primary);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
   transition: all 0.3s ease;
 }
 
 .footer-col a:hover {
-  color: var(--accent);
+  color: #ffffff;
   transform: translateX(5px);
 }
 
-.footer-divider {
-  width: 100%;
-  height: 1px;
-  background: rgba(60, 48, 36, 0.1);
-  margin-bottom: 30px;
+/* MASSIVE TEXT */
+.footer-massive-text {
+  font-family: var(--font-serif);
+  font-size: clamp(60px, 12vw, 200px);
+  line-height: 0.9;
+  text-align: center;
+  margin: 80px 0 60px 0;
+  color: #ffffff;
+  letter-spacing: -3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 80px;
+  white-space: nowrap;
+}
+
+.footer-massive-text .italic-accent {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent-light);
+  padding-left: 0.2em;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 30px;
 }
 
 .footer-info {
@@ -69,16 +90,28 @@
   justify-content: space-between;
   font-family: var(--font-sans);
   font-size: 9px;
-  letter-spacing: 2px;
-  opacity: 0.4;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
 }
 
 @media (max-width: 768px) {
   .footer-top {
     flex-direction: column;
-    gap: 50px;
+    gap: 60px;
   }
   .footer-nav {
+    flex-direction: column;
     gap: 40px;
+  }
+  .footer-massive-text {
+    white-space: normal;
+    font-size: 50px;
+  }
+  .footer-info {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    text-align: center;
   }
 }

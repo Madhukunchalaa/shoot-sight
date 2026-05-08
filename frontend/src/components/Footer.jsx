@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo (1).png';
+import logo from '../assets/logo (1).webp';
 import './Footer.css';
 
 const Footer = () => {
@@ -28,11 +28,14 @@ const Footer = () => {
           </div>
         </div>
 
+        <div className="footer-massive-text">
+          Shoot <i className="italic-accent">@ Sight</i>
+        </div>
+
         <div className="footer-bottom">
-          <div className="footer-divider"></div>
           <div className="footer-info">
             <p className="copyright">© 2026 SHOOT @ SIGHT. ALL RIGHTS RESERVED.</p>
-            <p className="location">HYDERABAD / GLOBAL</p>
+            <p className="location">BENGALURU / GLOBAL</p>
           </div>
         </div>
 

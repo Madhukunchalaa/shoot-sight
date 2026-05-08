@@ -1,15 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../assets/logo (1).png';
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../assets/logo (1).webp';
 import './Navbar.css';
 
 const Navbar = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
   const [isScrolled, setIsScrolled] = useState(false);
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
+    // If not on home page, navbar is always full visible
+    if (!isHomePage) {
+      setIsScrolled(true);
+      return;
+    }
+
+    // Reset scroll state on home page mount
+    setIsScrolled(window.scrollY > 100);
+
     const handleScroll = () => {
-      // Show full navbar elements after 100px
       setIsScrolled(window.scrollY > 100);
     };
 
@@ -22,7 +32,7 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
       clearInterval(timer);
     };
-  }, []);
+  }, [isHomePage]);
 
   const formatTime = (date) => {
     return date.toLocaleTimeString('en-US', { 
@@ -33,7 +43,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`boutique-nav ${isScrolled ? 'nav-full-visible' : 'nav-logo-only'}`}>
+    <nav className={`boutique-nav ${(!isHomePage || isScrolled) ? 'nav-full-visible' : 'nav-logo-only'}`}>
       <div className="nav-container">
         
         <div className="nav-left">
@@ -44,10 +54,13 @@ const Navbar = () => {
 
         <div className="nav-right">
           <div className="nav-links">
+            <Link to="/about" className="nav-link-item">ABOUT</Link>
             <Link to="/portfolio" className="nav-link-item">PORTFOLIO</Link>
+            <Link to="/blog" className="nav-link-item">JOURNAL</Link>
+            <Link to="/contact" className="nav-link-item">CONTACT</Link>
             <div className="nav-divider"></div>
             <div className="nav-location">
-              <span>HYDERABAD</span>
+              <span>BENGALURU</span>
               <span className="digital-clock">{formatTime(time)}</span>
             </div>
           </div>

@@ -4,8 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './OurStory.css';
 
 // Import Real Professional Assets
-import story1 from '../assets/SAS_4201.jpg';
-import story2 from '../assets/NGD_4849-2.jpg';
+import story1 from '../assets/SAS_4201.webp';
+import story2 from '../assets/NGD_4849-2.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,14 +71,18 @@ const OurStory = () => {
           {/* CONTENT NOW ON THE RIGHT */}
           <div className="story-content-new">
             <div className="vertical-label">01 // OUR PHILOSOPHY</div>
-            <h2 className="story-title-new">The Art <br />of <i>Observing</i></h2>
+            <h2 className="section-title-large" style={{ marginBottom: '40px' }}>The Art <br />of <i>Observing</i></h2>
+            <p className="story-p-lead">
+              We approach each wedding not as a checklist, but as a living, breathing narrative. 
+              Our lenses are drawn to the quiet glances, the unscripted laughter, and the fleeting tears.
+            </p>
             <p className="story-p-new">
               We believe the most profound moments aren't the ones directed, 
               but the ones discovered. Our approach is quiet, immersive, 
               and deeply intentional.
             </p>
             
-            <div className="story-stats">
+            <div className="story-stats-row">
               <div className="stat-item">
                 <span className="stat-num">10+</span>
                 <span className="stat-label">YEARS OF MASTERY</span>

@@ -1,60 +1,61 @@
 import { useState, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { Link } from 'react-router-dom';
 import './Portfolio.css';
 
-// Import client images
-import img1 from '../assets/img1.webp';
-import img2 from '../assets/img2.webp';
-import img3 from '../assets/img3.webp';
-import img4 from '../assets/img4.webp';
-import img5 from '../assets/img5.webp';
-import img6 from '../assets/img6.webp';
-import img7 from '../assets/img7.webp';
-import img8 from '../assets/img8.webp';
-import img9 from '../assets/img9.webp';
+// Import client images (New High-Res WebP)
+import img1 from '../assets/SAS_4201.webp';
+import img2 from '../assets/2S9A3065.webp';
+import img3 from '../assets/DSC06362.webp';
+import img4 from '../assets/NGD_4849-2.webp';
+import img5 from '../assets/NGD_4961.webp';
+import img6 from '../assets/NGD_9246.webp';
+import img7 from '../assets/NGD_9824.webp';
+import img8 from '../assets/_DSC0075 - Copy.webp';
+import img9 from '../assets/_DSC2178 - Copy.webp';
 
 const Portfolio = () => {
   const [filter, setFilter] = useState('All');
   const container = useRef();
 
   const items = [
-    { id: 1, title: 'Ethereal Morning', cat: 'Wedding', img: img1 },
-    { id: 2, title: 'Urban Romance', cat: 'Pre-wedding', img: img2 },
-    { id: 3, title: 'The Silent Vow', cat: 'Candid', img: img3 },
-    { id: 4, title: 'Golden Legacy', cat: 'Wedding', img: img4 },
-    { id: 5, title: 'Shadow & Light', cat: 'Candid', img: img5 },
-    { id: 6, title: 'Desert Dream', cat: 'Pre-wedding', img: img6 },
-    { id: 7, title: 'Floral Whisper', cat: 'Wedding', img: img7 },
-    { id: 8, title: 'Velvet Evening', cat: 'Candid', img: img8 },
-    { id: 9, title: 'Azure Coast', cat: 'Pre-wedding', img: img9 },
+    { id: 'naveen-swetha', title: 'Naveen & Swetha', cat: 'Wedding', img: img1, size: 'large' },
+    { id: 'rahul-pooja', title: 'Rahul & Pooja', cat: 'Pre-wedding', img: img2, size: 'tall' },
+    { id: 'vikram-anjali', title: 'Vikram & Anjali', cat: 'Candid', img: img3, size: 'wide' },
+    { id: 'arjun-sneha', title: 'Arjun & Sneha', cat: 'Wedding', img: img4, size: 'standard' },
+    { id: 'naveen-swetha', title: 'Shadow & Light', cat: 'Candid', img: img5, size: 'tall' },
+    { id: 'rahul-pooja', title: 'Urban Romance', cat: 'Pre-wedding', img: img6, size: 'standard' },
+    { id: 'vikram-anjali', title: 'Floral Whisper', cat: 'Wedding', img: img7, size: 'wide' },
+    { id: 'arjun-sneha', title: 'Velvet Evening', cat: 'Candid', img: img8, size: 'large' },
+    { id: 'naveen-swetha', title: 'Azure Coast', cat: 'Pre-wedding', img: img9, size: 'standard' },
   ];
 
   const filteredItems = filter === 'All' ? items : items.filter(i => i.cat === filter);
 
   useGSAP(() => {
-    gsap.from('.gallery-item', {
-      y: 50,
+    gsap.from('.gallery-editorial-item', {
+      y: 80,
       opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'power2.out',
+      duration: 1.2,
+      stagger: 0.15,
+      ease: 'power3.out',
     });
   }, [filter]);
 
   return (
     <div ref={container} className="portfolio-page section-padding">
       <div className="container">
-        <div className="page-header">
-          <span className="subtitle-accent">COLLECTIONS</span>
+        <div className="page-header-editorial">
+          <span className="subtitle-accent">01 // COLLECTIONS</span>
           <h1 className="section-title-large">The <i>Archives</i></h1>
         </div>
 
-        <div className="portfolio-filters">
+        <div className="portfolio-filters-elegant">
           {['All', 'Wedding', 'Pre-wedding', 'Candid'].map(cat => (
             <button 
               key={cat} 
-              className={`filter-btn ${filter === cat ? 'active' : ''}`}
+              className={`filter-btn-chic ${filter === cat ? 'active' : ''}`}
               onClick={() => setFilter(cat)}
             >
               {cat}
@@ -62,20 +63,30 @@ const Portfolio = () => {
           ))}
         </div>
 
-        <div className="portfolio-gallery">
-          {filteredItems.map(item => (
-            <div key={item.id} className="gallery-item">
-              <div className="gallery-img-wrapper">
-                <img src={item.img} alt={item.title} />
-                <div className="gallery-overlay">
-                  <span>View Story</span>
+        <div className="portfolio-masonry-grid">
+          {filteredItems.map((item, index) => (
+            <Link 
+              to={`/shoot/${item.id}`} 
+              key={`${item.id}-${index}`} 
+              className={`gallery-editorial-item size-${item.size}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <div className="gallery-matte-frame">
+                <div className="gallery-img-wrapper">
+                  <img src={item.img} alt={item.title} loading="lazy" />
+                  <div className="gallery-overlay">
+                    <span className="explore-pill">View Story</span>
+                  </div>
+                </div>
+                <div className="gallery-editorial-details">
+                  <span className="item-index-faint">0{index + 1}</span>
+                  <div>
+                    <span className="item-cat">{item.cat}</span>
+                    <h3 className="item-title-chic">{item.title}</h3>
+                  </div>
                 </div>
               </div>
-              <div className="gallery-details">
-                <span className="item-cat">{item.cat}</span>
-                <h3 className="item-title">{item.title}</h3>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

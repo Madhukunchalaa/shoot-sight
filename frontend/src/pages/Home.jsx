@@ -13,30 +13,43 @@ const Home = () => {
       <RecentShoots />
       <Services />
       
-      <section className="section-padding container journal-section">
-        <div className="section-header-centered">
-          <span className="subtitle-accent">03 // THE JOURNAL</span>
-          <h2 className="section-title-large">Stories <br /><i>In Frame</i></h2>
-        </div>
-        
-        <div className="journal-grid">
-          <div className="journal-post">
-            <div className="post-img">
-              <img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?q=80&w=2070" alt="Post" />
-            </div>
-            <div className="post-info">
-              <span className="post-date">April 2026</span>
-              <h3>Finding the Light in Candid Moments</h3>
-              <Link to="/blog" className="link-arrow">Read Story</Link>
-            </div>
+      <section className="section-padding container film-section-editorial">
+        <div className="massive-bg-word">CINEMA</div>
+        <div className="film-editorial-grid">
+          
+          <div className="film-text-content">
+            <span className="subtitle-accent">03 // FEATURED FILM</span>
+            <h2 className="section-title-large">Cinematic <br /><i>Poetry</i></h2>
+            <p className="film-description">
+              Experience the raw emotion, the fleeting glances, and the symphony of love in motion. Our films are crafted not just to document, but to make you feel.
+            </p>
+            <Link to="/portfolio" className="btn-premium">Explore Films</Link>
           </div>
+
+          <div className="film-video-presentation">
+            <div className="video-backdrop"></div>
+            <div className="video-responsive">
+              <iframe 
+                width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/uJYT8dm1YKg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=uJYT8dm1YKg&playsinline=1" 
+                title="YouTube video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerPolicy="strict-origin-when-cross-origin" 
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="floating-film-label">DIRECTOR'S CUT</div>
+          </div>
+
         </div>
       </section>
 
       <section className="cta-section section-padding">
         <div className="container">
           <div className="cta-content">
-            <h2 className="cta-title">Let's create <br />something <i>eternal</i>.</h2>
+            <h2 className="section-title-large">Let's create <br />something <i>eternal</i>.</h2>
             <p>Now booking luxury wedding experiences for 2026/27.</p>
             <div className="cta-actions">
               <Link to="/contact" className="btn-premium">Start a Conversation</Link>

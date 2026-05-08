@@ -1,5 +1,5 @@
 .boutique-story-section {
-  padding: 220px 0;
+  padding: 100px 0 120px;
   background: var(--bg-color);
   position: relative;
   overflow: hidden;
@@ -41,7 +41,8 @@
   top: 15%;
   right: -5%;
   z-index: 3;
-  border: 20px solid var(--bg-color);
+  border: 10px solid var(--bg-color);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.15);
 }
 
 .story-img-wrapper img {
@@ -71,55 +72,52 @@
   white-space: nowrap;
 }
 
-.story-title-new {
+.story-p-lead {
   font-family: var(--font-serif);
-  font-size: clamp(50px, 6vw, 110px);
-  line-height: 0.85;
-  font-weight: 300;
+  font-size: 24px;
+  line-height: 1.5;
   color: var(--text-primary);
-  letter-spacing: -3px;
-  margin-bottom: 40px;
-}
-
-.story-title-new i {
-  display: block;
-  padding-left: 60px; /* Indented italic */
+  max-width: 450px;
+  margin-bottom: 30px;
+  font-style: italic;
 }
 
 .story-p-new {
-  font-size: 17px;
-  line-height: 1.9;
+  font-size: 16px;
+  line-height: 1.8;
   color: var(--text-secondary);
-  max-width: 400px;
-  margin-bottom: 60px;
+  max-width: 420px;
+  margin-bottom: 50px;
   opacity: 0.8;
 }
 
-.story-stats {
+.story-stats-row {
   display: flex;
-  flex-direction: column; /* Vertical stats for a change */
-  gap: 40px;
+  flex-direction: row;
+  gap: 60px;
+  margin-top: 20px;
 }
 
 .stat-item {
-  border-bottom: 1px solid rgba(60, 48, 36, 0.1);
-  padding-bottom: 15px;
-  width: fit-content;
+  border-left: 1px solid rgba(60, 48, 36, 0.15);
+  padding-left: 20px;
 }
 
 .stat-num {
   font-family: var(--font-serif);
-  font-size: 45px;
+  font-size: 42px;
   color: var(--text-primary);
+  display: block;
+  margin-bottom: 5px;
 }
 
 .stat-label {
   font-family: var(--font-sans);
-  font-size: 8px;
-  letter-spacing: 4px;
+  font-size: 9px;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  margin-left: 15px;
-  opacity: 0.5;
+  color: var(--accent);
+  opacity: 0.8;
 }
 
 @media (max-width: 1024px) {
@@ -127,4 +125,6 @@
   .story-img-wrapper.type-1 { width: 100%; height: 50vh; }
   .story-img-wrapper.type-2 { display: none; }
   .vertical-label { position: relative; transform: none; left: 0; margin-bottom: 20px; }
+  .story-stats-row { flex-direction: column; gap: 30px; }
+  .stat-item { border-left: none; border-bottom: 1px solid rgba(60, 48, 36, 0.15); padding-left: 0; padding-bottom: 20px; width: fit-content; }
 }

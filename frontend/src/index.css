@@ -169,16 +169,51 @@ html.lenis, html.lenis body {
 /* Typography */
 h1, h2, h3, h4 {
   font-family: var(--font-sans);
-  font-weight: 800; /* Extra bold for that corporate look */
-  line-height: 1.1;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--text-primary);
-  text-transform: uppercase; /* Matching Arvind's bold headers */
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
 h1 i, h2 i, h3 i, h4 i {
-  color: var(--accent); /* Warm Brown for accented headings */
+  color: var(--accent);
   font-style: normal;
+}
+
+/* Global Section Headings */
+.section-header-centered {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.subtitle-accent {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: var(--accent);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.section-title-large {
+  font-family: var(--font-serif);
+  font-size: clamp(60px, 8vw, 110px);
+  font-weight: 300;
+  line-height: 0.9;
+  color: var(--text-primary);
+  letter-spacing: -2px;
+  text-transform: none; /* Override any global uppercase */
+  margin: 0;
+}
+
+.section-title-large i {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  padding-left: 0.3em;
 }
 
 p {

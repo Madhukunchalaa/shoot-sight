@@ -5,11 +5,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './RecentShoots.css';
 
 // Import Professional Assets
-import shoot1 from '../assets/NGD_4961.jpg';
-import shoot2 from '../assets/NGD_9246.jpg';
-import shoot3 from '../assets/NGD_9824.jpg';
-import shoot4 from '../assets/_DSC0075 - Copy.jpg';
-import shoot5 from '../assets/_DSC2178 - Copy.jpg';
+import shoot1 from '../assets/NGD_4961.webp';
+import shoot2 from '../assets/NGD_9246.webp';
+import shoot3 from '../assets/NGD_9824.webp';
+import shoot4 from '../assets/_DSC0075 - Copy.webp';
+import shoot5 from '../assets/_DSC2178 - Copy.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,15 +56,16 @@ const RecentShoots = () => {
         {shoots.map((shoot, index) => (
           <Link to={`/shoot/${shoot.id}`} key={index} className="horizontal-item-link">
             <div className="horizontal-item">
+              <span className="item-number-overlay">0{index + 1}</span>
               <div className="horizontal-img-wrapper">
                 <img src={shoot.img} alt={shoot.title} loading="lazy" />
-                <div className="item-overlay-boutique">
-                  <div className="overlay-top">
-                    <span className="item-cat-new">{shoot.cat}</span>
-                    <span className="view-more-tag">VIEW STORY</span>
-                  </div>
-                  <h4 className="item-title-new">{shoot.title}</h4>
+                <div className="view-more-hover">
+                  <span>EXPLORE</span>
                 </div>
+              </div>
+              <div className="horizontal-item-info">
+                <span className="item-cat-new">{shoot.cat}</span>
+                <h4 className="item-title-new">{shoot.title}</h4>
               </div>
             </div>
           </Link>

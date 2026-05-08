@@ -4,10 +4,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
 // Import Real Professional Assets
-import hero1 from '../assets/SAS_4201.jpg';
-import hero2 from '../assets/2S9A3065.jpg';
-import hero3 from '../assets/DSC06362.jpg';
-import hero4 from '../assets/NGD_4849-2.jpg';
+import hero1 from '../assets/SAS_4201.webp';
+import hero2 from '../assets/2S9A3065.webp';
+import hero3 from '../assets/DSC06362.webp';
+import hero4 from '../assets/NGD_4849-2.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -144,10 +144,6 @@ const Hero = () => {
         <p className="hero-tagline-luxury">SHOOT @ SIGHT // PRESERVING THE UNSPOKEN</p>
       </div>
 
-      <div className="hero-corner-detail top-left">EST. 2026 / CINEMA</div>
-      <div className="hero-corner-detail top-right">HYDERABAD - GLOBAL</div>
-      <div className="hero-corner-detail bottom-left">BOUTIQUE STUDIO</div>
-      <div className="hero-corner-detail bottom-right">SCROLL TO BEGIN</div>
     </section>
   );
 };

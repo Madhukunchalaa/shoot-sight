@@ -76,6 +76,28 @@
   text-decoration: none;
   font-weight: 700;
   position: relative;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.nav-link-item::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link-item:hover::after {
+  width: 100%;
+}
+
+.nav-link-item:hover {
+  color: var(--accent);
 }
 
 .nav-divider {

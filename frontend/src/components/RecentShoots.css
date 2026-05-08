@@ -2,82 +2,167 @@
   width: 100%;
   overflow: hidden;
   background: var(--bg-color);
-  padding: 100px 0;
+  padding: 20px 0 80px; /* Reduced padding */
 }
 
 .horizontal-header {
-  margin-bottom: 80px;
+  margin-bottom: 40px; /* Reduced margin */
 }
 
 .horizontal-scroll-container {
   display: flex;
   padding-left: 60px;
-  gap: 40px;
+  gap: 60px; /* Reduced gap */
   width: max-content;
+  align-items: flex-start;
+}
+
+.horizontal-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* Stagger Even Items */
+.horizontal-item-link:nth-child(even) {
+  margin-top: 60px; /* Reduced stagger */
 }
 
 .horizontal-item {
-  width: 600px;
+  width: 320px; /* Reduced width to easily fit smaller screens */
   flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  /* Editorial Matte Frame */
+  background: #ffffff;
+  padding: 12px 12px 90px 12px; /* Deep bottom padding for text */
+  box-shadow: 0 40px 80px rgba(0,0,0,0.05);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.8s;
+}
+
+.horizontal-item:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 50px 100px rgba(0,0,0,0.1);
+}
+
+.item-number-overlay {
+  position: absolute;
+  top: -25px;
+  left: -15px;
+  font-family: var(--font-serif);
+  font-size: 80px;
+  color: var(--accent);
+  opacity: 0.1;
+  font-weight: 300;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.horizontal-item:hover .item-number-overlay {
+  opacity: 0.3;
+  transform: translateX(10px);
 }
 
 .horizontal-img-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 16/10;
+  aspect-ratio: 4/5;
   overflow: hidden;
   background: var(--bg-secondary);
+  z-index: 1;
 }
 
 .horizontal-img-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s var(--transition-smooth);
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s;
+  filter: grayscale(15%) contrast(1.05);
 }
 
 .horizontal-item:hover img {
-  transform: scale(1.1);
+  transform: scale(1.05);
+  filter: grayscale(0%) contrast(1.1);
 }
 
-.item-overlay-boutique {
+/* View More Button */
+.view-more-hover {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 40px;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-  color: #fff;
+  height: 100%;
+  background: rgba(141, 110, 99, 0.15); /* Tint of accent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
 }
 
-.horizontal-item:hover .item-overlay-boutique {
+.view-more-hover span {
+  background: #fff;
+  color: #000;
+  padding: 12px 30px;
+  border-radius: 40px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 3px;
+  transform: translateY(20px);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.horizontal-item:hover .view-more-hover {
   opacity: 1;
+}
+
+.horizontal-item:hover .view-more-hover span {
   transform: translateY(0);
+}
+
+.horizontal-item-info {
+  position: absolute;
+  bottom: 25px; /* Closer to the bottom */
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
 }
 
 .item-cat-new {
   font-family: var(--font-sans);
   font-size: 10px;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  color: var(--accent);
+  margin-bottom: 6px;
   display: block;
 }
 
 .item-title-new {
-  font-size: 28px;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: 26px; /* Smaller font to fit */
+  font-weight: 300;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+  font-style: italic;
 }
 
 @media (max-width: 768px) {
   .horizontal-item {
-    width: 320px;
+    width: 280px;
   }
   .horizontal-scroll-container {
     padding-left: 20px;
-    gap: 20px;
+    gap: 30px;
+  }
+  .horizontal-item-link:nth-child(even) {
+    margin-top: 30px;
   }
 }
