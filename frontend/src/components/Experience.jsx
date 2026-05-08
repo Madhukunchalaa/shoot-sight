@@ -4,6 +4,11 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Experience.css';
 
+// Import newly optimized premium DSLR assets
+import curationImg from '../assets/_DSC4382.webp';
+import captureImg from '../assets/_I3A6612.webp';
+import heirloomImg from '../assets/_DSC4285.webp';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const Experience = () => {
@@ -40,6 +45,7 @@ const Experience = () => {
         );
       }
     });
+
   }, { scope: containerRef });
 
   return (
@@ -68,7 +74,7 @@ const Experience = () => {
             </div>
             <div className="layer-img-side">
               <div className="img-reveal-wrapper">
-                <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2070" alt="Curation" loading="lazy" />
+                <img src={curationImg} alt="The Curation Process" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>
@@ -79,7 +85,7 @@ const Experience = () => {
           <div className="layer-grid">
             <div className="layer-img-side">
               <div className="img-reveal-wrapper">
-                <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070" alt="Capture" loading="lazy" />
+                <img src={captureImg} alt="Cinematic Capture" loading="lazy" decoding="async" />
               </div>
             </div>
             <div className="layer-text-side">
@@ -100,7 +106,7 @@ const Experience = () => {
             </div>
             <div className="layer-img-side">
               <div className="img-reveal-wrapper">
-                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070" alt="Heirloom" loading="lazy" />
+                <img src={heirloomImg} alt="Timeless Heirloom Delivery" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>
