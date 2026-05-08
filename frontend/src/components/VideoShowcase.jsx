@@ -60,9 +60,9 @@ const VideoShowcase = () => {
         <div className="vs__text">
           <span className="vs__label">03 // THE FILM</span>
           <h2 className="vs__heading">
-            Motion<br /><em>& Memory</em>
+            When a<br /><em>day becomes a film</em>
           </h2>
-          <p className="vs__sub">Every frame breathes. Every moment lives.</p>
+          <p className="vs__sub">Years from now, you'll press play and feel everything — all over again.</p>
         </div>
 
         <div className="vs__video-wrap">

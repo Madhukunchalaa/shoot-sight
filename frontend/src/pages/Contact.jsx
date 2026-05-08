@@ -53,10 +53,10 @@ const Contact = () => {
         <div className="container">
           <span className="cnt__hero-label">05 // CONTACT</span>
           <h1 className="cnt__hero-heading">
-            Let's make<br /><em>something eternal</em>
+            Every love story<br /><em>deserves a witness</em>
           </h1>
           <p className="cnt__hero-sub">
-            Now booking luxury wedding experiences for 2026 & 2027.
+            Tell us about your day. We'll make sure it lives forever.
           </p>
         </div>
       </section>

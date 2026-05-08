@@ -15,10 +15,10 @@ const Home = () => {
       <section className="cta-section section-padding">
         <div className="container">
           <div className="cta-content">
-            <h2 className="cta-title">Let's create <br />something <i>eternal</i>.</h2>
-            <p>Now booking luxury wedding experiences for 2026/27.</p>
+            <h2 className="cta-title">Your love deserves <br />to be <i>remembered</i>.</h2>
+            <p>Every great love story has a photographer who was paying attention. Let's make yours unforgettable.</p>
             <div className="cta-actions">
-              <Link to="/contact" className="btn-premium">Start a Conversation</Link>
+              <Link to="/contact" className="btn-premium">Begin Your Story</Link>
             </div>
           </div>
         </div>

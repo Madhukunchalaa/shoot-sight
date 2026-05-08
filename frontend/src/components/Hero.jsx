@@ -12,22 +12,22 @@ const Hero = () => {
 
   const slides = [
     {
-      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC7505.webp',
+      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/paris/_DSC7505.webp',
       right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ragini/_I3A7475.webp',
-      t1: "TIMELESS",
-      t2: "MOMENTS"
+      t1: "FOREVER",
+      t2: "STARTS HERE"
     },
     {
-      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/kiran_tejaswini/NGD_9302.webp',
-      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/naveen%20and%20kate/_UNI9421.webp',
-      t1: "ETERNAL",
-      t2: "LEGACIES"
+      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/raghudixith_varijashree/_01A8221.webp',
+      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/priyanka%20and%20niranjan/DSC_0315.webp',
+      t1: "LOVE",
+      t2: "WITNESSED"
     },
     {
-      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/aishwarya_akshay/KRP_8887.webp',
-      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/srinidhi_ramya/DSC01641.webp',
-      t1: "PURE",
-      t2: "EMOTIONS"
+      left: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/pavithra%20and%20arun/DSC00571.webp',
+      right: 'https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/srinidhi_ramya/DSC00868.webp',
+      t1: "YOUR STORY",
+      t2: "TOLD GENTLY"
     }
   ];
 
@@ -150,7 +150,7 @@ const Hero = () => {
           <span className="brand-main">{slides[currentIndex].t1}</span>
           <span className="brand-accent"><i>{slides[currentIndex].t2}</i></span>
         </h1>
-        <p className="hero-tagline-luxury">SHOOT @ SIGHT // PRESERVING THE UNSPOKEN</p>
+        <p className="hero-tagline-luxury">BECAUSE SOME MOMENTS DESERVE TO LAST FOREVER</p>
       </div>
 
       <div className="hero-corner-detail top-left">EST. 2026 / CINEMA</div>

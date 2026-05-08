@@ -117,10 +117,10 @@ const Films = () => {
         <div className="container">
           <span className="flm__hero-label">// THE FILMS</span>
           <h1 className="flm__hero-heading">
-            Motion<br /><em>Stories</em>
+            Love in<br /><em>Motion</em>
           </h1>
           <p className="flm__hero-sub">
-            Moving images that hold still what time tries to take.
+            Because the way he looked at her — that deserved more than a photograph.
           </p>
         </div>
       </section>

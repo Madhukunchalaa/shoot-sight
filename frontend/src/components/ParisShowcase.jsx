@@ -44,7 +44,7 @@ const ParisShowcase = () => {
             Paris,<br /><em>Always</em>
           </h2>
           <p className="prs__sub">
-            City of light. City of love.<br />Where every cobblestone holds a story.
+            Some cities don't just set the scene —<br />they become part of the love story itself.
           </p>
         </div>
 
@@ -54,7 +54,7 @@ const ParisShowcase = () => {
           {/* Large left image */}
           <div className="prs__left">
             <img
-              src="https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC2178%20-%20Copy.webp"
+              src="https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/paris/_DSC2178%20-%20Copy.webp"
               alt="Paris"
               className="prs__img"
               loading="lazy"
@@ -67,7 +67,7 @@ const ParisShowcase = () => {
           <div className="prs__right">
             <div className="prs__right-top">
               <img
-                src="https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC7505.webp"
+                src="https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/paris/_DSC7505.webp"
                 alt="Paris"
                 className="prs__img"
                 loading="lazy"
@@ -77,7 +77,7 @@ const ParisShowcase = () => {
             </div>
             <div className="prs__right-bottom">
               <img
-                src="https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/PARIS/_DSC7759.webp"
+                src="https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/paris/_DSC7759.webp"
                 alt="Paris"
                 className="prs__img"
                 loading="lazy"
