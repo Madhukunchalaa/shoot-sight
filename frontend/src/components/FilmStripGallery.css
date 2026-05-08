@@ -382,15 +382,23 @@
 }
 
 .fsg__meta-loc {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-family: var(--font-sans, sans-serif);
-  font-size: 7.5px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.8px;
-  color: rgba(201, 169, 110, 0.48);
+  letter-spacing: 2.5px;
+  color: rgba(201, 169, 110, 0.9);
+  border: 1px solid rgba(201, 169, 110, 0.35);
+  padding: 8px 18px;
+  margin-top: 4px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.fsg__card:hover .fsg__meta-loc {
+  background: rgba(201, 169, 110, 0.12);
 }
 
 .fsg__dot {
@@ -405,7 +413,7 @@
 @media (max-width: 767px) {
   .fsg {
     height: auto;
-    overflow: visible;
+    overflow: hidden;
     cursor: default;
     padding: 56px 0 48px;
   }

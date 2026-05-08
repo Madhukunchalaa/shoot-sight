@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import videosData from '../data/videos.json';
 import './VideoShowcase.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -67,7 +69,7 @@ const VideoShowcase = () => {
           <video
             ref={videoRef}
             className="vs__video"
-            src="https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ezyZip.mp4"
+            src={videosData[0].url}
             muted
             autoPlay
             loop
@@ -97,6 +99,12 @@ const VideoShowcase = () => {
           <div className="vs__overlay" aria-hidden="true" />
         </div>
 
+      </div>
+
+      <div className="vs__view-more">
+        <Link to="/films" className="vs__view-more-link">
+          View More Films <span className="vs__arrow">→</span>
+        </Link>
       </div>
 
       <div className="vs__corner" aria-hidden="true">SHOOT @ SIGHT · 2026</div>

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "ezyzip",
+    "title": "A Wedding Film",
+    "subtitle": "Timeless Moments",
+    "description": "Every glance, every tear, every laugh — captured in motion the way memory holds it. Raw, real, and eternal.",
+    "url": "https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ezyZip.mp4",
+    "year": "2025",
+    "category": "Wedding Film"
+  },
+  {
+    "id": "ragini",
+    "title": "Ragini",
+    "subtitle": "A Portrait in Motion",
+    "description": "Stillness broken only by light. A portrait session that breathes — where every frame tells the story of a woman in her element.",
+    "url": "https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/ragini.mp4",
+    "year": "2025",
+    "category": "Portrait Film"
+  },
+  {
+    "id": "aishwarya",
+    "title": "Aishwarya & Akshay",
+    "subtitle": "Forever Begins Here",
+    "description": "Two souls, one story. Shot across golden hours and candlelit nights, this is love documented without interference.",
+    "url": "https://pub-cac83bb0873e44ebaf0b34571245ba3d.r2.dev/aishwarya.mp4",
+    "year": "2025",
+    "category": "Wedding Film"
+  }
+]

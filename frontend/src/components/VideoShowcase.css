@@ -113,6 +113,43 @@
   transform: scale(1.08);
 }
 
+/* ── View more link ───────────────────────────────────── */
+.vs__view-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+}
+
+.vs__view-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 6px;
+  transition: color 0.25s ease, gap 0.3s ease;
+}
+
+.vs__view-more-link:hover {
+  color: var(--accent);
+  gap: 16px;
+}
+
+.vs__arrow {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.vs__view-more-link:hover .vs__arrow {
+  transform: translateX(4px);
+}
+
 /* ── Corner label ─────────────────────────────────────── */
 .vs__corner {
   position: absolute;

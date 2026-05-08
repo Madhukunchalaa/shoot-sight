@@ -57,7 +57,7 @@ const LazyImage = ({ src, alt, frameNum, scrollRoot }) => {
           src={src}
           alt={alt}
           decoding="async"
-          style={{ opacity: 0 }}
+          style={loaded ? undefined : { opacity: 0 }}
           onLoad={handleLoad}
         />
       )}
