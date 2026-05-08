@@ -15,6 +15,7 @@
   gap: 60px; /* Reduced gap */
   width: max-content;
   align-items: flex-start;
+  will-change: transform; /* Optimize GSAP horizontal scrolling */
 }
 
 .horizontal-item-link {

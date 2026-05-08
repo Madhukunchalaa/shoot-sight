@@ -22,6 +22,7 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-color);
+  will-change: transform; /* Optimize GSAP stacking performance */
 }
 
 .intro-layer {
