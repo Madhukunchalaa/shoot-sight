@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import './Services.css';
 
+// Import newly optimized premium DSLR assets
+import weddingImg from '../assets/_DSC4399.webp';
+import cinematicImg from '../assets/_DSC4761 - Copy.webp';
+import preWeddingImg from '../assets/SAS_3280.webp';
+import droneImg from '../assets/DSC02320.webp';
+
 const Services = () => {
   const sectionRef = useRef(null);
   const imageRef = useRef(null);
@@ -31,25 +37,25 @@ const Services = () => {
       title: "Wedding Photography",
       desc: "Candid, emotional, and trend-forward photography that captures the soul of your celebration. We specialize in natural expressions, ethereal lighting, and storytelling frames that preserve your most intimate memories forever.",
       num: "01",
-      img: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070"
+      img: weddingImg
     },
     {
       title: "Cinematic Wedding Films",
       desc: "High-definition movies inspired by your unique love story. With artistic angles, cinematic drone perspectives, emotional pacing, and professional-grade color grading, we turn your wedding day into a timeless motion picture experience.",
       num: "02",
-      img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2069"
+      img: cinematicImg
     },
     {
       title: "Pre-Wedding & Engagement",
       desc: "A bespoke, conceptual shoot that reflects the essence of your partnership. Whether urban, nature-focused, luxury, or minimalist aesthetic — we curate mood-driven visuals designed for your legacy and invites.",
       num: "03",
-      img: "https://images.unsplash.com/photo-1510076857177-74700760be49?q=80&w=2070"
+      img: preWeddingImg
     },
     {
       title: "Drone & Aerial Coverage",
       desc: "Sweeping aerial views that provide a grand perspective of your wedding story. From majestic heritage venues to scenic outdoor landscapes, our advanced drone cinematography adds a breathtaking dimension to your visuals.",
       num: "04",
-      img: "https://images.unsplash.com/photo-1508394522741-82ac9c15ba69?q=80&w=2070"
+      img: droneImg
     }
   ];
 
