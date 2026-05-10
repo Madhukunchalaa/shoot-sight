@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import teamImg from '../assets/team.webp';
 import founderImg from '../assets/NGD_1351.jpg.webp';
+import aboutHeroBg from '../assets/DSC01641 - Copy.webp'; // Perfect warm romantic sunset background
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,25 +13,58 @@ const About = () => {
   const container = useRef();
 
   useGSAP(() => {
-    // 1. Hero Text Reveal
-    const tl = gsap.timeline();
-    tl.from('.about-title-word', {
+    // 0. Fullscreen Hero Entrance & Parallax
+    const heroTl = gsap.timeline();
+    heroTl.from('.about-hero-bg-img', {
+      scale: 1.15,
+      duration: 2.2,
+      ease: 'power3.out'
+    }).from('.about-hero-centered-content > *', {
+      y: 40,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.2,
+      ease: 'power3.out'
+    }, '-=1.7');
+
+    gsap.to('.about-hero-bg-img', {
+      yPercent: 15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.about-fullscreen-hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    // 1. Hero Text Reveal (Magazine Spread)
+    gsap.from('.about-title-word', {
       y: 100,
       opacity: 0,
       duration: 1.2,
       stagger: 0.1,
       ease: 'power4.out',
-      delay: 0.2
-    }).from('.about-hero-img', {
-      scale: 1.1,
+      scrollTrigger: {
+        trigger: '.about-hero-spread',
+        start: 'top 80%'
+      }
+    });
+
+    gsap.from('.about-hero-img', {
+      scale: 1.08,
       opacity: 0,
       duration: 1.5,
-      ease: 'power3.out'
-    }, "-=1");
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.about-hero-spread',
+        start: 'top 80%'
+      }
+    });
 
-    // 2. Parallax Image
+    // 2. Parallax Image (Magazine Spread)
     gsap.to('.about-hero-img img', {
-      y: 100,
+      y: 60,
       scrollTrigger: {
         trigger: '.about-hero-spread',
         scrub: true
@@ -79,6 +113,23 @@ const About = () => {
   return (
     <div ref={container} className="about-page-editorial">
       
+      {/* Fullscreen Hero Section with Parallax Background */}
+      <section className="about-fullscreen-hero">
+        <div className="about-hero-bg-wrapper">
+          <img src={aboutHeroBg} alt="The Story Behind The Light" className="about-hero-bg-img" />
+          <div className="about-hero-overlay"></div>
+        </div>
+        <div className="about-hero-centered-content">
+          <span className="subtitle-accent-white">BEHIND THE LENS</span>
+          <h1 className="about-hero-title">The Story Behind <br /><i>The Light</i></h1>
+          <p className="about-hero-tagline">SHOOT @ SIGHT // ARCHITECTS OF TIMELESS MEMORIES</p>
+          <div className="scroll-indicator-boutique white-indicator">
+            <span className="line"></span>
+            <span className="txt">DISCOVER OUR JOURNEY</span>
+          </div>
+        </div>
+      </section>
+
       {/* Magazine Spread Hero */}
       <section className="about-hero-spread container section-padding">
         <div className="about-hero-grid">
