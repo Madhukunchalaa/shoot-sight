@@ -88,12 +88,13 @@ const About = () => {
     gsap.from('.philosophy-block', {
       y: 50,
       opacity: 0,
-      duration: 1,
+      duration: 1.2,
       stagger: 0.2,
       ease: 'power3.out',
       scrollTrigger: {
-        trigger: '.about-philosophy',
-        start: 'top 75%'
+        trigger: '.philosophy-grid',
+        start: 'top 95%', // Fires immediately when the grid enters the viewport
+        once: true // Keeps elements visible once triggered
       }
     });
 
@@ -106,7 +107,8 @@ const About = () => {
       ease: 'power3.out',
       scrollTrigger: {
         trigger: '.about-founder-section',
-        start: 'top 70%'
+        start: 'top 90%', // Highly responsive entrance threshold
+        once: true
       }
     });
 
@@ -118,7 +120,8 @@ const About = () => {
       ease: 'power3.out',
       scrollTrigger: {
         trigger: '.about-founder-section',
-        start: 'top 70%'
+        start: 'top 90%',
+        once: true
       }
     });
   }, { scope: container });
