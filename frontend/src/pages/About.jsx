@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import teamImg from '../assets/team.webp';
-import founderImg from '../assets/NGD_4849-2.webp';
+import founderImg from '../assets/NGD_1351.jpg.webp';
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -55,7 +55,19 @@ const About = () => {
       y: 40,
       opacity: 0,
       duration: 1,
-      stagger: 0.2,
+      stagger: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.about-founder-section',
+        start: 'top 70%'
+      }
+    });
+
+    // 5. Founder Card Parallax/Reveal
+    gsap.from('.founder-card-container', {
+      x: -50,
+      opacity: 0,
+      duration: 1.5,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: '.about-founder-section',
@@ -96,26 +108,61 @@ const About = () => {
       <section className="about-founder-section section-padding">
         <div className="container">
           <div className="founder-grid">
+            
             <div className="founder-image-col">
-              <div className="founder-img-wrapper">
-                <img src={founderImg} alt="Shoot @ Sight Founder" />
+              <div className="founder-card-container">
+                {/* Vertical Tag */}
+                <div className="founder-vertical-tag">CREATIVE DIRECTOR // PAVITRA</div>
+                
+                {/* Decorative Offset Outline Frame */}
+                <div className="founder-backdrop-frame"></div>
+                
+                <div className="founder-img-wrapper">
+                  <img src={founderImg} alt="Pavitra — Founder & Director" />
+                </div>
               </div>
             </div>
+
             <div className="founder-content-col">
-              <h2 className="founder-quote">"We capture the moments you <i>feel</i>, long after the memory fades."</h2>
+              <span className="subtitle-accent">MEET THE FOUNDER</span>
+              <h2 className="founder-main-title">Pavitra</h2>
+              <p className="founder-sub-headline">Lead Visual Director & Founder</p>
+              
+              <h3 className="founder-quote">"We do not merely take photographs. We curate the timeless <i>poetry</i> of your celebration."</h3>
+              
               <div className="founder-bio">
-                <p>
-                  As the visionary behind Shoot @ Sight, my approach is deeply rooted in cinematic storytelling and fashion editorial. A wedding isn't just an event; it's the culmination of a unique legacy. 
+                <p className="bio-paragraph dropcap-para">
+                  As the visionary behind Shoot @ Sight, Pavitra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.
                 </p>
-                <p>
-                  I believe in documenting truth over perfection, ensuring every frame we deliver holds the weight of genuine emotion and timeless artistry.
+                <p className="bio-paragraph">
+                  Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavitra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.
                 </p>
               </div>
+
+              {/* Core Attributes */}
+              <div className="founder-pillars">
+                <div className="pillar-item">
+                  <span className="pillar-num">01 /</span>
+                  <div className="pillar-info">
+                    <span className="pillar-title">Cinematic Intuition</span>
+                    <span className="pillar-desc">Reading the room, anticipating micro-moments, and capturing raw, unposed emotions.</span>
+                  </div>
+                </div>
+                <div className="pillar-item">
+                  <span className="pillar-num">02 /</span>
+                  <div className="pillar-info">
+                    <span className="pillar-title">Editorial Polish</span>
+                    <span className="pillar-desc">Crafting stylized, Vogue-ready portraits on-site that feel elegant and modern.</span>
+                  </div>
+                </div>
+              </div>
+
               <div className="founder-signature-block">
                 <span className="founder-name">Pavitra</span>
-                <span className="founder-title">Lead Director & Founder</span>
+                <span className="founder-title">FOUNDER // SHOOT @ SIGHT</span>
               </div>
             </div>
+
           </div>
         </div>
       </section>
