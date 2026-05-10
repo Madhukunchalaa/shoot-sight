@@ -147,10 +147,18 @@ const About = () => {
           </div>
           
           <div className="about-hero-img">
-            <div className="about-img-mask">
-              <img src={teamImg} alt="Shoot @ Sight Studio Team" />
+            <div className="about-team-card-container">
+              {/* Sideways Text Tag */}
+              <div className="about-team-vertical-tag">CREATIVE COLLECTIVE // EST. 2018</div>
+              
+              {/* Offset Decorative Border */}
+              <div className="about-team-backdrop"></div>
+              
+              <div className="about-img-mask">
+                <img src={teamImg} alt="Shoot @ Sight Studio Team" />
+              </div>
             </div>
-            <div className="img-caption">The Founders, 2026</div>
+            <div className="img-caption">The Shoot @ Sight Creative Collective, 2026</div>
           </div>
         </div>
       </section>
