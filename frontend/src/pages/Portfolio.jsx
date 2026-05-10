@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Link } from 'react-router-dom';
 import './Portfolio.css';
 
-// Import client images (New High-Res WebP)
+// Import client images for fallback (New High-Res WebP)
 import img1 from '../assets/SAS_4201.webp';
 import img2 from '../assets/2S9A3065.webp';
 import img3 from '../assets/DSC06362.webp';
@@ -15,25 +15,58 @@ import img7 from '../assets/NGD_9824.webp';
 import img8 from '../assets/_DSC0075 - Copy.webp';
 import img9 from '../assets/_DSC2178 - Copy.webp';
 
+const mockItems = [
+  { id: 'naveen-swetha', title: 'Naveen & Swetha', cat: 'Wedding', img: img1, size: 'large' },
+  { id: 'rahul-pooja', title: 'Rahul & Pooja', cat: 'Pre-wedding', img: img2, size: 'tall' },
+  { id: 'vikram-anjali', title: 'Vikram & Anjali', cat: 'Candid', img: img3, size: 'wide' },
+  { id: 'arjun-sneha', title: 'Arjun & Sneha', cat: 'Wedding', img: img4, size: 'standard' },
+  { id: 'naveen-swetha', title: 'Shadow & Light', cat: 'Candid', img: img5, size: 'tall' },
+  { id: 'rahul-pooja', title: 'Urban Romance', cat: 'Pre-wedding', img: img6, size: 'standard' },
+  { id: 'vikram-anjali', title: 'Floral Whisper', cat: 'Wedding', img: img7, size: 'wide' },
+  { id: 'arjun-sneha', title: 'Velvet Evening', cat: 'Candid', img: img8, size: 'large' },
+  { id: 'naveen-swetha', title: 'Azure Coast', cat: 'Pre-wedding', img: img9, size: 'standard' },
+];
+
 const Portfolio = () => {
   const [filter, setFilter] = useState('All');
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const container = useRef();
 
-  const items = [
-    { id: 'naveen-swetha', title: 'Naveen & Swetha', cat: 'Wedding', img: img1, size: 'large' },
-    { id: 'rahul-pooja', title: 'Rahul & Pooja', cat: 'Pre-wedding', img: img2, size: 'tall' },
-    { id: 'vikram-anjali', title: 'Vikram & Anjali', cat: 'Candid', img: img3, size: 'wide' },
-    { id: 'arjun-sneha', title: 'Arjun & Sneha', cat: 'Wedding', img: img4, size: 'standard' },
-    { id: 'naveen-swetha', title: 'Shadow & Light', cat: 'Candid', img: img5, size: 'tall' },
-    { id: 'rahul-pooja', title: 'Urban Romance', cat: 'Pre-wedding', img: img6, size: 'standard' },
-    { id: 'vikram-anjali', title: 'Floral Whisper', cat: 'Wedding', img: img7, size: 'wide' },
-    { id: 'arjun-sneha', title: 'Velvet Evening', cat: 'Candid', img: img8, size: 'large' },
-    { id: 'naveen-swetha', title: 'Azure Coast', cat: 'Pre-wedding', img: img9, size: 'standard' },
-  ];
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+  useEffect(() => {
+    const fetchPortfolio = async () => {
+      try {
+        const res = await fetch(`${API_URL}/shoots`);
+        const data = await res.json();
+        
+        if (res.ok && data.data && data.data.length > 0) {
+          const sizes = ['large', 'tall', 'wide', 'standard'];
+          const mapped = data.data.map((s, idx) => ({
+            id: s.slug || s._id,
+            title: s.title,
+            cat: s.category,
+            img: s.heroImage,
+            size: sizes[idx % sizes.length]
+          }));
+          setItems(mapped);
+        } else {
+          setItems(mockItems);
+        }
+      } catch (err) {
+        setItems(mockItems);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPortfolio();
+  }, []);
 
   const filteredItems = filter === 'All' ? items : items.filter(i => i.cat === filter);
 
   useGSAP(() => {
+    if (filteredItems.length === 0) return;
     gsap.from('.gallery-editorial-item', {
       y: 80,
       opacity: 0,
@@ -41,7 +74,15 @@ const Portfolio = () => {
       stagger: 0.15,
       ease: 'power3.out',
     });
-  }, [filter]);
+  }, [filter, filteredItems]);
+
+  if (loading) {
+    return (
+      <div className="portfolio-page section-padding" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ color: '#8c8c8c', letterSpacing: '0.15em', fontSize: '0.8rem', textTransform: 'uppercase' }}>Unveiling the Archives...</span>
+      </div>
+    );
+  }
 
   return (
     <div ref={container} className="portfolio-page section-padding">

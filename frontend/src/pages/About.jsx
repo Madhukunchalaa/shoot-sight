@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import teamImg from '../assets/team.webp';
 import founderImg from '../assets/NGD_1351.jpg.webp';
 import aboutHeroBg from '../assets/DSC01641 - Copy.webp'; // Perfect warm romantic sunset background
-import philosophyBg from '../assets/_DSC4761 - Copy.webp'; // Stunning cinematic landscape backdrop
+import philosophyBg from '../assets/camera_lens_detail.webp'; // Stunning high-end camera lens details
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -243,56 +243,55 @@ const About = () => {
       </section>
 
       {/* The Philosophy */}
-      <section className="about-philosophy section-padding">
-        <div className="philosophy-image-bg" style={{ backgroundImage: `url(${philosophyBg})` }}></div>
-        <div className="philosophy-overlay"></div>
-        
-        <div className="container philosophy-content">
-          <div className="philosophy-header text-center">
-            <h2 className="section-title-large-white">The <i>Philosophy</i></h2>
+      <section className="about-philosophy section-padding container">
+        <div className="philosophy-split-grid">
+          
+          {/* Left Column: Gorgeous Light-filled Portrait */}
+          <div className="philosophy-image-col">
+            <div className="philosophy-portrait-wrapper">
+              {/* Offset Backdrop Line */}
+              <div className="philosophy-portrait-backdrop"></div>
+              
+              <div className="philosophy-portrait-mask">
+                <img src={philosophyBg} alt="Fine art lighting and details" className="philosophy-portrait-img" />
+              </div>
+              
+              <div className="philosophy-portrait-tag">INTENTIONAL // TIMING // RAW</div>
+            </div>
           </div>
 
-          <div className="philosophy-grid">
-            <div className="philosophy-block">
-              <div className="phil-num">01</div>
-              <h3 className="phil-title">Intentionality</h3>
-              <p className="phil-desc">We do not believe in spray-and-pray. Every frame is composed with purpose, ensuring a cohesive, editorial visual language throughout your entire collection.</p>
-            </div>
+          {/* Right Column: Highly Highlighted Content Stack */}
+          <div className="philosophy-content-col">
+            <span className="subtitle-accent">OUR CORE PILLARS</span>
+            <h2 className="philosophy-split-title">The <i>Philosophy</i></h2>
             
-            <div className="philosophy-block">
-              <div className="phil-num">02</div>
-              <h3 className="phil-title">Fidelity</h3>
-              <p className="phil-desc">Utilizing state-of-the-art lossless processing, we ensure that the colors, textures, and deep emotions remain vibrant and true to life for generations.</p>
-            </div>
-            
-            <div className="philosophy-block">
-              <div className="phil-num">03</div>
-              <h3 className="phil-title">Timelessness</h3>
-              <p className="phil-desc">We avoid fleeting color grading trends. Our true-to-life, cinematic editing style guarantees your gallery will look as stunning in fifty years as it does today.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+            <div className="philosophy-vertical-stack">
+              <div className="philosophy-stack-item">
+                <span className="philosophy-stack-num">01 /</span>
+                <div className="philosophy-stack-info">
+                  <h3 className="philosophy-stack-title">Intentionality</h3>
+                  <p className="philosophy-stack-desc">We do not believe in spray-and-pray. Every single frame is composed with meticulous purpose, ensuring a cohesive, editorial fine-art narrative throughout your entire collection.</p>
+                </div>
+              </div>
 
-      {/* The Stats (Editorial Style) */}
-      <section className="about-stats-editorial section-padding">
-        <div className="container">
-          <div className="stats-divider"></div>
-          <div className="stats-row-chic">
-            <div className="stat-chic">
-              <h4>400+</h4>
-              <p>STORIES TOLD</p>
-            </div>
-            <div className="stat-chic">
-              <h4>08+</h4>
-              <p>YEARS OF ARTISTRY</p>
-            </div>
-            <div className="stat-chic">
-              <h4>25+</h4>
-              <p>GLOBAL AWARDS</p>
+              <div className="philosophy-stack-item">
+                <div className="philosophy-stack-num">02 /</div>
+                <div className="philosophy-stack-info">
+                  <h3 className="philosophy-stack-title">Fidelity</h3>
+                  <p className="philosophy-stack-desc">Utilizing state-of-the-art lossless processing and color curation, we ensure that natural skin tones, fine fabric textures, and raw emotions remain true to life for generations.</p>
+                </div>
+              </div>
+
+              <div className="philosophy-stack-item">
+                <div className="philosophy-stack-num">03 /</div>
+                <div className="philosophy-stack-info">
+                  <h3 className="philosophy-stack-title">Timelessness</h3>
+                  <p className="philosophy-stack-desc">We completely avoid fleeting, heavily-filtered coloring trends. Our classic, cinematic styling guarantees your gallery looks as breathtaking in fifty years as it does today.</p>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="stats-divider"></div>
+
         </div>
       </section>
 
