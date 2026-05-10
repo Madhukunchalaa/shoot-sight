@@ -3,11 +3,17 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
-// Import Real Professional Assets
-import hero1 from '../assets/SAS_4201.webp';
-import hero2 from '../assets/2S9A3065.webp';
-import hero3 from '../assets/DSC06362.webp';
-import hero4 from '../assets/NGD_4849-2.webp';
+// Import newly optimized premium DSLR assets
+import slide1Left from '../assets/DSC02320.webp';
+import slide1Right from '../assets/2S9A3065.webp';
+import slide2Left from '../assets/_I3A6612.webp';
+import slide2Right from '../assets/_DSC4399.webp';
+import slide3Left from '../assets/_DSC4761 - Copy.webp';
+import slide3Right from '../assets/_DSC4285.webp';
+import slide4Left from '../assets/DSC01969 - Copy.webp';
+import slide4Right from '../assets/DSC01855 - Copy.webp';
+import slide5Left from '../assets/SAS_4201.webp';
+import slide5Right from '../assets/DSC01641 - Copy.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,22 +23,34 @@ const Hero = () => {
 
   const slides = [
     {
-      left: hero1,
-      right: hero2,
+      left: slide1Left,
+      right: slide1Right,
       t1: "TIMELESS",
       t2: "MOMENTS"
     },
     {
-      left: hero3,
-      right: hero4,
+      left: slide2Left,
+      right: slide2Right,
       t1: "ETERNAL",
       t2: "LEGACIES"
     },
     {
-      left: hero4,
-      right: hero1,
+      left: slide3Left,
+      right: slide3Right,
       t1: "PURE",
       t2: "EMOTIONS"
+    },
+    {
+      left: slide4Left,
+      right: slide4Right,
+      t1: "SAVORED",
+      t2: "SIGHTS"
+    },
+    {
+      left: slide5Left,
+      right: slide5Right,
+      t1: "INFINITE",
+      t2: "VISIONS"
     }
   ];
 
@@ -116,7 +134,7 @@ const Hero = () => {
             key={i} 
             className={`side-img-container left ${i === currentIndex ? 'active' : ''}`}
           >
-            <img src={slide.left} alt="Professional Photography" className="side-img" />
+            <img src={slide.left} alt="Professional Photography" className="side-img" decoding="async" />
           </div>
         ))}
         <div className="side-overlay"></div>
@@ -128,7 +146,7 @@ const Hero = () => {
             key={i} 
             className={`side-img-container right ${i === currentIndex ? 'active' : ''}`}
           >
-            <img src={slide.right} alt="Professional Photography" className="side-img" />
+            <img src={slide.right} alt="Professional Photography" className="side-img" decoding="async" />
           </div>
         ))}
         <div className="side-overlay"></div>
