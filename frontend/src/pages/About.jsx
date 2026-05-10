@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import teamImg from '../assets/team.webp';
 import founderImg from '../assets/NGD_1351.jpg.webp';
 import aboutHeroBg from '../assets/DSC01641 - Copy.webp'; // Perfect warm romantic sunset background
+import philosophyBg from '../assets/_DSC4761 - Copy.webp'; // Stunning cinematic landscape backdrop
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -33,6 +34,18 @@ const About = () => {
       scrollTrigger: {
         trigger: '.about-fullscreen-hero',
         start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    // 0.1 Philosophy Background Parallax
+    gsap.to('.philosophy-image-bg', {
+      yPercent: 15,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.about-philosophy',
+        start: 'top bottom',
         end: 'bottom top',
         scrub: true
       }
@@ -228,9 +241,12 @@ const About = () => {
 
       {/* The Philosophy */}
       <section className="about-philosophy section-padding">
-        <div className="container">
+        <div className="philosophy-image-bg" style={{ backgroundImage: `url(${philosophyBg})` }}></div>
+        <div className="philosophy-overlay"></div>
+        
+        <div className="container philosophy-content">
           <div className="philosophy-header text-center">
-            <h2 className="section-title-large">The <i>Philosophy</i></h2>
+            <h2 className="section-title-large-white">The <i>Philosophy</i></h2>
           </div>
 
           <div className="philosophy-grid">
@@ -240,7 +256,7 @@ const About = () => {
               <p className="phil-desc">We do not believe in spray-and-pray. Every frame is composed with purpose, ensuring a cohesive, editorial visual language throughout your entire collection.</p>
             </div>
             
-            <div className="philosophy-block offset-block">
+            <div className="philosophy-block">
               <div className="phil-num">02</div>
               <h3 className="phil-title">Fidelity</h3>
               <p className="phil-desc">Utilizing state-of-the-art lossless processing, we ensure that the colors, textures, and deep emotions remain vibrant and true to life for generations.</p>
