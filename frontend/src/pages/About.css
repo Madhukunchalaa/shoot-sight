@@ -117,7 +117,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.05) saturate(1.02); /* Optimized color richness */
+  /* Color-graded filter to transform the cool-blue studio backdrop into a warm cream/beige tint */
+  filter: sepia(0.18) saturate(1.15) contrast(1.05) hue-rotate(-12deg); 
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
