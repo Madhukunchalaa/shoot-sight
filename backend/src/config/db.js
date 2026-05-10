@@ -16,8 +16,8 @@ const connectDB = async () => {
       console.log(`Seeded default Admin: ${email}`);
     }
   } catch (error) {
-    console.error(`MongoDB connection error: ${error.message}`);
-    process.exit(1);
+    console.warn(`⚠️ MongoDB connection offline: ${error.message}`);
+    console.warn(`⚙️ Backend is running in Database-Free fallback mode (Offline JSON database).`);
   }
 };
 

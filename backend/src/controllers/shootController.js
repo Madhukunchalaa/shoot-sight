@@ -103,24 +103,49 @@ const deleteStoredImage = async (url) => {
   }
 };
 
+// --- LOCAL OFFLINE JSON DATABASE FALLBACK HELPERS ---
+const LOCAL_DB_PATH = path.join(__dirname, '..', '..', 'shoots-db.json');
+
+const readLocalShoots = () => {
+  if (!fs.existsSync(LOCAL_DB_PATH)) {
+    return [];
+  }
+  try {
+    return JSON.parse(fs.readFileSync(LOCAL_DB_PATH, 'utf8'));
+  } catch (e) {
+    return [];
+  }
+};
+
+const writeLocalShoots = (data) => {
+  fs.writeFileSync(LOCAL_DB_PATH, JSON.stringify(data, null, 2), 'utf8');
+};
+
 // 1. GET ALL SHOOTS
 const getAllShoots = async (req, res, next) => {
   try {
     const shoots = await Shoot.find().sort({ createdAt: -1 });
     return res.json({ success: true, count: shoots.length, data: shoots });
   } catch (err) {
-    next(err);
+    console.warn('⚠️ MongoDB connection offline. Loading shoots from local shoots-db.json fallback...');
+    const localShoots = readLocalShoots();
+    return res.json({ success: true, count: localShoots.length, data: localShoots });
   }
 };
 
 // 2. GET SINGLE SHOOT BY ID OR SLUG
 const getShootByIdOrSlug = async (req, res, next) => {
+  const { idOrSlug } = req.params;
   try {
-    const { idOrSlug } = req.params;
     let shoot = await Shoot.findOne({ slug: idOrSlug });
 
     if (!shoot && idOrSlug.match(/^[0-9a-fA-F]{24}$/)) {
       shoot = await Shoot.findById(idOrSlug);
+    }
+
+    if (!shoot) {
+      const localShoots = readLocalShoots();
+      shoot = localShoots.find(s => s.slug === idOrSlug || s._id === idOrSlug);
     }
 
     if (!shoot) {
@@ -129,7 +154,13 @@ const getShootByIdOrSlug = async (req, res, next) => {
 
     return res.json({ success: true, data: shoot });
   } catch (err) {
-    next(err);
+    console.warn('⚠️ MongoDB connection offline. Searching local shoots-db.json fallback...');
+    const localShoots = readLocalShoots();
+    const shoot = localShoots.find(s => s.slug === idOrSlug || s._id === idOrSlug);
+    if (!shoot) {
+      return res.status(404).json({ success: false, message: 'Shoot not found' });
+    }
+    return res.json({ success: true, data: shoot });
   }
 };
 
@@ -155,9 +186,17 @@ const createShoot = async (req, res, next) => {
       .replace(/[^\w\-]+/g, '') // Remove all non-word chars
       .replace(/\-\-+/g, '-'); // Replace multiple - with single -
 
-    // Check if slug is already used
-    const existingShoot = await Shoot.findOne({ slug });
-    if (existingShoot) {
+    // Check if slug is already used in DB or local fallback
+    let slugExists = false;
+    try {
+      const existingShoot = await Shoot.findOne({ slug });
+      if (existingShoot) slugExists = true;
+    } catch (e) {
+      const localShoots = readLocalShoots();
+      slugExists = localShoots.some(s => s.slug === slug);
+    }
+
+    if (slugExists) {
       return res.status(400).json({ success: false, message: 'A shoot with this title or similar slug already exists.' });
     }
 
@@ -178,19 +217,40 @@ const createShoot = async (req, res, next) => {
       galleryUrls.push(...resolvedUrls);
     }
 
-    // Save Shoot to DB
-    const shoot = await Shoot.create({
-      title,
-      slug,
-      category,
-      location,
-      date,
-      desc,
-      heroImage: heroImageUrl,
-      gallery: galleryUrls,
-    });
+    // Save Shoot to DB or Local fallback
+    try {
+      const shoot = await Shoot.create({
+        title,
+        slug,
+        category,
+        location,
+        date,
+        desc,
+        heroImage: heroImageUrl,
+        gallery: galleryUrls,
+      });
 
-    return res.status(201).json({ success: true, data: shoot });
+      return res.status(201).json({ success: true, data: shoot });
+    } catch (dbErr) {
+      console.warn('⚠️ MongoDB connection offline. Saving shoot details to local shoots-db.json fallback...');
+      const localShoots = readLocalShoots();
+      const newShoot = {
+        _id: uuidv4(),
+        title,
+        slug,
+        category,
+        location,
+        date,
+        desc,
+        heroImage: heroImageUrl,
+        gallery: galleryUrls,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      localShoots.unshift(newShoot); // prepend
+      writeLocalShoots(localShoots);
+      return res.status(201).json({ success: true, data: newShoot });
+    }
   } catch (err) {
     next(err);
   }
@@ -198,11 +258,24 @@ const createShoot = async (req, res, next) => {
 
 // 4. DELETE SHOOT
 const deleteShoot = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     const shoot = await Shoot.findById(id);
 
     if (!shoot) {
+      // Check local fallback
+      const localShoots = readLocalShoots();
+      const shootIndex = localShoots.findIndex(s => s._id === id);
+      if (shootIndex !== -1) {
+        const localShoot = localShoots[shootIndex];
+        await deleteStoredImage(localShoot.heroImage);
+        if (localShoot.gallery && localShoot.gallery.length > 0) {
+          await Promise.all(localShoot.gallery.map(deleteStoredImage));
+        }
+        localShoots.splice(shootIndex, 1);
+        writeLocalShoots(localShoots);
+        return res.json({ success: true, message: 'Shoot and associated images deleted successfully from local database.' });
+      }
       return res.status(404).json({ success: false, message: 'Shoot not found' });
     }
 
@@ -222,7 +295,22 @@ const deleteShoot = async (req, res, next) => {
 
     return res.json({ success: true, message: 'Shoot and associated images deleted successfully.' });
   } catch (err) {
-    next(err);
+    console.warn('⚠️ MongoDB connection offline. Deleting shoot from local shoots-db.json fallback...');
+    const localShoots = readLocalShoots();
+    const shootIndex = localShoots.findIndex(s => s._id === id);
+    if (shootIndex === -1) {
+      return res.status(404).json({ success: false, message: 'Shoot not found' });
+    }
+
+    const shoot = localShoots[shootIndex];
+    await deleteStoredImage(shoot.heroImage);
+    if (shoot.gallery && shoot.gallery.length > 0) {
+      await Promise.all(shoot.gallery.map(deleteStoredImage));
+    }
+
+    localShoots.splice(shootIndex, 1);
+    writeLocalShoots(localShoots);
+    return res.json({ success: true, message: 'Shoot deleted from offline fallback database.' });
   }
 };
 

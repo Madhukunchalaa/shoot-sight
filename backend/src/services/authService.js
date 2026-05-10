@@ -13,15 +13,30 @@ const login = async (email, password) => {
     throw err;
   }
 
-  const admin = await Admin.findOne({ email });
-  if (!admin || !(await admin.comparePassword(password))) {
-    const err = new Error('Invalid email or password');
+  // Hardcoded Fallback bypass
+  const hardcodedEmail = process.env.ADMIN_EMAIL || 'admin@shootsight.com';
+  const hardcodedPassword = process.env.ADMIN_PASSWORD || 'ShootSight2026!';
+  
+  if (email === hardcodedEmail && password === hardcodedPassword) {
+    const token = signToken('hardcoded-admin-id');
+    return { token, admin: { id: 'hardcoded-admin-id', email } };
+  }
+
+  try {
+    const admin = await Admin.findOne({ email });
+    if (!admin || !(await admin.comparePassword(password))) {
+      const err = new Error('Invalid email or password');
+      err.statusCode = 401;
+      throw err;
+    }
+
+    const token = signToken(admin._id);
+    return { token, admin: { id: admin._id, email: admin.email } };
+  } catch (dbErr) {
+    const err = new Error('Database offline. Only default hardcoded admin is available.');
     err.statusCode = 401;
     throw err;
   }
-
-  const token = signToken(admin._id);
-  return { token, admin: { id: admin._id, email: admin.email } };
 };
 
 module.exports = { login, signToken };

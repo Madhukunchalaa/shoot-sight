@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import './Blog.css';
@@ -10,39 +10,60 @@ import img4 from '../assets/SAS_4201.webp';
 
 const Blog = () => {
   const container = useRef();
+  const [activePost, setActivePost] = useState(null);
   
   const posts = [
     {
       id: 1,
       title: 'Finding the Light in Candid Moments',
       date: 'April 24, 2026',
-      cat: 'Artistry',
+      cat: 'ARTISTRY',
       excerpt: 'Exploring the technical and emotional aspects of low-light candid photography in high-end weddings.',
+      content: [
+        'Golden hour is that magical window of time just before sunset where the sun is low in the sky, producing a warm, soft light that behaves like a natural filter. In Hyderabad, the sunset light reflecting off heritage stone and lake vistas creates a dreamlike amber glow. To capture this, timing is everything.',
+        'We coordinate with our couples to block out exactly 45 minutes of their schedule. Tips for your shoot: 1. Keep moving. Low-angle light is perfect for capturing natural movement. 2. Lean into the flare. Backlighting creates a halo effect on hair and dresses. 3. Colors matter. Earthy colors, pastel pinks, and ivory reflect this light spectacularly.',
+        'Beyond technical specifications, candid lighting is about emotional pacing. We watch for silent cues—a heavy breath before the ceremony, a slight touch of hands, or tears half-hidden by a veil. Allowing these moments to occur naturally, without forcing unnatural lighting grids, keeps the integrity of the frame pure.'
+      ],
       img: img1,
       featured: true
     },
     {
       id: 2,
-      title: 'The Editorial Approach to Pre-wedding Shoots',
+      title: 'How to Stay Natural on Camera: 5 Essential Tips',
       date: 'March 15, 2026',
-      cat: 'Behind the Lens',
-      excerpt: 'How to transition from a simple photoshoot to a magazine-style visual narrative.',
+      cat: 'GUIDE',
+      excerpt: 'Feeling stiff or nervous in front of the lens? Read our guide on how to let go of the camera and focus on each other.',
+      content: [
+        'The biggest fear couples share with us is "We aren\'t photogenic" or "We feel awkward." We hear you! The secret to natural photos is simple: stop posing and start interacting. Here are 5 tips we use to keep things authentic:',
+        '1. Whisper a joke: Whispering something silly instantly breaks the tension and brings out real laughter. 2. Walk and talk: Walking gives your body a natural action, distracting you from the lens. 3. Touch points: Keep a hand on their waist or hold fingers. Physical contact grounds you.',
+        '4. Trust your photographer: We capture the spaces between the poses where your real connection shines. 5. Forget perfection: The most beautiful images are the ones with wind-blown hair and spontaneous smiles. Let go, look at each other, and let us handle the frames.'
+      ],
       img: img2
     },
     {
       id: 3,
-      title: 'Preserving Fidelity: The Tech Behind the Pixels',
+      title: 'Behind the Lens: Designing Your Pre-wedding Moodboard',
       date: 'February 28, 2026',
-      cat: 'Technical',
-      excerpt: 'A deep dive into our lossless processing engine and why 4K image quality matters.',
+      cat: 'INSPIRATION',
+      excerpt: 'How we collaborate with couples to design customized, high-fashion visual concepts before taking a single shot.',
+      content: [
+        'A pre-wedding shoot isn\'t just about taking pictures in a nice park—it is about telling your unique story. We begin every project by collaborating on a digital moodboard. We look at cinematic films, editorial fashion magazines, and vintage color grading to find a theme that resonates.',
+        'Whether it is "Classic Noir" in an urban setting or "Moody Romanticism" in the mountains, a moodboard ensures our wardrobe, styling, locations, and cameras are completely aligned.',
+        'By planning color coordination and movement patterns beforehand, we reduce the stress on the day of the shoot. This level of curated planning is what elevates a standard couple shoot into a bespoke work of fine art.'
+      ],
       img: img3
     },
     {
       id: 4,
-      title: 'Shadow & Soul: The Art of Black and White',
+      title: 'Misty Mountains: Capturing Love in Ooty\'s Valleys',
       date: 'January 10, 2026',
-      cat: 'Monochrome',
-      excerpt: 'Why stripping away color can often reveal the truest essence of a shared glance.',
+      cat: 'DESTINATIONS',
+      excerpt: 'A deep dive into our cinematic experience shooting in the cold, foggy tea-gardens of Ooty.',
+      content: [
+        'Ooty offers a completely different vibe compared to the grand, warm palaces of Hyderabad. The fog, the deep greens of tea estates, and the cold air create an incredibly moody, intimate atmosphere.',
+        'During our recent shoot with Vikram & Anjali, the mist rolled in so thick that the background completely disappeared. This allowed us to focus purely on their expressions and the soft texture of their sweaters.',
+        'It is a testament to how weather can become a powerful storytelling tool in photography. Instead of hiding from rain or fog, we lean directly into them to capture the high-contrast, moody colors of the environment.'
+      ],
       img: img4
     }
   ];
@@ -94,8 +115,8 @@ const Blog = () => {
         <div className="blog-header-stylish">
           <span className="subtitle-accent">04 // JOURNAL</span>
           <h1 className="editorial-title">
-            <i>{renderTypingText("Editorial")}</i> <br /> 
-            {renderTypingText("Perspectives")}
+            <i>{renderTypingText("Behind")}</i> <br /> 
+            {renderTypingText("The Scenes")}
           </h1>
           <div className="title-accent-line"></div>
         </div>
@@ -120,20 +141,49 @@ const Blog = () => {
               </div>
               <h2 className="post-title-stylish">{post.title}</h2>
               <p className="post-excerpt">{post.excerpt}</p>
-              <a href={`#blog/${post.id}`} className="read-more-magazine">
-                <span>View Narrative</span>
+              <button onClick={() => setActivePost(post)} className="read-more-magazine" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>
+                <span>Read Article</span>
                 <div className="btn-line"></div>
-              </a>
+              </button>
             </div>
           </article>
         ))}
       </div>
 
+      {/* Interactive Reader Modal */}
+      {activePost && (
+        <div className="blog-reader-modal" onClick={() => setActivePost(null)}>
+          <div className="modal-inner-glass" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={() => setActivePost(null)}>✕</button>
+            
+            <div className="modal-scroll-content">
+              <div className="modal-header-meta">
+                <span className="modal-cat">{activePost.cat}</span>
+                <span className="modal-dot">•</span>
+                <span className="modal-date">{activePost.date}</span>
+              </div>
+              
+              <h2 className="modal-title">{activePost.title}</h2>
+              
+              <div className="modal-hero-img-box">
+                <img src={activePost.img} alt={activePost.title} />
+              </div>
+
+              <div className="modal-body-paragraphs">
+                {activePost.content.map((para, i) => (
+                  <p key={i} className="modal-p">{para}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <section className="journal-footer-cta section-padding">
         <div className="container">
           <div className="cta-box-editorial">
-            <h3>Subscribe to <i>The Narrative</i></h3>
-            <p>A monthly curation of visual stories and editorial insights delivered to your inbox.</p>
+            <h3>Subscribe to <i>The Blog</i></h3>
+            <p>A monthly curation of shoot stories, lighting tips, and backstage guides delivered directly to your inbox.</p>
             <div className="editorial-input-group">
               <input type="email" placeholder="YOUR EMAIL ADDRESS" />
               <button>JOIN</button>
