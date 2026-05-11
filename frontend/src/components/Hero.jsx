@@ -4,16 +4,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
 // Import newly optimized premium DSLR assets
-import slide1Left from '../assets/DSC02320.webp';
-import slide1Right from '../assets/2S9A3065.webp';
-import slide2Left from '../assets/_I3A6612.webp';
-import slide2Right from '../assets/_DSC4399.webp';
-import slide3Left from '../assets/_DSC4761 - Copy.webp';
-import slide3Right from '../assets/_DSC4285.webp';
-import slide4Left from '../assets/DSC01969 - Copy.webp';
-import slide4Right from '../assets/DSC01855 - Copy.webp';
-import slide5Left from '../assets/SAS_4201.webp';
-import slide5Right from '../assets/DSC01641 - Copy.webp';
+import slide1Left from '../assets/SAS_2092.webp';
+import slide1Right from '../assets/_I3A6612.webp';
+import slide2Left from '../assets/NGD_1093.webp';
+import slide2Right from '../assets/2S9A8309.webp';
+import slide3Left from '../assets/KRP_9777.webp';
+import slide3Right from '../assets/_DSC1468 - Copy.webp';
+import slide4Left from '../assets/NGD_9246.webp';
+import slide4Right from '../assets/DSC02320.webp';
+import slide5Left from '../assets/_DSC4382.webp';
+import slide5Right from '../assets/SAS_3280.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
