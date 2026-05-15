@@ -14,7 +14,7 @@ import './App.css';
 
 function App() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminRoute = location.pathname.includes('admin');
 
   return (
     <>
@@ -30,7 +30,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           
           {/* Admin Portal */}
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/blog/admin-login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </main>

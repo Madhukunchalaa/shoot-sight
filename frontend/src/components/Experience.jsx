@@ -4,10 +4,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Experience.css';
 
-// Import newly optimized premium DSLR assets
-import curationImg from '../assets/_DSC4382.webp';
-import captureImg from '../assets/_I3A6612.webp';
-import heirloomImg from '../assets/_DSC4285.webp';
+const curationImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4382.webp";
+const captureImg = "/perfect_capture.png";
+const heirloomImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4285.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,11 +65,16 @@ const Experience = () => {
 
         {/* STEP 01 */}
         <div className="experience-layer step-layer color-1">
-          <div className="layer-grid">
+          <div className="layer-grid container">
             <div className="layer-text-side">
-              <span className="layer-num">01</span>
+              <span className="layer-num">Phase 01 // Curation</span>
               <h3 className="layer-heading">The Curation</h3>
               <p className="layer-desc">We begin by understanding the soul of your story, selecting the perfect aesthetic tone and light for your unique celebration.</p>
+              <div className="layer-tags">
+                <span className="exp-tag">Moodboarding</span>
+                <span className="exp-tag">Lighting Design</span>
+                <span className="exp-tag">Styling Harmony</span>
+              </div>
             </div>
             <div className="layer-img-side">
               <div className="img-reveal-wrapper">
@@ -82,27 +86,37 @@ const Experience = () => {
 
         {/* STEP 02 */}
         <div className="experience-layer step-layer color-2">
-          <div className="layer-grid">
+          <div className="layer-grid container">
             <div className="layer-img-side">
               <div className="img-reveal-wrapper">
                 <img src={captureImg} alt="Cinematic Capture" loading="lazy" decoding="async" />
               </div>
             </div>
             <div className="layer-text-side">
-              <span className="layer-num">02</span>
+              <span className="layer-num">Phase 02 // Capture</span>
               <h3 className="layer-heading">The Capture</h3>
               <p className="layer-desc">Discreet, immersive, and refined. We capture the moments that feel like a whisper, and the ones that roar across time.</p>
+              <div className="layer-tags">
+                <span className="exp-tag">Discreet Presence</span>
+                <span className="exp-tag">Candid Emotion</span>
+                <span className="exp-tag">Cinematic Framing</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* STEP 03 */}
         <div className="experience-layer step-layer color-3">
-          <div className="layer-grid">
+          <div className="layer-grid container">
             <div className="layer-text-side">
-              <span className="layer-num">03</span>
+              <span className="layer-num">Phase 03 // Heirloom</span>
               <h3 className="layer-heading">The Heirloom</h3>
               <p className="layer-desc">Final delivery of high-fidelity, processed imagery designed to last for generations. Your legacy, preserved in light.</p>
+              <div className="layer-tags">
+                <span className="exp-tag">Color Grading</span>
+                <span className="exp-tag">Fine Art Prints</span>
+                <span className="exp-tag">Digital Vault</span>
+              </div>
             </div>
             <div className="layer-img-side">
               <div className="img-reveal-wrapper">

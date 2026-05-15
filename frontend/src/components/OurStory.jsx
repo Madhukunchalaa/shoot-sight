@@ -3,9 +3,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './OurStory.css';
 
-// Import Real Professional Assets
-import story1 from '../assets/SAS_4201.webp';
-import story2 from '../assets/NGD_4849-2.webp';
+const story1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
+const story2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4849-2.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 

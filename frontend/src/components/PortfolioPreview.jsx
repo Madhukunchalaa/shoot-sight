@@ -3,10 +3,9 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import './PortfolioPreview.css';
 
-// Import client images
-import img1 from '../assets/img1.webp';
-import img2 from '../assets/img2.webp';
-import img3 from '../assets/img3.webp';
+const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/img1.webp";
+const img2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/img2.webp";
+const img3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/img3.webp";
 
 const PortfolioPreview = () => {
   const container = useRef();

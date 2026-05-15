@@ -4,24 +4,78 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './ShootDetail.css';
 
-// Import local assets for fallback
-import hero1 from '../assets/SAS_4201.webp';
-import hero2 from '../assets/2S9A3065.webp';
-import gal1 from '../assets/DSC06362.webp';
-import gal2 from '../assets/NGD_4849-2.webp';
-import gal3 from '../assets/NGD_4961.webp';
-import gal4 from '../assets/_DSC3521 - Copy.webp';
+const hero1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
+const hero2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A3065.webp";
+const gal1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC06362.webp";
+const gal2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4849-2.webp";
+const gal3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4961.webp";
+const gal4 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const mockShootData = {
-  'naveen-swetha': { 
-    title: "Naveen & Swetha", 
-    date: "Jan 2026", 
-    location: "Hyderabad", 
-    desc: "A soulful celebration of love and culture. Every glance captured the essence of two families becoming one under the golden evening sky. The focus was on raw, unposed emotions and the delicate details of their heritage.", 
-    hero: hero1,
-    gallery: [gal1, gal2, gal3, gal4]
+  'raghudixith-varijashree': {
+    title: "Raghu Dixit & Varijashree",
+    date: "May 2026",
+    location: "Bangalore",
+    desc: "A beautiful, musical celebration of love and art. Documented with raw emotion, vibrant energy, and timeless cinematic framing.",
+    hero: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp",
+    gallery: [
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6707.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6712.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6719.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6723.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7085.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7151.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7412.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7441.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A7334.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A7603.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A7606-2.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A7645.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A7854.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A8221.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A8224.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A8226.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A8233.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A8234.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A8267.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/_01A8274.webp"
+    ]
+  },
+  'naveen-kate': { 
+    title: "Naveen & Kate", 
+    date: "May 2026", 
+    location: "Sydney", 
+    desc: "A breathtaking high-fashion wedding celebration. Every single moment radiated elegance, love, and joyous festivity, captured against beautiful backdrops with pristine lighting.", 
+    hero: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp",
+    gallery: [
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD07968.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD07976.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08046.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08122.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08132.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08167.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08209.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08264.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08292.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08295.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08301.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08325.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08335.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08347.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08349.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08396.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08404.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08450.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08504.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08510.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08526.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08556.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08617.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08653.webp"
+    ]
   },
   'rahul-pooja': { 
     title: "Rahul & Pooja", 
@@ -54,8 +108,19 @@ const ShootDetail = () => {
   const container = useRef();
   const [shoot, setShoot] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setLightboxImage(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -75,10 +140,10 @@ const ShootDetail = () => {
             gallery: s.gallery || []
           });
         } else {
-          setShoot(mockShootData[id] || mockShootData['naveen-swetha']);
+          setShoot(mockShootData[id] || mockShootData['naveen-kate']);
         }
       } catch (err) {
-        setShoot(mockShootData[id] || mockShootData['naveen-swetha']);
+        setShoot(mockShootData[id] || mockShootData['naveen-kate']);
       } finally {
         setLoading(false);
       }
@@ -127,15 +192,6 @@ const ShootDetail = () => {
     return () => ctx.revert();
   }, [loading, shoot]);
 
-  // Safe helper to fetch gallery image with fallback
-  const getGalleryImage = (index) => {
-    if (shoot && shoot.gallery && shoot.gallery[index]) {
-      return shoot.gallery[index];
-    }
-    const fallbacks = [gal1, gal2, gal3, gal4];
-    return fallbacks[index % fallbacks.length];
-  };
-
   if (loading || !shoot) {
     return (
       <div className="shoot-exhibition-page" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -161,8 +217,12 @@ const ShootDetail = () => {
 
       {/* Hero Feature */}
       <section className="exhibition-hero container">
-        <div className="exhibition-hero-img-wrapper">
+        <div 
+          className="exhibition-hero-img-wrapper lightbox-trigger" 
+          onClick={() => setLightboxImage(shoot.hero)}
+        >
           <img src={shoot.hero} alt={shoot.title} />
+          <div className="zoom-indicator">EXPLORE FULLSCREEN</div>
         </div>
       </section>
 
@@ -186,33 +246,24 @@ const ShootDetail = () => {
       {/* The Gallery Asymmetric Collage */}
       <section className="exhibition-gallery-collage container">
         <div className="collage-grid-vintage">
-          <div className="collage-cell cell-tall exhibition-gallery-item">
-            <div className="gallery-img-wrapper">
-              <img src={getGalleryImage(0)} alt="Story Frame 1" />
-            </div>
-            <div className="gallery-caption">Frame 01 // Intentionality</div>
-          </div>
-
-          <div className="collage-cell cell-wide exhibition-gallery-item">
-            <div className="gallery-img-wrapper">
-              <img src={getGalleryImage(1)} alt="Story Frame 2" />
-            </div>
-            <div className="gallery-caption">Frame 02 // Atmosphere</div>
-          </div>
-
-          <div className="collage-cell cell-square exhibition-gallery-item">
-            <div className="gallery-img-wrapper">
-              <img src={getGalleryImage(2)} alt="Story Frame 3" />
-            </div>
-            <div className="gallery-caption">Frame 03 // Composition</div>
-          </div>
-
-          <div className="collage-cell cell-portrait exhibition-gallery-item">
-            <div className="gallery-img-wrapper">
-              <img src={getGalleryImage(3)} alt="Story Frame 4" />
-            </div>
-            <div className="gallery-caption">Frame 04 // Legacy</div>
-          </div>
+          {shoot.gallery.map((imgUrl, idx) => {
+            const cellClasses = ['cell-tall', 'cell-wide', 'cell-square', 'cell-portrait'];
+            const captions = ['Intentionality', 'Atmosphere', 'Composition', 'Legacy', 'Harmony', 'Raw Emotion', 'Elegance', 'Timeless', 'Vibrancy', 'Rhythm'];
+            const cellClass = cellClasses[idx % cellClasses.length];
+            const caption = captions[idx % captions.length];
+            return (
+              <div key={idx} className={`collage-cell ${cellClass} exhibition-gallery-item`}>
+                <div 
+                  className="gallery-img-wrapper lightbox-trigger" 
+                  onClick={() => setLightboxImage(imgUrl)}
+                >
+                  <img src={imgUrl} alt={`Story Frame ${idx + 1}`} loading="lazy" />
+                  <div className="zoom-indicator">EXPLORE FULLSCREEN</div>
+                </div>
+                <div className="gallery-caption">Frame {idx + 1 < 10 ? `0${idx + 1}` : idx + 1} // {caption}</div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -220,6 +271,16 @@ const ShootDetail = () => {
       <div className="exhibition-footer section-padding container text-center">
         <Link to="/portfolio" className="btn-premium">Return to Archives</Link>
       </div>
+
+      {/* Fullscreen Lightbox Modal */}
+      {lightboxImage && (
+        <div className="shoot-lightbox-modal" onClick={() => setLightboxImage(null)}>
+          <button className="lightbox-close-btn" onClick={() => setLightboxImage(null)}>✕</button>
+          <div className="lightbox-content-wrapper" onClick={(e) => e.stopPropagation()}>
+            <img src={lightboxImage} alt="Fullscreen exhibition view" className="lightbox-img" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

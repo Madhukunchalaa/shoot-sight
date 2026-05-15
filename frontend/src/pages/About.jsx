@@ -2,10 +2,10 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import teamImg from '../assets/team.webp';
-import founderImg from '../assets/NGD_1351.jpg.webp';
-import aboutHeroBg from '../assets/DSC01641 - Copy.webp'; // Perfect warm romantic sunset background
-import philosophyBg from '../assets/camera_lens_detail.webp'; // Stunning high-end camera lens details
+const teamImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/team.webp";
+const founderImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_1351jpg.webp";
+const aboutHeroBg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC01641_-_Copy.webp";
+const philosophyBg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/camera_lens_detail.webp";
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);

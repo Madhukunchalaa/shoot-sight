@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import './Services.css';
 
-// Import newly optimized premium DSLR assets
-import weddingImg from '../assets/_DSC4399.webp';
-import cinematicImg from '../assets/_DSC4761 - Copy.webp';
-import preWeddingImg from '../assets/SAS_3280.webp';
-import droneImg from '../assets/DSC02320.webp';
+const weddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4399.webp";
+const cinematicImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4761_-_Copy.webp";
+const preWeddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
+const droneImg = "/drone_aerial_coverage.png";
 
 const Services = () => {
   const sectionRef = useRef(null);

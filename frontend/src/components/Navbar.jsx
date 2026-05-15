@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/logo (1).webp';
+const logo = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/logo_1.webp";
 import './Navbar.css';
 
 const Navbar = () => {
@@ -54,9 +54,10 @@ const Navbar = () => {
 
         <div className="nav-right">
           <div className="nav-links">
+            <Link to="/" className="nav-link-item">HOME</Link>
             <Link to="/about" className="nav-link-item">ABOUT</Link>
             <Link to="/portfolio" className="nav-link-item">PORTFOLIO</Link>
-            <Link to="/blog" className="nav-link-item">JOURNAL</Link>
+            <Link to="/blog" className="nav-link-item">BLOG</Link>
             <Link to="/contact" className="nav-link-item">CONTACT</Link>
             <div className="nav-divider"></div>
             <div className="nav-location">

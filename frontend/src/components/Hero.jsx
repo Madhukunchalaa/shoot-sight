@@ -3,17 +3,16 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
-// Import newly optimized premium DSLR assets
-import slide1Left from '../assets/SAS_2092.webp';
-import slide1Right from '../assets/_I3A6612.webp';
-import slide2Left from '../assets/NGD_1093.webp';
-import slide2Right from '../assets/2S9A8309.webp';
-import slide3Left from '../assets/KRP_9777.webp';
-import slide3Right from '../assets/_DSC1468 - Copy.webp';
-import slide4Left from '../assets/NGD_9246.webp';
-import slide4Right from '../assets/DSC02320.webp';
-import slide5Left from '../assets/_DSC4382.webp';
-import slide5Right from '../assets/SAS_3280.webp';
+const slide1Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_2092.webp";
+const slide1Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_I3A6612.webp";
+const slide2Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_1093.webp";
+const slide2Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A8309.webp";
+const slide3Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/KRP_9777.webp";
+const slide3Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC1468_-_Copy.webp";
+const slide4Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_9246.webp";
+const slide4Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC02320.webp";
+const slide5Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4382.webp";
+const slide5Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 

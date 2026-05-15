@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('list'); // 'list' or 'create'
+  const [activeTab, setActiveTab] = useState('list'); // 'list', 'create', 'blogs-list', 'create-blog'
   const [shoots, setShoots] = useState([]);
   const [loadingList, setLoadingList] = useState(true);
   
-  // Create Form State
+  // Create Shoot Form State
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Wedding');
   const [location, setLocation] = useState('');
@@ -15,6 +15,14 @@ const AdminDashboard = () => {
   const [desc, setDesc] = useState('');
   const [heroImage, setHeroImage] = useState(null);
   const [gallery, setGallery] = useState([]);
+
+  // Blog Management State
+  const [blogs, setBlogs] = useState([]);
+  const [loadingBlogs, setLoadingBlogs] = useState(true);
+  const [blogTitle, setBlogTitle] = useState('');
+  const [blogCategory, setBlogCategory] = useState('ARTISTRY');
+  const [blogContent, setBlogContent] = useState('');
+  const [blogCover, setBlogCover] = useState("https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp");
   
   // UI States
   const [uploading, setUploading] = useState(false);
@@ -33,6 +41,7 @@ const AdminDashboard = () => {
       return;
     }
     fetchShoots();
+    fetchBlogs();
   }, [navigate]);
 
   const fetchShoots = async () => {
@@ -49,6 +58,24 @@ const AdminDashboard = () => {
       setError('Could not connect to the server.');
     } finally {
       setLoadingList(false);
+    }
+  };
+
+  const fetchBlogs = async () => {
+    setLoadingBlogs(true);
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/blogs`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setBlogs(data.blogs || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingBlogs(false);
     }
   };
 
@@ -91,6 +118,32 @@ const AdminDashboard = () => {
         setTimeout(() => setSuccess(''), 3000);
       } else {
         setError(data.message || 'Deletion failed.');
+      }
+    } catch (err) {
+      setError('Connection to server failed during deletion.');
+    }
+  };
+
+  const handleDeleteBlog = async (blogId, blogTitle) => {
+    if (!window.confirm(`Are you sure you want to delete blog "${blogTitle}"?`)) {
+      return;
+    }
+
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/blogs/${blogId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (res.ok) {
+        setSuccess('Blog deleted successfully.');
+        setBlogs(blogs.filter(b => b._id !== blogId));
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Blog deletion failed.');
       }
     } catch (err) {
       setError('Connection to server failed during deletion.');
@@ -174,13 +227,45 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleBlogSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); setSuccess(''); setUploading(true);
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/blogs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: blogTitle,
+          content: blogContent,
+          coverImageUrl: blogCover,
+          tags: [blogCategory],
+          isPublished: true
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to publish blog');
+      setSuccess(`Successfully published "${blogTitle}"!`);
+      setBlogTitle(''); setBlogContent('');
+      fetchBlogs();
+      setTimeout(() => { setActiveTab('blogs-list'); setSuccess(''); }, 2000);
+    } catch (err) {
+      setError(err.message || 'Failed to submit blog.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="dashboard-wrapper">
       {/* Sidebar / Topbar Header */}
       <header className="dashboard-header">
         <div className="header-branding">
-          <span className="subtitle-accent">PORTFOLIO ENGINE</span>
-          <h2 className="header-title">The <i>Studio</i> Console</h2>
+          <span className="subtitle-accent">PORTFOLIO & BLOG CONSOLE</span>
+          <h2 className="header-title">Studio <i>Admin</i> Console</h2>
         </div>
         <div className="header-actions">
           <span className="admin-badge">{localStorage.getItem('adminEmail')}</span>
@@ -208,6 +293,20 @@ const AdminDashboard = () => {
             disabled={uploading}
           >
             Publish New Story
+          </button>
+          <button 
+            className={`dash-tab-btn ${activeTab === 'blogs-list' ? 'active' : ''}`}
+            onClick={() => { setActiveTab('blogs-list'); fetchBlogs(); }}
+            disabled={uploading}
+          >
+            Blog Articles ({blogs.length})
+          </button>
+          <button 
+            className={`dash-tab-btn ${activeTab === 'create-blog' ? 'active' : ''}`}
+            onClick={() => setActiveTab('create-blog')}
+            disabled={uploading}
+          >
+            Write Blog Post
           </button>
         </div>
 
@@ -373,6 +472,121 @@ const AdminDashboard = () => {
 
               <button type="submit" className="btn-premium-submit" disabled={uploading}>
                 {uploading ? 'Processing & Uploading...' : 'Publish Story Archive'}
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* Tab content 3: Blogs List */}
+        {activeTab === 'blogs-list' && (
+          <div className="tab-content list-tab">
+            {loadingBlogs ? (
+              <div className="dash-loader">Retrieving blog articles...</div>
+            ) : blogs.length === 0 ? (
+              <div className="dash-empty-state">
+                <p>No blog articles published yet. Write your first behind-the-scenes piece!</p>
+                <button onClick={() => setActiveTab('create-blog')} className="btn-premium-action">Write First Blog</button>
+              </div>
+            ) : (
+              <div className="admin-shoots-grid">
+                {blogs.map((blog) => (
+                  <div key={blog._id} className="admin-shoot-card">
+                    <div className="card-thumbnail-wrapper">
+                      <img src={blog.coverImageUrl || "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp"} alt={blog.title} />
+                      <span className="card-cat-badge">{blog.tags?.[0] || 'ARTISTRY'}</span>
+                    </div>
+                    <div className="card-details">
+                      <h4 className="card-title-new">{blog.title}</h4>
+                      <p className="card-meta-faint">{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                      <div className="card-actions-framer">
+                        <a href="/blog" target="_blank" rel="noreferrer" className="btn-preview-link">
+                          View Live ↗
+                        </a>
+                        <button 
+                          onClick={() => handleDeleteBlog(blog._id, blog.title)}
+                          className="btn-delete-card"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Tab content 4: Create Blog */}
+        {activeTab === 'create-blog' && (
+          <div className="tab-content form-tab">
+            <form onSubmit={handleBlogSubmit} className="admin-chic-form">
+              <div className="form-double-column">
+                <div className="input-group-chic">
+                  <label htmlFor="blogTitle">Article Title</label>
+                  <input
+                    type="text"
+                    id="blogTitle"
+                    required
+                    placeholder="e.g., Finding the Light in Candid Moments"
+                    value={blogTitle}
+                    onChange={(e) => setBlogTitle(e.target.value)}
+                    disabled={uploading}
+                  />
+                </div>
+                
+                <div className="input-group-chic">
+                  <label htmlFor="blogCategory">Tag / Category</label>
+                  <select
+                    id="blogCategory"
+                    value={blogCategory}
+                    onChange={(e) => setBlogCategory(e.target.value)}
+                    disabled={uploading}
+                    className="select-chic"
+                  >
+                    <option value="ARTISTRY">ARTISTRY</option>
+                    <option value="GUIDE">GUIDE</option>
+                    <option value="INSPIRATION">INSPIRATION</option>
+                    <option value="DESTINATIONS">DESTINATIONS</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="input-group-chic">
+                <label htmlFor="blogCover">Cover Image WebP URL</label>
+                <input
+                  type="text"
+                  id="blogCover"
+                  required
+                  placeholder="https://pub-...r2.dev/..."
+                  value={blogCover}
+                  onChange={(e) => setBlogCover(e.target.value)}
+                  disabled={uploading}
+                />
+              </div>
+
+              <div className="input-group-chic">
+                <label htmlFor="blogContent">Article Content (Paragraphs)</label>
+                <textarea
+                  id="blogContent"
+                  required
+                  rows="8"
+                  placeholder="Write your article content here. Separate paragraphs with a blank line (double newline)..."
+                  value={blogContent}
+                  onChange={(e) => setBlogContent(e.target.value)}
+                  disabled={uploading}
+                />
+              </div>
+
+              {uploading && (
+                <div className="upload-progress-card">
+                  <div className="progress-spinner"></div>
+                  <p className="progress-text">Publishing article...</p>
+                </div>
+              )}
+
+              <button type="submit" className="btn-premium-submit" disabled={uploading}>
+                {uploading ? 'Publishing...' : 'Publish Blog Article'}
               </button>
             </form>
           </div>

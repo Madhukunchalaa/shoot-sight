@@ -4,17 +4,16 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './RecentShoots.css';
 
-// Import Professional Assets for fallback
-import shoot1 from '../assets/NGD_4961.webp';
-import shoot2 from '../assets/NGD_9246.webp';
-import shoot3 from '../assets/NGD_9824.webp';
-import shoot4 from '../assets/_DSC0075 - Copy.webp';
-import shoot5 from '../assets/_DSC2178 - Copy.webp';
+const shoot2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_9246.webp";
+const shoot3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_9824.webp";
+const shoot4 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC0075_-_Copy.webp";
+const shoot5 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC2178_-_Copy.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const mockShoots = [
-  { id: 'naveen-swetha', title: "Naveen & Swetha", cat: "Wedding", img: shoot1 },
+  { id: 'raghudixith-varijashree', title: "Raghu Dixit & Varijashree", cat: "Wedding", img: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp" },
+  { id: 'naveen-kate', title: "Naveen & Kate", cat: "Wedding", img: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp" },
   { id: 'rahul-pooja', title: "Rahul & Pooja", cat: "Pre-Wedding", img: shoot2 },
   { id: 'vikram-anjali', title: "Vikram & Anjali", cat: "Cinematic Film", img: shoot3 },
   { id: 'arjun-sneha', title: "Arjun & Sneha", cat: "Destination", img: shoot4 },

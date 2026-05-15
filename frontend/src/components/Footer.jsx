@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo (1).webp';
+const logo = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/logo_1.webp";
 import './Footer.css';
 
 const Footer = () => {
@@ -16,7 +16,7 @@ const Footer = () => {
             <div className="footer-col">
               <h4>EXPLORE</h4>
               <Link to="/portfolio">Collections</Link>
-              <Link to="/blog">The Journal</Link>
+              <Link to="/blog">Blog</Link>
               <Link to="/about">Our Story</Link>
             </div>
             <div className="footer-col">

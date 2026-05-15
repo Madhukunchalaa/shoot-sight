@@ -22,10 +22,11 @@
 
 .footer-slogan {
   font-family: var(--font-sans);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 5px;
-  opacity: 0.5;
-  margin-top: 10px;
+  color: #ffffff;
+  opacity: 0.8;
+  margin-top: 15px;
 }
 
 .footer-nav {

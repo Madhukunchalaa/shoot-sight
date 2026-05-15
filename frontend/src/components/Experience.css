@@ -47,48 +47,91 @@
 .layer-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  width: 85%;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
   gap: 100px;
   align-items: center;
+  padding: 0 40px;
+}
+
+.layer-text-side {
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .layer-num {
   font-family: var(--font-sans);
-  font-size: 12vw;
-  font-weight: 900;
-  color: rgba(60, 48, 36, 0.04);
-  position: absolute;
-  top: -20%;
-  left: -5%;
-  z-index: -1;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: block;
 }
 
 .layer-heading {
   font-family: var(--font-serif);
-  font-size: 70px;
-  line-height: 1;
-  margin-bottom: 25px;
+  font-size: clamp(45px, 6vw, 75px);
+  line-height: 1.1;
+  font-weight: 300;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
   color: var(--text-primary);
 }
 
 .layer-desc {
+  font-family: var(--font-sans);
   font-size: 18px;
   line-height: 1.8;
   color: var(--text-secondary);
+  font-weight: 300;
+  max-width: 500px;
+  margin-bottom: 40px;
+}
+
+.layer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.exp-tag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(60, 48, 36, 0.15);
+  color: var(--text-secondary);
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.exp-tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .img-reveal-wrapper {
-  height: 70vh;
+  height: 65vh;
   width: 100%;
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.08);
 }
 
 .img-reveal-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-layer:hover .img-reveal-wrapper img {
+  transform: scale(1.03);
 }
 
 .color-1 { background: #fdf8f3; }
@@ -118,7 +161,12 @@
 }
 
 @media (max-width: 1024px) {
-  .layer-grid { grid-template-columns: 1fr; gap: 40px; }
-  .layer-heading { font-size: 35px; }
+  .layer-grid { 
+    grid-template-columns: 1fr; 
+    gap: 40px; 
+    padding: 0 20px;
+  }
+  .layer-heading { font-size: 38px; margin-bottom: 20px; }
+  .layer-desc { font-size: 16px; margin-bottom: 25px; }
   .img-reveal-wrapper { height: 40vh; }
 }
