@@ -85,7 +85,7 @@ const Contact = () => {
             <div className="direct-item">
               <span className="direct-label">DIRECT CHANNELS</span>
               <a href="mailto:hello@shootatsight.com" className="direct-link">hello@shootatsight.com</a>
-              <a href="tel:+917989776255" className="direct-link">+91 7989776255</a>
+              <a href="tel:+919900233338" className="direct-link">+91 9900233338</a>
             </div>
           </div>
 

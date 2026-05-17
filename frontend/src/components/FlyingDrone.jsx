@@ -5,7 +5,7 @@ const FlyingDrone = () => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleClick = () => {
-    window.open("https://wa.me/917989776255?text=Hello%20Shoot%20%40%20Sight!%20I'd%20love%20to%20start%20a%20conversation%20about%20our%20celebration.", "_blank");
+    window.open("https://wa.me/919900233338?text=Hello%20Shoot%20%40%20Sight!%20I'd%20love%20to%20start%20a%20conversation%20about%20our%20celebration.", "_blank");
   };
 
   return (
@@ -18,7 +18,7 @@ const FlyingDrone = () => {
       {/* Luxury dynamic floating tooltip */}
       <div className={`drone-tooltip ${showTooltip ? 'visible' : ''}`}>
         <span className="tooltip-tag">WHATSAPP DIRECT</span>
-        <span className="tooltip-text">Tap to Curation Desk // +91 7989776255</span>
+        <span className="tooltip-text">Tap to Curation Desk // +91 9900233338</span>
       </div>
 
       {/* Stylized high-tech carbon fiber drone */}

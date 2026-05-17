@@ -106,7 +106,7 @@ const Navbar = () => {
           <div className="mobile-menu-footer">
             <span className="mobile-menu-tagline">NOW BOOKING 2026 / 2027</span>
             <a 
-              href="https://wa.me/917989776255" 
+              href="https://wa.me/919900233338" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="mobile-menu-cta"
