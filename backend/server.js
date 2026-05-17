@@ -1,4 +1,12 @@
 require('dotenv').config();
+
+// Strip surrounding quotes from environment variables (pasted from .env in Railway/Render)
+for (const key in process.env) {
+  if (typeof process.env[key] === 'string') {
+    process.env[key] = process.env[key].trim().replace(/^["']|["']$/g, '');
+  }
+}
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
