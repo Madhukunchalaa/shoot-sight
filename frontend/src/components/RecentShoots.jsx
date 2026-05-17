@@ -46,6 +46,11 @@ const RecentShoots = () => {
             img: s.heroImage
           }));
           setShoots(mapped); // show ALL clients from DB
+          
+          // Recalculate ScrollTrigger parameters on the next tick
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 100);
         }
       } catch (err) {
         // Keep showing mock data — already loaded
@@ -55,8 +60,6 @@ const RecentShoots = () => {
   }, []);
 
   useEffect(() => {
-    if (shoots.length === 0) return;
-
     const ctx = gsap.context(() => {
       gsap.to(horizontalRef.current, {
         x: () => -(horizontalRef.current.scrollWidth - window.innerWidth),
@@ -81,7 +84,7 @@ const RecentShoots = () => {
       clearTimeout(timer);
       ctx.revert();
     };
-  }, [shoots]);
+  }, []); // Run EXACTLY once on mount to prevent ScrollTrigger offset calculation corruptions while scrolled!
 
 
   return (
