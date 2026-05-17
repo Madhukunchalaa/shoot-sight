@@ -1,4 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Home from './pages/Home';
 import About from './pages/About';
 import ShootDetail from './pages/ShootDetail';
@@ -13,9 +16,18 @@ import SmoothScroll from './components/SmoothScroll';
 import MobileAppTabBar from './components/MobileAppTabBar';
 import './App.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.includes('admin');
+
+  useLayoutEffect(() => {
+    ScrollTrigger.getAll().forEach(t => t.kill());
+    document.querySelectorAll('.pin-spacer').forEach(spacer => {
+      if (spacer.children.length === 0) spacer.parentNode?.removeChild(spacer);
+    });
+  }, [location.pathname]);
 
   return (
     <>

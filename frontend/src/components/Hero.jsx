@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
@@ -55,7 +55,7 @@ const Hero = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Entrance
       const tl = gsap.timeline();
@@ -103,7 +103,10 @@ const Hero = () => {
       });
     }, containerRef);
 
-    // Auto Carousel Logic with Text Sync
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       gsap.to(".hero-center-title", {
         opacity: 0,
@@ -111,7 +114,7 @@ const Hero = () => {
         duration: 0.8,
         onComplete: () => {
           setCurrentIndex((prev) => (prev + 1) % slides.length);
-          gsap.fromTo(".hero-center-title", 
+          gsap.fromTo(".hero-center-title",
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
           );
@@ -119,10 +122,7 @@ const Hero = () => {
       });
     }, 5000);
 
-    return () => {
-      ctx.revert();
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   return (
