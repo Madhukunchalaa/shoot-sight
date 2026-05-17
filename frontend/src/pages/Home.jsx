@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import Hero from '../components/Hero';
 import OurStory from '../components/OurStory';
 import Services from '../components/Services';
@@ -32,6 +33,72 @@ const Home = () => {
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
+  }, []);
+
+  useGSAP(() => {
+    // 1. Elegant staggered reveal for film text content items
+    gsap.from(".film-text-content > *", {
+      y: 40,
+      opacity: 0,
+      stagger: 0.15,
+      duration: 1.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".film-section-editorial",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      }
+    });
+
+    // 2. Parallax sliding effect for the massive background word "CINEMA"
+    gsap.fromTo(".massive-bg-word",
+      { xPercent: -15 },
+      {
+        xPercent: 15,
+        scrollTrigger: {
+          trigger: ".film-section-editorial",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.2
+        }
+      }
+    );
+
+    // 3. Staggered reveal for the film video items with clearProps to preserve CSS hover transforms!
+    gsap.fromTo(".film-video-item",
+      { y: 120, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1.4,
+        stagger: 0.25,
+        ease: "power4.out",
+        clearProps: "transform,opacity",
+        scrollTrigger: {
+          trigger: ".film-videos-column",
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+
+    // 4. Parallax subtle scaling and vertical drift on the backdrop element inside each video item
+    const backdrops = gsap.utils.toArray('.video-backdrop');
+    backdrops.forEach((backdrop) => {
+      gsap.fromTo(backdrop,
+        { yPercent: -8, scaleY: 0.95 },
+        {
+          yPercent: 8,
+          scaleY: 1.05,
+          scrollTrigger: {
+            trigger: backdrop,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        }
+      );
+    });
   }, []);
 
   return (
