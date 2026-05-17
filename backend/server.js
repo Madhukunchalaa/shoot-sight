@@ -18,6 +18,16 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api', routes);
 
+// Serve compiled React frontend statically in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+  // Wildcard handler to serve index.html for React Router compatibility
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html'));
+  });
+}
+
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
