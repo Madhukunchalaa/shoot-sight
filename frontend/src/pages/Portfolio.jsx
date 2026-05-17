@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { API_URL } from '../config';
 import './Portfolio.css';
 
 const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
@@ -51,7 +52,6 @@ const Portfolio = () => {
   const [lightboxImage, setLightboxImage] = useState(null);
   const container = useRef();
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     const handleKeyDown = (e) => {

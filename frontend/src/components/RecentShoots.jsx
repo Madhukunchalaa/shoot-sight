@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { API_URL } from '../config';
 import './RecentShoots.css';
 
 const shoot2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_9246.webp";
@@ -25,7 +26,6 @@ const RecentShoots = () => {
   // Start with mock data immediately — no blank loading screen
   const [shoots, setShoots] = useState(mockShoots);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     const loadData = async () => {
