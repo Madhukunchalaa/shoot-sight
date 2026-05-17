@@ -29,6 +29,12 @@ const SmoothScroll = () => {
 
     lenis.on('scroll', ScrollTrigger.update);
 
+    // Auto-recalculate Lenis scroll limits on every ScrollTrigger refresh (image paint, dynamic data updates)
+    const handleRefresh = () => {
+      lenis.resize();
+    };
+    ScrollTrigger.addEventListener("refresh", handleRefresh);
+
     const updateTicker = (time) => {
       lenis.raf(time * 1000);
     };
@@ -38,6 +44,7 @@ const SmoothScroll = () => {
 
     return () => {
       lenis.destroy();
+      ScrollTrigger.removeEventListener("refresh", handleRefresh);
       gsap.ticker.remove(updateTicker);
     };
   }, []);
