@@ -1,0 +1,13 @@
+{
+  "name": "shoot-sight-root",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "npm run build --prefix frontend"
+  }
+}
