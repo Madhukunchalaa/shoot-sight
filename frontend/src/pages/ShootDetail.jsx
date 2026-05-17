@@ -226,7 +226,15 @@ const ShootDetail = () => {
       });
     }, container);
 
-    return () => ctx.revert();
+    // Refresh ScrollTrigger parameters on the next tick to ensure dynamic layout offsets are computed correctly
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+
+    return () => {
+      ctx.revert();
+      clearTimeout(refreshTimer);
+    };
   }, [loading, shoot]);
 
   if (loading || !shoot) {

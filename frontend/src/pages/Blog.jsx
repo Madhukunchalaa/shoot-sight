@@ -134,6 +134,13 @@ const Blog = () => {
         }
       });
     });
+
+    // Refresh ScrollTrigger parameters on the next tick to ensure dynamic layout offsets are computed correctly
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+
+    return () => clearTimeout(refreshTimer);
   }, { scope: container, dependencies: [loading, posts] });
 
   const renderTypingText = (text) => {
