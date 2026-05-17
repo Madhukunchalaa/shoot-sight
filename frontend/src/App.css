@@ -22,8 +22,6 @@
 
 .film-text-content {
   padding-right: 80px;
-  position: sticky; /* Ultra-smooth side-by-side pinning */
-  top: 150px;
   align-self: start;
 }
 

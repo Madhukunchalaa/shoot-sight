@@ -36,7 +36,17 @@ const Home = () => {
   }, []);
 
   useGSAP(() => {
-    // 1. Elegant staggered reveal for film text content items
+    // 1. Elegant side-by-side pinning: lock left-hand text content while right-hand videos scroll past
+    ScrollTrigger.create({
+      trigger: ".film-section-editorial",
+      start: "top 120px",  // Pins when the top of the editorial section reaches 120px from screen top
+      end: "bottom 95%",  // Unpins when the bottom of the section reaches 95% of viewport
+      pin: ".film-text-content",
+      pinSpacing: false,   // Prevents empty dead-space layout shifting
+      invalidateOnRefresh: true
+    });
+
+    // 2. Elegant staggered reveal for film text content items (only triggers once)
     gsap.from(".film-text-content > *", {
       y: 40,
       opacity: 0,
@@ -50,7 +60,7 @@ const Home = () => {
       }
     });
 
-    // 2. Parallax sliding effect for the massive background word "CINEMA"
+    // 3. Parallax sliding effect for the massive background word "CINEMA"
     gsap.fromTo(".massive-bg-word",
       { xPercent: -15 },
       {
@@ -64,25 +74,29 @@ const Home = () => {
       }
     );
 
-    // 3. Staggered reveal for the film video items with clearProps to preserve CSS hover transforms!
-    gsap.fromTo(".film-video-item",
-      { y: 120, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.4,
-        stagger: 0.25,
-        ease: "power4.out",
-        clearProps: "transform,opacity",
-        scrollTrigger: {
-          trigger: ".film-videos-column",
-          start: "top 80%",
-          toggleActions: "play none none none"
+    // 4. Cinematic Spotlight Focus Parallax for the videos!
+    // As each video card scrolls into the center of the screen, it highlights/zooms up smoothly.
+    const videoItems = gsap.utils.toArray('.film-video-item');
+    videoItems.forEach((item) => {
+      gsap.fromTo(item,
+        { scale: 0.96, opacity: 0.4 },
+        {
+          scale: 1.03,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 70%",   // Highlights when top of video reaches 70% viewport
+            end: "bottom 30%",  // Dims out when bottom of video leaves 30% viewport
+            scrub: 0.8,         // Silky smooth scrubbing matching the user's scroll speed
+            toggleActions: "play reverse play reverse"
+          }
         }
-      }
-    );
+      );
+    });
 
-    // 4. Parallax subtle scaling and vertical drift on the backdrop element inside each video item
+    // 5. Parallax subtle scaling and vertical drift on the backdrop element inside each video item
     const backdrops = gsap.utils.toArray('.video-backdrop');
     backdrops.forEach((backdrop) => {
       gsap.fromTo(backdrop,
