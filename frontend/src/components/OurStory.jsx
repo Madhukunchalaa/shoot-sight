@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './OurStory.css';
@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const OurStory = () => {
   const containerRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Parallax for images
       gsap.to(".story-img-wrapper.type-1 img", {

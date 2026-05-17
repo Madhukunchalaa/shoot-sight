@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -59,7 +59,7 @@ const RecentShoots = () => {
     loadData();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.to(horizontalRef.current, {
         x: () => -(horizontalRef.current.scrollWidth - window.innerWidth),
