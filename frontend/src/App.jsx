@@ -10,6 +10,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SmoothScroll from './components/SmoothScroll';
+import MobileAppTabBar from './components/MobileAppTabBar';
 import './App.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <MobileAppTabBar />}
     </>
   );
 }

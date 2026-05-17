@@ -6,35 +6,57 @@ const {
   getShootByIdOrSlug,
   createShoot,
   deleteShoot,
+  addGalleryImages,
+  removeGalleryImage,
+  updateHeroImage,
 } = require('../controllers/shootController');
 
 const router = Router();
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB limit
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20 MB limit per file
 });
 
 const uploadFields = upload.fields([
   { name: 'heroImage', maxCount: 1 },
-  { name: 'gallery', maxCount: 30 }, // allow up to 30 photos in gallery
+  { name: 'gallery', maxCount: 50 },
 ]);
 
 // Public endpoints
 router.get('/', getAllShoots);
 router.get('/:idOrSlug', getShootByIdOrSlug);
 
-// Admin protected endpoints
-router.post('/', adminAuth, (req, res, next) => {
+// Create new shoot (multer first, then auth)
+router.post('/', (req, res, next) => {
   uploadFields(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
+    if (err instanceof multer.MulterError)
       return res.status(400).json({ success: false, message: `Upload error: ${err.message}` });
-    }
     if (err) return next(err);
     next();
   });
-}, createShoot);
+}, adminAuth, createShoot);
 
+// Add images to existing shoot gallery
+router.patch('/:id/gallery', (req, res, next) => {
+  upload.fields([{ name: 'gallery', maxCount: 50 }])(req, res, (err) => {
+    if (err) return next(err);
+    next();
+  });
+}, adminAuth, addGalleryImages);
+
+// Remove one image from gallery
+router.delete('/:id/gallery', adminAuth, removeGalleryImage);
+
+// Replace hero/cover image
+router.patch('/:id/hero', (req, res, next) => {
+  upload.fields([{ name: 'heroImage', maxCount: 1 }])(req, res, (err) => {
+    if (err) return next(err);
+    next();
+  });
+}, adminAuth, updateHeroImage);
+
+// Delete entire shoot
 router.delete('/:id', adminAuth, deleteShoot);
 
 module.exports = router;

@@ -12,7 +12,6 @@ const blogSchema = new Schema(
   { timestamps: true }
 );
 
-blogSchema.index({ slug: 1 });
 blogSchema.index({ isPublished: 1, createdAt: -1 });
 
 module.exports = model('Blog', blogSchema);

@@ -11,36 +11,35 @@ const heirloomImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/
 gsap.registerPlugin(ScrollTrigger);
 
 const Experience = () => {
-  const containerRef = useRef();
+  const containerRef = useRef(null);
 
   useGSAP(() => {
     const panels = gsap.utils.toArray('.experience-layer');
-    
-    // 1. Create a Master Pin for the entire section to ensure it stays isolated
-    ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      end: `+=${panels.length * 100}%`,
-      pin: true,
-      pinSpacing: true, // This creates the "Safety Buffer"
-      refreshPriority: -1
+    if (panels.length === 0) return;
+
+    // Trigger and pin the stacking container directly to place the pin-spacer outside the element
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current, // Trigger directly on the container
+        start: "top top",
+        end: () => `+=${(panels.length - 1) * 100}%`, // Scroll for exactly 3 transitions (300vh)
+        pin: true, // Pin the container directly
+        scrub: true,
+        pinSpacing: true,
+        invalidateOnRefresh: true, // Dynamically recalibrates coordinates on viewport updates
+      }
     });
 
-    // 2. Individual Layer Reveals
+    // Build the sequential card stack reveals
     panels.forEach((panel, i) => {
-      if (i !== 0) { // Skip intro for stacking logic
-        gsap.fromTo(panel, 
+      if (i > 0) {
+        tl.fromTo(panel,
           { yPercent: 100 },
           { 
             yPercent: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: () => (i * window.innerHeight) + " top",
-              end: () => ((i + 1) * window.innerHeight) + " top",
-              scrub: true,
-            }
-          }
+            ease: "none"
+          },
+          `+=0`
         );
       }
     });

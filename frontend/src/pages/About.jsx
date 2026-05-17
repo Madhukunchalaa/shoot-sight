@@ -40,7 +40,7 @@ const About = () => {
     });
 
     // 0.1 Philosophy Background Parallax
-    gsap.to('.philosophy-image-bg', {
+    gsap.to('.philosophy-portrait-img', {
       yPercent: 15,
       ease: 'none',
       scrollTrigger: {
@@ -85,14 +85,14 @@ const About = () => {
     });
 
     // 3. Stagger Philosophy items
-    gsap.from('.philosophy-block', {
+    gsap.from('.philosophy-stack-item', {
       y: 50,
       opacity: 0,
       duration: 1.2,
       stagger: 0.2,
       ease: 'power3.out',
       scrollTrigger: {
-        trigger: '.philosophy-grid',
+        trigger: '.philosophy-split-grid',
         start: 'top 95%', // Fires immediately when the grid enters the viewport
         once: true // Keeps elements visible once triggered
       }
@@ -152,10 +152,8 @@ const About = () => {
           <div className="about-hero-text">
             <span className="subtitle-accent">02 // THE STUDIO</span>
             <h1 className="about-main-title">
-              <span className="about-title-word">Curating</span><br/>
-              <span className="about-title-word"><i>Legacy</i></span><br/>
-              <span className="about-title-word">Through</span><br/>
-              <span className="about-title-word">Light.</span>
+              <span className="about-title-word">Curating <i>Legacy</i></span><br/>
+              <span className="about-title-word">Through Light.</span>
             </h1>
             <p className="about-hero-desc about-title-word">
               Founded in 2018, Shoot @ Sight is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.

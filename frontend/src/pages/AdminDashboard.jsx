@@ -16,6 +16,12 @@ const AdminDashboard = () => {
   const [heroImage, setHeroImage] = useState(null);
   const [gallery, setGallery] = useState([]);
 
+  // Gallery Edit State
+  const [editingShoot, setEditingShoot] = useState(null); // shoot being edited
+  const [editingBlog, setEditingBlog] = useState(null);   // blog being edited
+  const [editUploading, setEditUploading] = useState(false);
+  const [editMsg, setEditMsg] = useState('');
+
   // Blog Management State
   const [blogs, setBlogs] = useState([]);
   const [loadingBlogs, setLoadingBlogs] = useState(true);
@@ -64,16 +70,24 @@ const AdminDashboard = () => {
   const fetchBlogs = async () => {
     setLoadingBlogs(true);
     const token = localStorage.getItem('adminToken');
+    // 5 second timeout — if MongoDB is offline, fail silently
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
     try {
       const res = await fetch(`${API_URL}/admin/blogs`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { 'Authorization': `Bearer ${token}` },
+        signal: controller.signal
       });
+      clearTimeout(timeout);
       const data = await res.json();
       if (res.ok) {
         setBlogs(data.blogs || []);
       }
+      // Blog fetch failure is silent — doesn't block the shoot upload
     } catch (err) {
-      console.error(err);
+      clearTimeout(timeout);
+      // Silently handle — blogs are optional, don't block the admin panel
+      setBlogs([]);
     } finally {
       setLoadingBlogs(false);
     }
@@ -121,6 +135,183 @@ const AdminDashboard = () => {
       }
     } catch (err) {
       setError('Connection to server failed during deletion.');
+    }
+  };
+
+  // ── Gallery Edit Handlers ────────────────────────────────────────────────
+  const openEditPanel = (shoot) => {
+    setEditingShoot({ ...shoot, gallery: [...(shoot.gallery || [])] });
+    setEditMsg('');
+  };
+
+  const handleAddGalleryImages = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    setEditUploading(true);
+    setEditMsg('Uploading new images...');
+    const token = localStorage.getItem('adminToken');
+    const fd = new FormData();
+    files.forEach(f => fd.append('gallery', f));
+    try {
+      const res = await fetch(`${API_URL}/shoots/${editingShoot._id}/gallery`, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: fd,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEditingShoot(prev => ({ ...prev, gallery: data.gallery }));
+        setShoots(prev => prev.map(s => s._id === editingShoot._id ? { ...s, gallery: data.gallery } : s));
+        setEditMsg(`✅ ${files.length} image(s) added successfully!`);
+      } else {
+        setEditMsg(`❌ ${data.message || 'Upload failed'}`);
+      }
+    } catch { setEditMsg('❌ Connection error'); }
+    finally { setEditUploading(false); e.target.value = ''; }
+  };
+
+  const handleRemoveGalleryImage = async (imageUrl) => {
+    if (!window.confirm('Remove this image from the gallery?')) return;
+    setEditUploading(true);
+    setEditMsg('Removing image...');
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/shoots/${editingShoot._id}/gallery`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEditingShoot(prev => ({ ...prev, gallery: data.gallery }));
+        setShoots(prev => prev.map(s => s._id === editingShoot._id ? { ...s, gallery: data.gallery } : s));
+        setEditMsg('✅ Image removed.');
+      } else {
+        setEditMsg(`❌ ${data.message || 'Remove failed'}`);
+      }
+    } catch { setEditMsg('❌ Connection error'); }
+    finally { setEditUploading(false); }
+  };
+
+  const handleChangeHero = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setEditUploading(true);
+    setEditMsg('Updating cover image...');
+    const token = localStorage.getItem('adminToken');
+    const fd = new FormData();
+    fd.append('heroImage', file);
+    try {
+      const res = await fetch(`${API_URL}/shoots/${editingShoot._id}/hero`, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: fd,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setEditingShoot(prev => ({ ...prev, heroImage: data.heroImage }));
+        setShoots(prev => prev.map(s => s._id === editingShoot._id ? { ...s, heroImage: data.heroImage } : s));
+        setEditMsg('✅ Cover image updated!');
+      } else {
+        setEditMsg(`❌ ${data.message || 'Update failed'}`);
+      }
+    } catch { setEditMsg('❌ Connection error'); }
+    finally { setEditUploading(false); e.target.value = ''; }
+  };
+
+  // ── Blog Cover Upload & Edit Handlers ────────────────────────────────────
+  const handleBlogCoverUpload = async (e, isEdit = false) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (isEdit) {
+      setEditUploading(true);
+      setEditMsg('Uploading cover image...');
+    } else {
+      setUploading(true);
+      setUploadProgress('Uploading blog cover image...');
+    }
+
+    const token = localStorage.getItem('adminToken');
+    const fd = new FormData();
+    fd.append('image', file);
+
+    try {
+      const res = await fetch(`${API_URL}/images/upload`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: fd
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        if (isEdit) {
+          setEditingBlog(prev => ({ ...prev, coverImageUrl: data.url }));
+          setEditMsg('✅ Cover image uploaded!');
+        } else {
+          setBlogCover(data.url);
+          setSuccess('✅ Cover image uploaded!');
+          setTimeout(() => setSuccess(''), 3000);
+        }
+      } else {
+        const errMsg = data.message || 'Upload failed';
+        if (isEdit) setEditMsg(`❌ ${errMsg}`);
+        else setError(errMsg);
+      }
+    } catch {
+      if (isEdit) setEditMsg('❌ Connection error');
+      else setError('Connection error');
+    } finally {
+      if (isEdit) setEditUploading(false);
+      else {
+        setUploading(false);
+        setUploadProgress('');
+      }
+      e.target.value = '';
+    }
+  };
+
+  const openEditBlogPanel = (blog) => {
+    if (!blog) {
+      setEditingBlog(null);
+      return;
+    }
+    setEditingBlog({ ...blog });
+    setEditMsg('');
+  };
+
+  const handleEditBlogSubmit = async (e) => {
+    e.preventDefault();
+    setEditUploading(true);
+    setEditMsg('Updating blog post...');
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/blogs/${editingBlog._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: editingBlog.title,
+          content: editingBlog.content,
+          coverImageUrl: editingBlog.coverImageUrl,
+          tags: editingBlog.tags,
+          isPublished: editingBlog.isPublished ?? true
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setBlogs(prev => prev.map(b => b._id === editingBlog._id ? data.blog : b));
+        setEditingBlog(null);
+        setSuccess('✅ Blog article updated successfully!');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setEditMsg(`❌ ${data.message || 'Update failed'}`);
+      }
+    } catch {
+      setEditMsg('❌ Connection error');
+    } finally {
+      setEditUploading(false);
     }
   };
 
@@ -177,7 +368,7 @@ const AdminDashboard = () => {
     });
 
     try {
-      setUploadProgress('Compressing & converting images to .webp...');
+      setUploadProgress('Crafting your story archive — optimising images for the web...');
       const res = await fetch(`${API_URL}/shoots`, {
         method: 'POST',
         headers: {
@@ -325,23 +516,21 @@ const AdminDashboard = () => {
                 {shoots.map((shoot) => (
                   <div key={shoot._id} className="admin-shoot-card">
                     <div className="card-thumbnail-wrapper">
-                      <img src={shoot.heroImage} alt={shoot.title} />
+                      <img src={editingShoot?._id === shoot._id ? editingShoot.heroImage : shoot.heroImage} alt={shoot.title} />
                       <span className="card-cat-badge">{shoot.category}</span>
                     </div>
                     <div className="card-details">
                       <h4 className="card-title-new">{shoot.title}</h4>
                       <p className="card-meta-faint">{shoot.location} // {shoot.date}</p>
-                      <p className="card-gallery-count">{shoot.gallery?.length || 0} gallery photos</p>
+                      <p className="card-gallery-count">
+                        {(editingShoot?._id === shoot._id ? editingShoot.gallery : shoot.gallery)?.length || 0} gallery photos
+                      </p>
                       <div className="card-actions-framer">
-                        <a href={`/shoot/${shoot.slug}`} target="_blank" rel="noreferrer" className="btn-preview-link">
-                          View Live ↗
-                        </a>
-                        <button 
-                          onClick={() => handleDelete(shoot._id, shoot.title)}
-                          className="btn-delete-card"
-                        >
-                          Delete
+                        <a href={`/shoot/${shoot.slug}`} target="_blank" rel="noreferrer" className="btn-preview-link">View Live ↗</a>
+                        <button onClick={() => openEditPanel(shoot)} className="btn-edit-gallery">
+                          Edit Gallery
                         </button>
+                        <button onClick={() => handleDelete(shoot._id, shoot.title)} className="btn-delete-card">Delete</button>
                       </div>
                     </div>
                   </div>
@@ -492,16 +681,22 @@ const AdminDashboard = () => {
                 {blogs.map((blog) => (
                   <div key={blog._id} className="admin-shoot-card">
                     <div className="card-thumbnail-wrapper">
-                      <img src={blog.coverImageUrl || "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp"} alt={blog.title} />
-                      <span className="card-cat-badge">{blog.tags?.[0] || 'ARTISTRY'}</span>
+                      <img src={(editingBlog?._id === blog._id ? editingBlog.coverImageUrl : blog.coverImageUrl) || "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp"} alt={blog.title} />
+                      <span className="card-cat-badge">{(editingBlog?._id === blog._id ? editingBlog.tags?.[0] : blog.tags?.[0]) || 'ARTISTRY'}</span>
                     </div>
                     <div className="card-details">
                       <h4 className="card-title-new">{blog.title}</h4>
-                      <p className="card-meta-faint">{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                      <p className="card-meta-faint">
+                        {new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        {!blog.isPublished && <span className="draft-badge"> (DRAFT)</span>}
+                      </p>
                       <div className="card-actions-framer">
                         <a href="/blog" target="_blank" rel="noreferrer" className="btn-preview-link">
                           View Live ↗
                         </a>
+                        <button onClick={() => openEditBlogPanel(blog)} className="btn-edit-gallery">
+                          Edit Article
+                        </button>
                         <button 
                           onClick={() => handleDeleteBlog(blog._id, blog.title)}
                           className="btn-delete-card"
@@ -552,17 +747,25 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              <div className="input-group-chic">
-                <label htmlFor="blogCover">Cover Image WebP URL</label>
-                <input
-                  type="text"
-                  id="blogCover"
-                  required
-                  placeholder="https://pub-...r2.dev/..."
-                  value={blogCover}
-                  onChange={(e) => setBlogCover(e.target.value)}
-                  disabled={uploading}
-                />
+              <div className="input-group-chic upload-box-chic">
+                <label htmlFor="blogCoverInput">Cover Image (R2 Optimized)</label>
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    id="blogCoverInput"
+                    accept="image/*"
+                    onChange={(e) => handleBlogCoverUpload(e, false)}
+                    disabled={uploading}
+                  />
+                  <div className="custom-file-label">
+                    {blogCover ? '✅ Cover Image Uploaded (Click to Change)' : 'Choose Cover Photo'}
+                  </div>
+                </div>
+                {blogCover && (
+                  <div className="hero-preview-row" style={{ marginTop: '15px' }}>
+                    <img src={blogCover} alt="blog cover preview" className="hero-thumb-edit" />
+                  </div>
+                )}
               </div>
 
               <div className="input-group-chic">
@@ -592,6 +795,174 @@ const AdminDashboard = () => {
           </div>
         )}
       </main>
+
+      {/* ── SPACIOUS FULL-SCREEN PORTFOLIO EDIT MODAL ── */}
+      {editingShoot && (
+        <div className="premium-edit-modal-overlay" onClick={() => setEditingShoot(null)}>
+          <div className="premium-edit-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={() => setEditingShoot(null)}>✕</button>
+            
+            <div className="edit-panel-header" style={{ marginBottom: '10px' }}>
+              <span style={{ fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#c9b57f' }}>Manage Client Shoot</span>
+              {editMsg && <span className={`edit-msg ${editMsg.startsWith('✅') ? 'ok' : 'err'}`}>{editMsg}</span>}
+            </div>
+            
+            <h2 className="modal-title-editorial">
+              Editing: <i>{editingShoot.title}</i>
+            </h2>
+
+            <div className="modal-body-scrollable" data-lenis-prevent>
+              {/* Cover Photo */}
+              <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '25px', marginBottom: '25px' }}>
+                <div className="edit-section-label">Cover / Hero Image</div>
+                <div className="hero-preview-row">
+                  <img src={editingShoot.heroImage} alt="cover" className="hero-thumb-edit" style={{ width: '160px', height: '100px', borderRadius: '4px' }} />
+                  <div>
+                    <p style={{ fontSize: '0.8rem', color: '#a0a0a0', marginBottom: '12px', lineHeight: '1.4' }}>
+                      This represents the face of this shoot archive. Upload a new landscape/portrait image to change it.
+                    </p>
+                    <label className={`btn-edit-upload ${editUploading ? 'disabled' : ''}`}>
+                      {editUploading ? 'Uploading WebP...' : '⬆ Upload New Cover'}
+                      <input type="file" accept="image/*" hidden onChange={handleChangeHero} disabled={editUploading} />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Gallery Grid */}
+              <div className="edit-section">
+                <div className="edit-section-label" style={{ marginBottom: '10px' }}>
+                  Gallery Collage Collection ({editingShoot.gallery?.length || 0} images)
+                </div>
+                <p style={{ fontSize: '0.8rem', color: '#a0a0a0', marginBottom: '20px', lineHeight: '1.4' }}>
+                  These images populate the scrollable narrative collection. Click the red ✕ button on any image to permanently delete it, or click "Add Photos" to upload multiple new images.
+                </p>
+                
+                <div className="gallery-edit-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '15px' }}>
+                  {(editingShoot.gallery || []).map((url, idx) => (
+                    <div key={idx} className="gallery-edit-thumb" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+                      <img src={url} alt={`gallery-${idx}`} />
+                      <button
+                        className="gallery-remove-btn"
+                        onClick={() => handleRemoveGalleryImage(url)}
+                        disabled={editUploading}
+                        title="Remove Image"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                  {/* Add More Card */}
+                  <label className={`gallery-add-btn ${editUploading ? 'disabled' : ''}`} style={{ minHeight: '130px' }}>
+                    <span>＋</span>
+                    <small>Add Photos</small>
+                    <input type="file" accept="image/*" multiple hidden onChange={handleAddGalleryImages} disabled={editUploading} />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── SPACIOUS FULL-SCREEN BLOG EDIT MODAL ── */}
+      {editingBlog && (
+        <div className="premium-edit-modal-overlay" onClick={() => setEditingBlog(null)}>
+          <div className="premium-edit-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px' }}>
+            <button className="modal-close-btn" onClick={() => setEditingBlog(null)}>✕</button>
+            
+            <div className="edit-panel-header" style={{ marginBottom: '10px' }}>
+              <span style={{ fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#c9b57f' }}>Edit Blog Post</span>
+              {editMsg && <span className={`edit-msg ${editMsg.startsWith('✅') ? 'ok' : 'err'}`}>{editMsg}</span>}
+            </div>
+
+            <h2 className="modal-title-editorial">
+              Editing: <i>{editingBlog.title}</i>
+            </h2>
+
+            <form onSubmit={handleEditBlogSubmit} className="modal-body-scrollable" data-lenis-prevent>
+              {/* Title */}
+              <div className="edit-section">
+                <label className="edit-section-label">Article Title</label>
+                <input
+                  type="text"
+                  required
+                  className="input-chic"
+                  value={editingBlog.title}
+                  onChange={(e) => setEditingBlog(prev => ({ ...prev, title: e.target.value }))}
+                  disabled={editUploading}
+                />
+              </div>
+
+              {/* Category & Status */}
+              <div className="form-double-column edit-section" style={{ gap: '20px' }}>
+                <div>
+                  <label className="edit-section-label">Tag / Category</label>
+                  <select
+                    value={editingBlog.tags?.[0] || 'ARTISTRY'}
+                    onChange={(e) => setEditingBlog(prev => ({ ...prev, tags: [e.target.value] }))}
+                    className="select-chic"
+                    style={{ width: '100%', padding: '14px', background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.1)' }}
+                    disabled={editUploading}
+                  >
+                    <option value="ARTISTRY">ARTISTRY</option>
+                    <option value="GUIDE">GUIDE</option>
+                    <option value="INSPIRATION">INSPIRATION</option>
+                    <option value="DESTINATIONS">DESTINATIONS</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="edit-section-label">Status</label>
+                  <select
+                    value={editingBlog.isPublished ? 'Published' : 'Draft'}
+                    onChange={(e) => setEditingBlog(prev => ({ ...prev, isPublished: e.target.value === 'Published' }))}
+                    className="select-chic"
+                    style={{ width: '100%', padding: '14px', background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.1)' }}
+                    disabled={editUploading}
+                  >
+                    <option value="Published">Published</option>
+                    <option value="Draft">Draft</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Cover Image */}
+              <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '25px', marginBottom: '25px' }}>
+                <label className="edit-section-label">Cover Image</label>
+                <div className="hero-preview-row">
+                  <img src={editingBlog.coverImageUrl || "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp"} alt="cover" className="hero-thumb-edit" style={{ width: '160px', height: '100px', borderRadius: '4px' }} />
+                  <div>
+                    <p style={{ fontSize: '0.8rem', color: '#a0a0a0', marginBottom: '12px' }}>
+                      Choose an image from your computer to update this article's primary cover.
+                    </p>
+                    <label className={`btn-edit-upload ${editUploading ? 'disabled' : ''}`}>
+                      {editUploading ? 'Uploading WebP...' : '⬆ Upload New Cover'}
+                      <input type="file" accept="image/*" hidden onChange={(e) => handleBlogCoverUpload(e, true)} disabled={editUploading} />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="edit-section">
+                <label className="edit-section-label">Content (Separate paragraphs with a blank line)</label>
+                <textarea
+                  required
+                  rows="10"
+                  className="textarea-chic"
+                  value={editingBlog.content}
+                  onChange={(e) => setEditingBlog(prev => ({ ...prev, content: e.target.value }))}
+                  disabled={editUploading}
+                />
+              </div>
+
+              <button type="submit" className="btn-premium-submit" style={{ width: '100%', padding: '16px', background: '#ffeaa7', color: '#111' }} disabled={editUploading}>
+                {editUploading ? 'Saving changes...' : 'Save Blog Post Changes'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -9,19 +9,22 @@
 .film-section-editorial {
   position: relative;
   padding: 160px 0;
-  overflow: hidden;
+  /* Wiped overflow: hidden to allow native sticky position to scroll down the parent grid */
 }
 
 .film-editorial-grid {
   display: grid;
-  grid-template-columns: 40% 60%;
-  align-items: center;
+  grid-template-columns: 42% 58%;
+  align-items: start; /* Locks alignment at start to support sticky columns */
   position: relative;
   z-index: 2;
 }
 
 .film-text-content {
-  padding-right: 60px;
+  padding-right: 80px;
+  position: sticky; /* Ultra-smooth side-by-side pinning */
+  top: 150px;
+  align-self: start;
 }
 
 .film-description {
@@ -33,8 +36,21 @@
   font-style: italic;
 }
 
-.film-video-presentation {
+.film-videos-column {
+  display: flex;
+  flex-direction: column;
+  gap: 150px; /* Expansive, premium spacing as you scroll down the page */
+  width: 100%;
+}
+
+.film-video-item {
   position: relative;
+  width: 100%;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.film-video-item:hover {
+  transform: scale(1.02);
 }
 
 .video-backdrop {

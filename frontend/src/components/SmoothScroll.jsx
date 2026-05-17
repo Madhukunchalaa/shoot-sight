@@ -42,20 +42,29 @@ const SmoothScroll = () => {
     };
   }, []);
 
-  // 2. Reset scroll instantly on route change *before* paint to avoid ScrollTrigger calculation bugs
+  // 2. Force Lenis unlock/reset on route changes
   useLayoutEffect(() => {
     if (lenisRef.current) {
+      lenisRef.current.start(); // Unlock scroll in case a modal left it locked
       lenisRef.current.scrollTo(0, { immediate: true });
+      lenisRef.current.resize();
     } else {
       window.scrollTo(0, 0);
     }
   }, [pathname]);
 
-  // 3. Refresh GSAP ScrollTrigger after route mount to recalibrate trigger positions
+  // 3. Post-paint refresh: Reset scroll position and recalculate dimensions once the new DOM finishes rendering
   useEffect(() => {
     const timer = setTimeout(() => {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+        lenisRef.current.resize();
+      } else {
+        window.scrollTo(0, 0);
+      }
       ScrollTrigger.refresh();
-    }, 100);
+    }, 50);
+
     return () => clearTimeout(timer);
   }, [pathname]);
 

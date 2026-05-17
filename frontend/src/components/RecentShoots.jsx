@@ -14,24 +14,29 @@ gsap.registerPlugin(ScrollTrigger);
 const mockShoots = [
   { id: 'raghudixith-varijashree', title: "Raghu Dixit & Varijashree", cat: "Wedding", img: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp" },
   { id: 'naveen-kate', title: "Naveen & Kate", cat: "Wedding", img: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp" },
-  { id: 'rahul-pooja', title: "Rahul & Pooja", cat: "Pre-Wedding", img: shoot2 },
-  { id: 'vikram-anjali', title: "Vikram & Anjali", cat: "Cinematic Film", img: shoot3 },
-  { id: 'arjun-sneha', title: "Arjun & Sneha", cat: "Destination", img: shoot4 },
-  { id: 'royal-affair', title: "The Royal Affair", cat: "Royal Wedding", img: shoot5 },
+  { id: 'ragini', title: "Ragini", cat: "Portrait", img: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6607.webp" },
+  { id: 'aishwarya-and-akshay', title: "Aishwarya & Akshay", cat: "Wedding", img: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp" },
+  { id: 'srinidhi-and-ramya', title: "Srinidhi & Ramya", cat: "Wedding", img: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00045.webp" },
 ];
 
 const RecentShoots = () => {
   const horizontalRef = useRef(null);
   const containerRef = useRef(null);
-  const [shoots, setShoots] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Start with mock data immediately — no blank loading screen
+  const [shoots, setShoots] = useState(mockShoots);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const res = await fetch(`${API_URL}/shoots`);
+        // 3 second timeout — if API is slow, we already have mock data showing
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3000);
+
+        const res = await fetch(`${API_URL}/shoots`, { signal: controller.signal });
+        clearTimeout(timeout);
+
         const data = await res.json();
         if (res.ok && data.data && data.data.length > 0) {
           const mapped = data.data.map(s => ({
@@ -40,15 +45,10 @@ const RecentShoots = () => {
             cat: s.category,
             img: s.heroImage
           }));
-          // Slice to top 5 for horizontal scroll
-          setShoots(mapped.slice(0, 5));
-        } else {
-          setShoots(mockShoots);
+          setShoots(mapped); // show ALL clients from DB
         }
       } catch (err) {
-        setShoots(mockShoots);
-      } finally {
-        setLoading(false);
+        // Keep showing mock data — already loaded
       }
     };
     loadData();
@@ -58,31 +58,31 @@ const RecentShoots = () => {
     if (shoots.length === 0) return;
 
     const ctx = gsap.context(() => {
-      const horizontalWidth = horizontalRef.current.scrollWidth;
-      const windowWidth = window.innerWidth;
-      
       gsap.to(horizontalRef.current, {
-        x: () => -(horizontalWidth - windowWidth),
+        x: () => -(horizontalRef.current.scrollWidth - window.innerWidth),
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
           pin: true,
           pinSpacing: true,
-          scrub: 1,
-          end: () => "+=" + horizontalWidth,
+          scrub: true, // Synced in real-time with global Lenis scroll
+          end: () => "+=" + horizontalRef.current.scrollWidth,
+          invalidateOnRefresh: true, // Dynamically recalibrates coordinates on viewport updates
         }
       });
     }, containerRef);
-    return () => ctx.revert();
+
+    // Refresh ScrollTrigger after DOM has fully painted the shoots to guarantee exact pixel widths
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+    };
   }, [shoots]);
 
-  if (loading) {
-    return (
-      <section className="horizontal-shoots-section" style={{ height: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ color: '#8c8c8c', letterSpacing: '0.1em', fontSize: '0.8rem', textTransform: 'uppercase' }}>Entering Archives...</p>
-      </section>
-    );
-  }
 
   return (
     <section ref={containerRef} className="horizontal-shoots-section">
@@ -97,7 +97,7 @@ const RecentShoots = () => {
             <div className="horizontal-item">
               <span className="item-number-overlay">0{index + 1}</span>
               <div className="horizontal-img-wrapper">
-                <img src={shoot.img} alt={shoot.title} loading="lazy" />
+                <img src={shoot.img} alt={shoot.title} loading={index < 2 ? 'eager' : 'lazy'} />
                 <div className="view-more-hover">
                   <span>EXPLORE</span>
                 </div>

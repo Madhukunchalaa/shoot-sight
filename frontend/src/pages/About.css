@@ -646,7 +646,7 @@
     grid-template-columns: 1fr;
     gap: 60px;
   }
-  .philosophy-grid {
+  .philosophy-split-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
@@ -657,5 +657,83 @@
     flex-direction: column;
     gap: 60px;
     padding: 60px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-fullscreen-hero {
+    height: 75vh; /* Snug height on mobile app views */
+  }
+
+  .about-hero-centered-content {
+    margin-top: 40px;
+  }
+
+  .about-hero-spread {
+    padding-top: 80px;
+  }
+
+  /* Swapped offsets to prevent horizontal page clipping */
+  .about-team-card-container {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 15px; /* Safely handles the left-aligned offset */
+  }
+
+  .about-team-backdrop {
+    top: 12px;
+    left: 0px;
+    width: calc(100% - 15px);
+  }
+
+  .about-team-vertical-tag,
+  .founder-vertical-tag,
+  .philosophy-portrait-tag {
+    display: none !important; /* Hides overflow-prone sideways tags on small portrait screens */
+  }
+
+  /* Founder card mobile sizing */
+  .founder-card-container {
+    width: 100%;
+    padding-left: 15px;
+  }
+
+  .founder-backdrop-frame {
+    top: 12px;
+    left: 0px;
+    width: calc(100% - 15px);
+  }
+
+  .founder-quote {
+    font-size: 1.15rem;
+    padding-left: 15px;
+    margin: 15px 0;
+  }
+
+  /* Philosophy layout overrides */
+  .philosophy-split-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .philosophy-portrait-wrapper {
+    width: 100%;
+    padding-left: 15px;
+  }
+
+  .philosophy-portrait-backdrop {
+    top: -12px;
+    left: 0px;
+    width: calc(100% - 15px);
+  }
+
+  .pillar-item,
+  .philosophy-stack-item {
+    gap: 15px;
+  }
+
+  .pillar-desc,
+  .philosophy-stack-desc {
+    font-size: 0.8rem;
   }
 }

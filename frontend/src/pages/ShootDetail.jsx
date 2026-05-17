@@ -14,6 +14,47 @@ const gal4 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC352
 gsap.registerPlugin(ScrollTrigger);
 
 const mockShootData = {
+  'aishwarya-and-akshay': {
+    title: "Aishwarya & Akshay",
+    date: "May 2026",
+    location: "Bangalore",
+    desc: "An editorial wedding narrative captured with timeless sophistication. From grand architectural frames to the quietest glances, Aishwarya and Akshay's celebration was a masterclass in elegance.",
+    hero: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp",
+    gallery: [
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_6193.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_6202.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_6209.jpg",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_7208.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_7791.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_7858.jpg",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_7896.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8887.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_9045.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_9106.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/_DSC7299.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/_DSC7806.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/_DSC8119.webp"
+    ]
+  },
+  'srinidhi-and-ramya': {
+    title: "Srinidhi & Ramya",
+    date: "May 2026",
+    location: "Bangalore",
+    desc: "A heartfelt celebration of love, warmth, and togetherness. Srinidhi and Ramya's wedding was a beautiful story of two families coming together, captured in every candid laugh and tender moment.",
+    hero: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00045.webp",
+    gallery: [
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00013.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00045.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00167.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00174.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00219.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00236-Edit.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00238-Edit.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00868.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC01641.webp"
+    ]
+  },
   'raghudixith-varijashree': {
     title: "Raghu Dixit & Varijashree",
     date: "May 2026",
@@ -77,29 +118,25 @@ const mockShootData = {
       "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08653.webp"
     ]
   },
-  'rahul-pooja': { 
-    title: "Rahul & Pooja", 
-    date: "Feb 2026", 
-    location: "Bangalore", 
-    desc: "A modern pre-wedding story captured at dusk. We focused on the architecture, the dramatic light, and the quiet, intimate moments between the chaos of the city.", 
-    hero: hero2,
-    gallery: [gal4, gal3, gal2, gal1]
-  },
-  'vikram-anjali': { 
-    title: "Vikram & Anjali", 
-    date: "Mar 2026", 
-    location: "Ooty", 
-    desc: "A misty, cinematic affair in the hills. The weather provided a natural softbox, allowing us to capture incredibly moody and romantic portraits that feel like stills from a film.", 
-    hero: gal1,
-    gallery: [hero1, hero2, gal3, gal4]
-  },
-  'arjun-sneha': { 
-    title: "Arjun & Sneha", 
-    date: "Apr 2026", 
-    location: "Paris", 
-    desc: "A classic destination story. From the cobblestone streets to the grand architecture, their love story was documented with an editorial, high-fashion approach.", 
-    hero: gal4,
-    gallery: [gal2, gal1, hero1, hero2]
+  'ragini': {
+    title: "Ragini",
+    date: "May 2026",
+    location: "Bangalore",
+    desc: "A stunning portrait story of grace and beauty. Every frame was crafted to celebrate Ragini's elegance with soft, cinematic lighting and a timeless editorial approach.",
+    hero: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6607.webp",
+    gallery: [
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6369.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6392.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6398.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6607.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6939.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6987.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A7057.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A7175.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A7398.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A7446.webp",
+      "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A7475.webp"
+    ]
   }
 };
 

@@ -28,12 +28,13 @@ const getPublishedBlogs = async (page = 1, limit = 10) => {
 
   const [blogs, total] = await Promise.all([
     Blog.find(filter)
-      .select('title slug coverImageUrl createdAt')
+      .select('title slug coverImageUrl content tags createdAt')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
+      .maxTimeMS(3000)
       .lean(),
-    Blog.countDocuments(filter),
+    Blog.countDocuments(filter).maxTimeMS(3000),
   ]);
 
   return { blogs, total, page, totalPages: Math.ceil(total / limit) };
@@ -57,8 +58,9 @@ const getAllBlogs = async (page = 1, limit = 10) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
+      .maxTimeMS(3000)
       .lean(),
-    Blog.countDocuments(),
+    Blog.countDocuments().maxTimeMS(3000),
   ]);
 
   return { blogs, total, page, totalPages: Math.ceil(total / limit) };

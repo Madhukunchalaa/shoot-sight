@@ -11,7 +11,10 @@ const shootSchema = new Schema(
     heroImage: { type: String, required: true },
     gallery: [{ type: String }],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    autoIndex: false  // index already exists in MongoDB — prevents duplicate index warning on startup
+  }
 );
 
 module.exports = model('Shoot', shootSchema);

@@ -83,8 +83,8 @@ const Blog = () => {
             title: b.title,
             date: new Date(b.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
             cat: (b.tags && b.tags[0]) ? b.tags[0].toUpperCase() : 'ARTISTRY',
-            excerpt: b.content.substring(0, 140) + '...',
-            content: b.content.split('\n\n'),
+            excerpt: b.content ? (b.content.substring(0, 140) + '...') : '',
+            content: b.content ? b.content.split('\n\n') : [],
             img: b.coverImageUrl || img1,
             featured: idx === 0
           }));
@@ -199,7 +199,7 @@ const Blog = () => {
           <div className="modal-inner-glass" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-btn" onClick={() => setActivePost(null)}>✕</button>
             
-            <div className="modal-scroll-content">
+            <div className="modal-scroll-content" data-lenis-prevent>
               <div className="modal-header-meta">
                 <span className="modal-cat">{activePost.cat}</span>
                 <span className="modal-dot">•</span>

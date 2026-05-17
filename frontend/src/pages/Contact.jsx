@@ -3,7 +3,8 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Contact.css';
-const bannerImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
+
+const contactImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,120 +12,168 @@ const Contact = () => {
   const container = useRef();
 
   useGSAP(() => {
-    // Banner Parallax
-    gsap.to('.contact-banner-img', {
-      y: 100,
-      scrollTrigger: {
-        trigger: '.contact-banner',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
-
-    // Content Entrance
-    gsap.from('.contact-reveal-light', {
-      y: 40,
+    // Elegant entrance reveal
+    gsap.from('.reveal-item', {
+      y: 50,
       opacity: 0,
-      duration: 1.2,
+      duration: 1.4,
       stagger: 0.15,
-      ease: 'power3.out',
+      ease: 'power4.out',
       delay: 0.2
     });
 
-    // Form input focus effect
-    const inputs = document.querySelectorAll('.journal-input-light');
-    inputs.forEach(input => {
-      input.addEventListener('focus', () => {
-        gsap.to(input.nextElementSibling, { scaleX: 1, duration: 0.5, ease: 'power2.out' });
-      });
-      input.addEventListener('blur', () => {
-        if (!input.value) {
-          gsap.to(input.nextElementSibling, { scaleX: 0, duration: 0.5, ease: 'power2.in' });
-        }
-      });
+    // Image card zoom effect
+    gsap.from('.contact-image-wrapper img', {
+      scale: 1.15,
+      duration: 2.5,
+      ease: 'power3.out'
     });
+
   }, { scope: container });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Your narrative has been initiated. Our curation team will review your application shortly.");
+  };
+
   return (
-    <div ref={container} className="contact-page-light">
+    <div ref={container} className="contact-page-editorial-dark" data-lenis-prevent>
       
-      {/* Short Cinematic Banner */}
-      <div className="contact-banner">
-        <img src={bannerImg} alt="Shoot @ Sight Contact" className="contact-banner-img" />
-        <div className="contact-banner-overlay"></div>
-        <h1 className="contact-banner-title contact-reveal-light">Get in Touch</h1>
-      </div>
-
-      <div className="container contact-content-light section-padding">
+      <div className="contact-main-grid container">
         
-        <div className="contact-grid-light">
-          {/* LEFT: TITLE & INFO */}
-          <div className="contact-info-light">
-            <header className="contact-header-light contact-reveal-light">
-              <span className="subtitle-accent">05 // INQUIRY</span>
-              <h2 className="contact-main-title-light">
-                Begin the<br/><i>Narrative</i>
-              </h2>
-              <p className="contact-intro-text">
-                We take on a limited number of commissions each year to ensure every story receives our complete artistic devotion. Tell us about your vision.
-              </p>
-            </header>
+        {/* LEFT COLUMN: THE COUTURIER PHILOSOPHY & ATTITUDE */}
+        <div className="contact-editorial-left">
+          
+          <div className="reveal-item">
+            <span className="contact-accent-tag">05 // THE INITIATION</span>
+          </div>
 
-            <div className="info-blocks-light contact-reveal-light">
-              <div className="info-section-light">
-                <h3 className="info-label">Direct</h3>
-                <a href="mailto:hello@shootatsight.com" className="info-link">hello@shootatsight.com</a>
-                <a href="tel:+917989776255" className="info-link">+91 7989776255</a>
-              </div>
+          <h1 className="contact-hero-title reveal-item">
+            For those who value <br />
+            <i>legacy over pixels.</i>
+          </h1>
 
-              <div className="info-section-light">
-                <h3 className="info-label">Studio</h3>
-                <p className="info-text">Bengaluru, India</p>
-              </div>
+          <div className="contact-attitude-body reveal-item">
+            <p className="attitude-p-bold">
+              We do not accommodate traditional wedding checklists. We do not manufacture fake poses. 
+            </p>
+            <p className="attitude-p-light">
+              We exist exclusively for couples who view their celebration as an uninhibited editorial work of art. 
+              Our visual signature is raw, cinematic, and unapologetic. We capture the high-fashion drama, 
+              the unscripted whispers, and the grand architectural scaling of your love. 
+            </p>
+            <p className="attitude-p-gold">
+              If you are ready to move past standard imagery and immortalize your history as a living masterpiece, let’s begin.
+            </p>
+          </div>
+
+          {/* Majestic Image Frame with offset borders */}
+          <div className="contact-image-frame reveal-item">
+            <div className="contact-image-vertical-label">HIGH END EDITORIAL // RAW EMOTION</div>
+            <div className="contact-image-backdrop"></div>
+            <div className="contact-image-wrapper">
+              <img src={contactImg} alt="High-Fashion Editorial Narrative" />
             </div>
           </div>
 
-          {/* RIGHT: THE FORM */}
-          <div className="contact-form-light contact-reveal-light">
-            <form className="journal-form-light">
-              <div className="journal-field-light">
-                <input type="text" className="journal-input-light" placeholder="Your Names" required />
-                <div className="input-line-light"></div>
+          {/* Quick Contact Blocks */}
+          <div className="contact-direct-blocks reveal-item">
+            <div className="direct-item">
+              <span className="direct-label">THE STUDIO</span>
+              <p className="direct-value">Bengaluru, India // Global Commissions</p>
+            </div>
+            <div className="direct-item">
+              <span className="direct-label">DIRECT CHANNELS</span>
+              <a href="mailto:hello@shootatsight.com" className="direct-link">hello@shootatsight.com</a>
+              <a href="tel:+917989776255" className="direct-link">+91 7989776255</a>
+            </div>
+          </div>
+
+        </div>
+
+        {/* RIGHT COLUMN: THE COMMISSION FORM CARD */}
+        <div className="contact-editorial-right reveal-item">
+          <div className="contact-form-glass-card">
+            
+            <div className="form-card-header">
+              <h2 className="form-card-title">Apply for Commission</h2>
+              <p className="form-card-sub">We accept limited bookings annually to protect our artistic devotion.</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="premium-contact-form">
+              
+              <div className="form-input-group">
+                <label className="form-input-label">Your Names</label>
+                <input 
+                  type="text" 
+                  required 
+                  className="input-contact-chic" 
+                  placeholder="e.g. Aria & Alexander" 
+                />
               </div>
 
-              <div className="journal-field-light">
-                <input type="email" className="journal-input-light" placeholder="Email Address" required />
-                <div className="input-line-light"></div>
+              <div className="form-input-group">
+                <label className="form-input-label">Email Address</label>
+                <input 
+                  type="email" 
+                  required 
+                  className="input-contact-chic" 
+                  placeholder="e.g. aria@luxury.com" 
+                />
               </div>
 
-              <div className="journal-field-light">
-                <div className="split-fields">
-                  <div className="journal-field-sub">
-                    <input type="text" className="journal-input-light" placeholder="Event Date" required />
-                    <div className="input-line-light"></div>
-                  </div>
-                  <div className="journal-field-sub">
-                    <input type="text" className="journal-input-light" placeholder="Location" required />
-                    <div className="input-line-light"></div>
-                  </div>
+              <div className="form-double-fields">
+                <div className="form-input-group">
+                  <label className="form-input-label">Celebration Date</label>
+                  <input 
+                    type="text" 
+                    required 
+                    className="input-contact-chic" 
+                    placeholder="DD.MM.YYYY" 
+                  />
+                </div>
+                <div className="form-input-group">
+                  <label className="form-input-label">Destinations / Venues</label>
+                  <input 
+                    type="text" 
+                    required 
+                    className="input-contact-chic" 
+                    placeholder="e.g. Lake Como, Italy" 
+                  />
                 </div>
               </div>
 
-              <div className="journal-field-light">
-                <textarea className="journal-input-light text-area-light" placeholder="Tell us your vision and what draws you to our work..." rows="4"></textarea>
-                <div className="input-line-light"></div>
+              <div className="form-input-group">
+                <label className="form-input-label">Artistic Scope / Vision</label>
+                <textarea 
+                  rows="4" 
+                  required 
+                  className="textarea-contact-chic" 
+                  placeholder="Tell us about the atmosphere, the styling, and what draws you to our raw visual signature..."
+                />
               </div>
 
-              <div className="form-footer-light">
-                <button type="submit" className="btn-premium">
-                  Submit Inquiry
-                </button>
+              <div className="form-input-group">
+                <label className="form-input-label">Investment Range</label>
+                <select className="select-contact-chic" required>
+                  <option value="" disabled selected>Select Your Curation Tier</option>
+                  <option value="essential">Signature Photo Journal (Starting at $8,000)</option>
+                  <option value="cinematic">Editorial Photo + Cinema Curation (Starting at $14,000)</option>
+                  <option value="multi-day">Multi-day Global Archive (Starting at $25,000)</option>
+                </select>
               </div>
+
+              <button type="submit" className="btn-luxury-submit">
+                <span>INITIATE NARRATIVE</span>
+              </button>
+
             </form>
+
           </div>
         </div>
+
       </div>
+
     </div>
   );
 };

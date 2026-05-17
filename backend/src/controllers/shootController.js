@@ -124,10 +124,23 @@ const writeLocalShoots = (data) => {
 // 1. GET ALL SHOOTS
 const getAllShoots = async (req, res, next) => {
   try {
-    const shoots = await Shoot.find().sort({ createdAt: -1 });
-    return res.json({ success: true, count: shoots.length, data: shoots });
+    // Use Promise.race so a slow/pending MongoDB connection doesn't hang the request
+    const dbShoots = await Promise.race([
+      Shoot.find().sort({ createdAt: 1 }).lean(),  // oldest first = correct left-to-right scroll order
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('MongoDB timeout')), 2000)
+      )
+    ]);
+
+    // Merge MongoDB results with local JSON — deduplicated by slug
+    const localShoots = readLocalShoots();
+    const dbSlugs = new Set(dbShoots.map(s => s.slug));
+    const localOnly = localShoots.filter(s => !dbSlugs.has(s.slug));
+    const merged = [...dbShoots, ...localOnly];
+
+    return res.json({ success: true, count: merged.length, data: merged });
   } catch (err) {
-    console.warn('⚠️ MongoDB connection offline. Loading shoots from local shoots-db.json fallback...');
+    console.warn('⚠️ MongoDB unavailable or timed out — serving shoots-db.json fallback');
     const localShoots = readLocalShoots();
     return res.json({ success: true, count: localShoots.length, data: localShoots });
   }
@@ -319,4 +332,81 @@ module.exports = {
   getShootByIdOrSlug,
   createShoot,
   deleteShoot,
+  addGalleryImages,
+  removeGalleryImage,
+  updateHeroImage,
 };
+
+// ─── HELPER: find shoot by id or slug (mongo + local fallback) ───────────────
+async function findShoot(idOrSlug) {
+  let shoot = null;
+  try {
+    if (idOrSlug.match(/^[0-9a-fA-F]{24}$/)) shoot = await Shoot.findById(idOrSlug);
+    if (!shoot) shoot = await Shoot.findOne({ slug: idOrSlug });
+  } catch (_) {}
+  return shoot;
+}
+
+// 5. ADD IMAGES TO GALLERY
+async function addGalleryImages(req, res, next) {
+  try {
+    const shoot = await findShoot(req.params.id);
+    if (!shoot) return res.status(404).json({ success: false, message: 'Shoot not found' });
+
+    const files = req.files?.['gallery'] || [];
+    if (files.length === 0)
+      return res.status(400).json({ success: false, message: 'No images provided' });
+
+    const newUrls = await Promise.all(
+      files.map(async (file) => {
+        const filename = `${uuidv4()}.webp`;
+        return processAndStoreImage(file.buffer, filename, req);
+      })
+    );
+
+    shoot.gallery.push(...newUrls);
+    await shoot.save();
+    return res.json({ success: true, gallery: shoot.gallery });
+  } catch (err) { next(err); }
+}
+
+// 6. REMOVE ONE IMAGE FROM GALLERY
+async function removeGalleryImage(req, res, next) {
+  try {
+    const shoot = await findShoot(req.params.id);
+    if (!shoot) return res.status(404).json({ success: false, message: 'Shoot not found' });
+
+    const { imageUrl } = req.body;
+    const idx = shoot.gallery.indexOf(imageUrl);
+    if (idx === -1) return res.status(404).json({ success: false, message: 'Image not in gallery' });
+
+    shoot.gallery.splice(idx, 1);
+    await shoot.save();
+
+    // Delete from R2/local storage (non-blocking)
+    deleteStoredImage(imageUrl).catch(() => {});
+
+    return res.json({ success: true, gallery: shoot.gallery });
+  } catch (err) { next(err); }
+}
+
+// 7. UPDATE HERO / COVER IMAGE
+async function updateHeroImage(req, res, next) {
+  try {
+    const shoot = await findShoot(req.params.id);
+    if (!shoot) return res.status(404).json({ success: false, message: 'Shoot not found' });
+
+    const heroFile = req.files?.['heroImage']?.[0];
+    if (!heroFile) return res.status(400).json({ success: false, message: 'No hero image provided' });
+
+    const oldHero = shoot.heroImage;
+    const filename = `${uuidv4()}.webp`;
+    shoot.heroImage = await processAndStoreImage(heroFile.buffer, filename, req);
+    await shoot.save();
+
+    // Delete old hero from R2 (non-blocking)
+    if (oldHero) deleteStoredImage(oldHero).catch(() => {});
+
+    return res.json({ success: true, heroImage: shoot.heroImage });
+  } catch (err) { next(err); }
+}

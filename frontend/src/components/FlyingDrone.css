@@ -1,0 +1,239 @@
+.flying-drone-container {
+  position: fixed;
+  bottom: 45px;
+  right: 45px;
+  width: 90px;
+  height: 90px;
+  z-index: 9999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: droneFloat 4s ease-in-out infinite;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.35));
+}
+
+.flying-drone-container:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 20px 35px rgba(184, 159, 101, 0.3));
+}
+
+/* ── TOOLTIP STYLING ── */
+.drone-tooltip {
+  position: absolute;
+  bottom: 110px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(184, 159, 101, 0.25);
+  border-top: 3px solid #b89f65;
+  padding: 12px 18px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(15px) scale(0.95);
+  transform-origin: bottom right;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(44, 30, 21, 0.12);
+}
+
+.drone-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.tooltip-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: #b89f65;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tooltip-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.88rem;
+  color: #2c1e15;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ── DRONE STRUCTURE MESH ── */
+.drone-mesh-wrapper {
+  position: relative;
+  width: 70px;
+  height: 50px;
+}
+
+/* Chassis Center Fuselage */
+.drone-fuselage {
+  position: absolute;
+  top: 15px;
+  left: 17px;
+  width: 36px;
+  height: 22px;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px 12px 8px 8px;
+  z-index: 2;
+  box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.2);
+}
+
+/* Glowing Camera Gimbal */
+.drone-gimbal {
+  position: absolute;
+  bottom: -4px;
+  left: 11px;
+  width: 14px;
+  height: 14px;
+  background: #222222;
+  border: 1px solid rgba(184, 159, 101, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-aperture {
+  width: 6px;
+  height: 6px;
+  background: #00cec9;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00cec9;
+  animation: cameraPulse 2s ease-in-out infinite;
+}
+
+/* PulsPulse led signal indicator */
+.drone-signal-light {
+  position: absolute;
+  top: 4px;
+  left: 15px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: ledPulse 1.5s infinite;
+}
+
+/* Wing Arms extending outwards */
+.drone-motor-arm {
+  position: absolute;
+  top: 18px;
+  width: 24px;
+  height: 6px;
+  background: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 1;
+}
+
+.arm-left {
+  left: 0;
+  transform: rotate(-15deg);
+  border-radius: 3px 0 0 3px;
+  transform-origin: right center;
+}
+
+.arm-right {
+  right: 0;
+  transform: rotate(15deg);
+  border-radius: 0 3px 3px 0;
+  transform-origin: left center;
+}
+
+/* Propeller Motor Caps */
+.motor-hub {
+  position: absolute;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  background: #050505;
+  border: 1.5px solid #b89f65;
+  border-radius: 50%;
+}
+
+.arm-left .motor-hub {
+  left: -2px;
+}
+
+.arm-right .motor-hub {
+  right: -2px;
+}
+
+/* Spinning blades (fast rotating CSS overlays) */
+.propeller-blade {
+  position: absolute;
+  top: -2px;
+  width: 32px;
+  height: 2px;
+  background: rgba(10, 10, 10, 0.8);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+}
+
+.arm-left .propeller-blade {
+  left: -13px;
+  animation: spinCW 0.12s linear infinite;
+}
+
+.arm-right .propeller-blade {
+  right: -13px;
+  animation: spinCCW 0.12s linear infinite;
+}
+
+/* ── KEYFRAME ANIMATIONS ── */
+@keyframes droneFloat {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes spinCW {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinCCW {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes ledPulse {
+  0% { background: #b89f65; box-shadow: 0 0 4px #b89f65; }
+  50% { background: #55efc4; box-shadow: 0 0 10px #55efc4; }
+  100% { background: #b89f65; box-shadow: 0 0 4px #b89f65; }
+}
+
+@keyframes cameraPulse {
+  0% { transform: scale(1); box-shadow: 0 0 6px #00cec9; }
+  50% { transform: scale(1.15); box-shadow: 0 0 12px #00cec9; }
+  100% { transform: scale(1); box-shadow: 0 0 6px #00cec9; }
+}
+
+@media (max-width: 768px) {
+  .flying-drone-container {
+    bottom: 90px; /* Positions it nicely above the 68px sticky bottom app tab bar! */
+    right: 20px;
+    width: 70px;
+    height: 70px;
+  }
+  
+  .drone-mesh-wrapper {
+    transform: scale(0.85); /* Slightly smaller for mobile screens */
+  }
+
+  .drone-tooltip {
+    bottom: 90px;
+    right: -10px;
+    padding: 8px 12px;
+  }
+
+  .tooltip-text {
+    font-size: 0.78rem;
+  }
+}
