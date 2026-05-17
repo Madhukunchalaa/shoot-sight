@@ -23,10 +23,13 @@ function App() {
   const isAdminRoute = location.pathname.includes('admin');
 
   useLayoutEffect(() => {
-    ScrollTrigger.getAll().forEach(t => t.kill());
-    document.querySelectorAll('.pin-spacer').forEach(spacer => {
-      if (spacer.children.length === 0) spacer.parentNode?.removeChild(spacer);
-    });
+    // Return a cleanup function that runs *before* the route path changes (unmount of the old route)
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+      document.querySelectorAll('.pin-spacer').forEach(spacer => {
+        if (spacer.children.length === 0) spacer.parentNode?.removeChild(spacer);
+      });
+    };
   }, [location.pathname]);
 
   return (
