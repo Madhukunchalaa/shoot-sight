@@ -33,6 +33,7 @@ const Experience = () => {
     // Build the sequential card stack reveals
     panels.forEach((panel, i) => {
       if (i > 0) {
+        // Slide the current panel up from offscreen
         tl.fromTo(panel,
           { yPercent: 100 },
           { 
@@ -41,6 +42,13 @@ const Experience = () => {
           },
           `+=0`
         );
+
+        // Simultaneously scale down and fade the previous layer to create premium 3D depth-of-field stacking!
+        tl.to(panels[i - 1], {
+          scale: 0.95,
+          opacity: 0.4,
+          ease: "power1.inOut"
+        }, `<`); // Align with the start of the current panel's slide-up
       }
     });
 

@@ -61,18 +61,27 @@ const RecentShoots = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.to(horizontalRef.current, {
-        x: () => -(horizontalRef.current.scrollWidth - window.innerWidth),
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          pin: true,
-          pinSpacing: true,
-          scrub: true, // Synced in real-time with global Lenis scroll
-          end: () => "+=" + horizontalRef.current.scrollWidth,
-          invalidateOnRefresh: true, // Dynamically recalibrates coordinates on viewport updates
-        }
-      });
+      const scrollWidth = horizontalRef.current.scrollWidth;
+      const windowWidth = window.innerWidth;
+      const overflow = scrollWidth - windowWidth;
+
+      if (overflow > 0) {
+        gsap.to(horizontalRef.current, {
+          x: -overflow,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            pin: true,
+            pinSpacing: true,
+            scrub: true, // Synced in real-time with global Lenis scroll
+            end: () => "+=" + overflow, // Mathematically precise scroll distance (0 dead-scroll space!)
+            invalidateOnRefresh: true, // Dynamically recalibrates coordinates on viewport updates
+          }
+        });
+      } else {
+        // Center the cards or leave them in a beautiful static row if they fit perfectly!
+        gsap.set(horizontalRef.current, { x: 0 });
+      }
     }, containerRef);
 
     // Refresh ScrollTrigger after DOM has fully painted the shoots to guarantee exact pixel widths
@@ -84,7 +93,7 @@ const RecentShoots = () => {
       clearTimeout(timer);
       ctx.revert();
     };
-  }, []); // Run EXACTLY once on mount to prevent ScrollTrigger offset calculation corruptions while scrolled!
+  }, [shoots]); // Re-run when shoots load to calculate exact dynamic database widths!
 
 
   return (

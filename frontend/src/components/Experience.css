@@ -30,10 +30,24 @@
 }
 
 .step-layer {
-  z-index: 2;
   border-top: 1px solid rgba(60, 48, 36, 0.05);
   box-shadow: 0 -30px 60px rgba(0,0,0,0.05);
-  transform: translateY(100vh); /* Base layout state: hidden safely off-screen until GSAP animates them up */
+  /* Removed transform: translateY(100vh) to eliminate CSS vs GSAP specificity conflicts.
+     GSAP dynamically sets yPercent: 100% on mount before paint. */
+}
+
+/* Sequential z-index stacking layers to prevent browser layer compositing bugs */
+.color-1 { 
+  background: #fdf8f3; 
+  z-index: 20;
+}
+.color-2 { 
+  background: #faf5f0; 
+  z-index: 30;
+}
+.color-3 { 
+  background: #fdf8f3; 
+  z-index: 40;
 }
 
 .stack-main-title {
@@ -134,10 +148,6 @@
 .step-layer:hover .img-reveal-wrapper img {
   transform: scale(1.03);
 }
-
-.color-1 { background: #fdf8f3; }
-.color-2 { background: #faf5f0; }
-.color-3 { background: #fdf8f3; }
 
 .scroll-indicator-boutique {
   display: flex;
