@@ -119,6 +119,19 @@
   }
 }
 
+@media (max-width: 768px) {
+  .video-backdrop {
+    display: none;
+  }
+  .floating-film-label {
+    left: 0;
+    bottom: -30px;
+  }
+  .film-video-item {
+    margin-bottom: 20px;
+  }
+}
+
 .post-date {
   font-family: var(--font-sans);
   font-size: 10px;

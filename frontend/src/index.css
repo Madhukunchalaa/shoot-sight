@@ -40,6 +40,10 @@
   font-weight: 700;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);
