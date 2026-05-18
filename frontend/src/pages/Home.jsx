@@ -36,17 +36,7 @@ const Home = () => {
   }, []);
 
   useGSAP(() => {
-    // 1. Elegant side-by-side pinning: lock left-hand text content while right-hand videos scroll past
-    ScrollTrigger.create({
-      trigger: ".film-section-editorial",
-      start: "top 120px",  // Pins when the top of the editorial section reaches 120px from screen top
-      end: "bottom 95%",  // Unpins when the bottom of the section reaches 95% of viewport
-      pin: ".film-text-content",
-      pinSpacing: false,   // Prevents empty dead-space layout shifting
-      invalidateOnRefresh: true
-    });
-
-    // 2. Elegant staggered reveal for film text content items (only triggers once)
+    // Staggered reveal for film text content
     gsap.from(".film-text-content > *", {
       y: 40,
       opacity: 0,
@@ -60,7 +50,7 @@ const Home = () => {
       }
     });
 
-    // 3. Parallax sliding effect for the massive background word "CINEMA"
+    // Parallax sliding for the background "CINEMA" word
     gsap.fromTo(".massive-bg-word",
       { xPercent: -15 },
       {
@@ -74,45 +64,35 @@ const Home = () => {
       }
     );
 
-    // 4. Cinematic Spotlight Focus Parallax for the videos!
-    // As each video card scrolls into the center of the screen, it highlights/zooms up smoothly.
-    const videoItems = gsap.utils.toArray('.film-video-item');
-    videoItems.forEach((item) => {
-      gsap.fromTo(item,
-        { scale: 0.96, opacity: 0.4 },
-        {
-          scale: 1.03,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 70%",   // Highlights when top of video reaches 70% viewport
-            end: "bottom 30%",  // Dims out when bottom of video leaves 30% viewport
-            scrub: 0.8,         // Silky smooth scrubbing matching the user's scroll speed
-            toggleActions: "play reverse play reverse"
-          }
+    // Spotlight entrance for the single video
+    gsap.fromTo(".film-video-item",
+      { scale: 0.96, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".film-video-item",
+          start: "top 75%",
+          toggleActions: "play none none none"
         }
-      );
-    });
+      }
+    );
 
-    // 5. Parallax subtle scaling and vertical drift on the backdrop element inside each video item
-    const backdrops = gsap.utils.toArray('.video-backdrop');
-    backdrops.forEach((backdrop) => {
-      gsap.fromTo(backdrop,
-        { yPercent: -8, scaleY: 0.95 },
-        {
-          yPercent: 8,
-          scaleY: 1.05,
-          scrollTrigger: {
-            trigger: backdrop,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1
-          }
+    // Backdrop parallax
+    gsap.fromTo(".video-backdrop",
+      { yPercent: -8 },
+      {
+        yPercent: 8,
+        scrollTrigger: {
+          trigger: ".video-backdrop",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1
         }
-      );
-    });
+      }
+    );
   }, []);
 
   return (
@@ -126,96 +106,38 @@ const Home = () => {
       <Experience />
       
       {/* Featured Films Section */}
-      <section className="section-padding container film-section-editorial">
+      <section className="container film-section-editorial">
         <div className="massive-bg-word">CINEMA</div>
         <div className="film-editorial-grid">
-          
+
           <div className="film-text-content">
             <span className="subtitle-accent">03 // FEATURED FILMS</span>
-            <h2 className="section-title-large">Cinematic <br /><i>Poetry</i></h2>
+            <h2 className="film-section-heading">Cinematic <i>Poetry</i></h2>
             <p className="film-description">
               Experience the raw emotion, the fleeting glances, and the symphony of love in motion. Our films are crafted not just to document, but to make you feel.
             </p>
-            <Link to="/portfolio" className="btn-premium">Explore Films</Link>
           </div>
 
-          <div className="film-videos-column">
-            
-            {/* Video 1 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">DIRECTOR'S CUT // MONACO</div>
+          <div className="film-video-item">
+            <div className="video-backdrop"></div>
+            <div className="video-responsive">
+              <iframe
+                src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1"
+                title="Director's Cut — Monaco"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
             </div>
-
-            {/* Video 2 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/wLqHwzM9ABo?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=wLqHwzM9ABo&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">CINEMATIC ESSENCE // TUSCANY</div>
-            </div>
-
-            {/* Video 3 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/a94LGkUt3Pg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=a94LGkUt3Pg&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">THE SYMPHONY // PARIS</div>
-            </div>
-
-            {/* Video 4 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/b58Iizh8Dfg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=b58Iizh8Dfg&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">ETERNAL NARRATIVE // AMALFI</div>
-            </div>
-
           </div>
 
         </div>
+
+        <div className="film-view-btn-row">
+          <Link to="/films" className="btn-premium">View Films</Link>
+        </div>
+
       </section>
 
       {/* Testimonials (Kudos & Praise) */}

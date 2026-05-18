@@ -3,109 +3,68 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
-const slide1Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_2092.webp";
-const slide1Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_I3A6612.webp";
-const slide2Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_1093.webp";
-const slide2Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A8309.webp";
-const slide3Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/KRP_9777.webp";
-const slide3Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC1468_-_Copy.webp";
-const slide4Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_9246.webp";
-const slide4Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC02320.webp";
-const slide5Left = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4382.webp";
-const slide5Right = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
+const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7441.webp";
+const img2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD07968.webp";
+const img3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4399.webp";
+const img4 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4761_-_Copy.webp";
+const img5 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const slides = [
+  { img: img1, t1: "TIMELESS",  t2: "MOMENTS"  },
+  { img: img2, t1: "ETERNAL",   t2: "LEGACIES"  },
+  { img: img3, t1: "PURE",      t2: "EMOTIONS"  },
+  { img: img4, t1: "SAVORED",   t2: "SIGHTS"    },
+  { img: img5, t1: "INFINITE",  t2: "VISIONS"   },
+];
+
 const Hero = () => {
   const containerRef = useRef(null);
-  const textRef = useRef(null);
-
-  const slides = [
-    {
-      left: slide1Left,
-      right: slide1Right,
-      t1: "TIMELESS",
-      t2: "MOMENTS"
-    },
-    {
-      left: slide2Left,
-      right: slide2Right,
-      t1: "ETERNAL",
-      t2: "LEGACIES"
-    },
-    {
-      left: slide3Left,
-      right: slide3Right,
-      t1: "PURE",
-      t2: "EMOTIONS"
-    },
-    {
-      left: slide4Left,
-      right: slide4Right,
-      t1: "SAVORED",
-      t2: "SIGHTS"
-    },
-    {
-      left: slide5Left,
-      right: slide5Right,
-      t1: "INFINITE",
-      t2: "VISIONS"
-    }
-  ];
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Entrance
-      const tl = gsap.timeline();
-      tl.from(".hero-side", {
-        width: 0,
-        duration: 1.8,
-        stagger: 0.3,
-        ease: "expo.inOut"
-      })
-      .from(".center-line", {
-        height: 0,
-        duration: 1,
-        ease: "power2.inOut"
-      }, "-=1");
+      // Cinematic entrance
+      gsap.from(".hero-bg-slide.active .hero-bg-img", {
+        scale: 1.08,
+        duration: 2.2,
+        ease: "power2.out",
+      });
+      gsap.from(".hero-center-content", {
+        opacity: 0,
+        y: 30,
+        duration: 1.6,
+        delay: 0.5,
+        ease: "power3.out",
+      });
 
-      // 2. Section Pinning & Layered Scroll
+      // Scroll pin
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
         end: "bottom top",
         pin: true,
         pinSpacing: false,
-        scrub: true
+        scrub: true,
       });
 
-      // Continuous Parallax
-      gsap.to(".side-img-container.left", {
-        y: -150,
+      // Parallax drift upward on scroll
+      gsap.to(".hero-bg-img", {
+        y: -120,
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
           end: "bottom top",
-          scrub: 1
-        }
-      });
-
-      gsap.to(".side-img-container.right", {
-        y: 100,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1
-        }
+          scrub: 1,
+        },
       });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
+  // Auto-advance slides
   useEffect(() => {
     const interval = setInterval(() => {
       gsap.to(".hero-center-title", {
@@ -118,42 +77,27 @@ const Hero = () => {
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
           );
-        }
+        },
       });
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section ref={containerRef} className="hero-dual-reveal">
-      <div className="hero-side left-side">
-        {slides.map((slide, i) => (
-          <div 
-            key={i} 
-            className={`side-img-container left ${i === currentIndex ? 'active' : ''}`}
-          >
-            <img src={slide.left} alt="Professional Photography" className="side-img" decoding="async" />
-          </div>
-        ))}
-        <div className="side-overlay"></div>
-      </div>
+    <section ref={containerRef} className="hero-full">
 
-      <div className="hero-side right-side">
-        {slides.map((slide, i) => (
-          <div 
-            key={i} 
-            className={`side-img-container right ${i === currentIndex ? 'active' : ''}`}
-          >
-            <img src={slide.right} alt="Professional Photography" className="side-img" decoding="async" />
-          </div>
-        ))}
-        <div className="side-overlay"></div>
-      </div>
+      {/* Background images — only the active one is visible */}
+      {slides.map((slide, i) => (
+        <div key={i} className={`hero-bg-slide ${i === currentIndex ? 'active' : ''}`}>
+          <img src={slide.img} alt="Photography" className="hero-bg-img" decoding="async" />
+        </div>
+      ))}
 
-      <div className="center-line"></div>
+      {/* Dark overlay */}
+      <div className="hero-overlay" />
 
-      <div className="hero-center-content" ref={textRef}>
+      {/* Centered text */}
+      <div className="hero-center-content">
         <h1 className="hero-center-title">
           <span className="brand-main">{slides[currentIndex].t1}</span>
           <span className="brand-accent"><i>{slides[currentIndex].t2}</i></span>

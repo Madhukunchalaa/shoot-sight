@@ -5,6 +5,7 @@ import './OurStory.css';
 
 const story1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
 const story2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4849-2.webp";
+const story3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC02320.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +37,17 @@ const OurStory = () => {
         }
       });
 
+      gsap.to(".story-img-wrapper.type-3", {
+        y: -60,
+        x: -20,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.4
+        }
+      });
+
       // Text reveal
       gsap.from(".story-content-new > *", {
         y: 30,
@@ -64,6 +76,9 @@ const OurStory = () => {
             </div>
             <div className="story-img-wrapper type-2">
               <img src={story2} alt="Detail Frame" />
+            </div>
+            <div className="story-img-wrapper type-3">
+              <img src={story3} alt="Candid Moment" loading="lazy" decoding="async" />
             </div>
           </div>
 

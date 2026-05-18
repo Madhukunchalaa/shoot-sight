@@ -102,10 +102,10 @@
 
 /* Hero Spread */
 .about-hero-spread {
-  min-height: 90vh;
   display: flex;
   align-items: center;
-  padding-top: 150px;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 .about-hero-grid {
@@ -431,8 +431,7 @@
 
 /* Philosophy Section - Clean Light Asymmetrical Split Layout */
 .about-philosophy {
-  background: var(--bg-color); /* Matches the beautiful default warm cream backdrop */
-  margin-top: 60px;
+  background: var(--bg-color);
 }
 
 .philosophy-split-grid {
@@ -612,7 +611,7 @@
 
 /* Signature */
 .about-signature-editorial {
-  padding-bottom: 150px;
+  padding-bottom: 80px;
 }
 
 .editorial-quote {

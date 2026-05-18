@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { API_URL } from '../config';
+import RecentShoots from '../components/RecentShoots';
 import './Portfolio.css';
 
 const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
@@ -121,9 +122,9 @@ const Portfolio = () => {
         </div>
 
         <div className="portfolio-filters-elegant">
-          {['All', 'Wedding', 'Pre-wedding', 'Editorial', 'Cinematic'].map(cat => (
-            <button 
-              key={cat} 
+          {['All', 'Wedding', 'Pre-wedding', 'Editorial', 'Cinematic', 'Recent Captures'].map(cat => (
+            <button
+              key={cat}
               className={`filter-btn-chic ${filter === cat ? 'active' : ''}`}
               onClick={() => setFilter(cat)}
             >
@@ -132,27 +133,31 @@ const Portfolio = () => {
           ))}
         </div>
 
-        <div className="portfolio-masonry-grid">
-          {filteredItems.map((item, index) => (
-            <div 
-              key={`${item.id}-${index}`} 
-              className={`gallery-editorial-item size-${item.size}`}
-              onClick={() => setLightboxImage(item.img)}
-            >
-              <div className="gallery-matte-frame">
-                <div className="gallery-img-wrapper">
-                  <img src={item.img} alt={`Frame 0${index + 1}`} loading="lazy" />
-                  <div className="gallery-overlay">
-                    <span className="explore-pill">Explore Fullscreen</span>
+        {filter === 'Recent Captures' ? (
+          <RecentShoots />
+        ) : (
+          <div className="portfolio-masonry-grid">
+            {filteredItems.map((item, index) => (
+              <div
+                key={`${item.id}-${index}`}
+                className={`gallery-editorial-item size-${item.size}`}
+                onClick={() => setLightboxImage(item.img)}
+              >
+                <div className="gallery-matte-frame">
+                  <div className="gallery-img-wrapper">
+                    <img src={item.img} alt={`Frame 0${index + 1}`} loading="lazy" />
+                    <div className="gallery-overlay">
+                      <span className="explore-pill">Explore Fullscreen</span>
+                    </div>
+                  </div>
+                  <div className="gallery-editorial-details">
+                    <span className="item-index-faint">0{index + 1}</span>
                   </div>
                 </div>
-                <div className="gallery-editorial-details">
-                  <span className="item-index-faint">0{index + 1}</span>
-                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Fullscreen Lightbox Modal */}
