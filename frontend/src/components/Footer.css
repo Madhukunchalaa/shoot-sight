@@ -17,7 +17,8 @@
   height: 80px;
   margin-bottom: 20px;
   opacity: 0.9;
-  filter: invert(1); /* Turns the dark logo white */
+  /* invert(1): black text → white, red→cyan. hue-rotate(180deg): cyan→red back. Net result: white text + red @. */
+  filter: invert(1) hue-rotate(180deg) saturate(3) brightness(1.15);
 }
 
 .footer-slogan {

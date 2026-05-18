@@ -29,7 +29,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-massive-text">
-          Shoot <i className="italic-accent">@ Sight</i>
+          <i className="italic-accent">Shoot @ Sight</i>
         </div>
 
         <div className="footer-bottom">

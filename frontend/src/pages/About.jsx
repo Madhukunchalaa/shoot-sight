@@ -191,24 +191,24 @@ const About = () => {
                 <div className="founder-backdrop-frame"></div>
                 
                 <div className="founder-img-wrapper">
-                  <img src={founderImg} alt="Pavitra — Founder & Director" />
+                  <img src={founderImg} alt="Pavithra — Founder & Director" />
                 </div>
               </div>
             </div>
 
             <div className="founder-content-col">
               <span className="subtitle-accent">MEET THE FOUNDER</span>
-              <h2 className="founder-main-title">Pavitra</h2>
+              <h2 className="founder-main-title">Pavithra</h2>
               <p className="founder-sub-headline">Lead Visual Director & Founder</p>
               
               <h3 className="founder-quote">"We do not merely take photographs. We curate the timeless <i>poetry</i> of your celebration."</h3>
               
               <div className="founder-bio">
                 <p className="bio-paragraph dropcap-para">
-                  As the visionary behind Shoot @ Sight, Pavitra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.
+                  As the visionary behind Shoot @ Sight, Pavithra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.
                 </p>
                 <p className="bio-paragraph">
-                  Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavitra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.
+                  Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavithra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.
                 </p>
               </div>
 
@@ -231,7 +231,7 @@ const About = () => {
               </div>
 
               <div className="founder-signature-block">
-                <span className="founder-name">Pavitra</span>
+                <span className="founder-name">Pavithra</span>
                 <span className="founder-title">FOUNDER // SHOOT @ SIGHT</span>
               </div>
             </div>

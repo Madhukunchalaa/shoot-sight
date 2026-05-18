@@ -164,7 +164,6 @@
 
 .about-img-mask {
   width: 100%;
-  aspect-ratio: 16/10.5; /* Beautiful landscape format so everyone displays fully side-by-side! */
   overflow: hidden;
   box-shadow: 20px 20px 60px rgba(0,0,0,0.06);
   z-index: 2;
@@ -173,10 +172,9 @@
 
 .about-img-mask img {
   width: 100%;
-  height: 125%; /* Space for scroll parallax */
-  object-fit: cover;
+  height: auto; /* Natural aspect ratio — no cropping, all faces visible */
+  display: block;
   filter: contrast(1.05) saturate(1.02);
-  transform: translateY(-10%);
 }
 
 /* Offset Backdrop outline */
