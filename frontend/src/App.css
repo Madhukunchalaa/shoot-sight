@@ -40,6 +40,10 @@
   padding-right: 20px;
 }
 
+.film-text-content .btn-premium {
+  margin-top: 40px;
+}
+
 .film-description {
   font-family: var(--font-serif);
   font-size: 16px;
@@ -56,13 +60,6 @@
   gap: 30px;
 }
 
-.film-view-btn-row {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-  position: relative;
-  z-index: 3;
-}
 
 .film-video-item {
   position: relative;

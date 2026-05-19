@@ -7,25 +7,25 @@ const films = [
   {
     id: 'E6mpqvgMyUY',
     label: "DIRECTOR'S CUT",
-    location: "MONACO",
+    location: "DUBAI",
     num: "01"
   },
   {
     id: 'wLqHwzM9ABo',
     label: "CINEMATIC ESSENCE",
-    location: "TUSCANY",
+    location: "INDIA",
     num: "02"
   },
   {
     id: 'a94LGkUt3Pg',
     label: "THE SYMPHONY",
-    location: "PARIS",
+    location: "INDIA",
     num: "03"
   },
   {
     id: 'b58Iizh8Dfg',
     label: "ETERNAL NARRATIVE",
-    location: "AMALFI",
+    location: "INDIA",
     num: "04"
   }
 ];

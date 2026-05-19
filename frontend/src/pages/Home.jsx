@@ -116,6 +116,7 @@ const Home = () => {
             <p className="film-description">
               Experience the raw emotion, the fleeting glances, and the symphony of love in motion. Our films are crafted not just to document, but to make you feel.
             </p>
+            <Link to="/films" className="btn-premium">View Films</Link>
           </div>
 
           <div className="film-video-item">
@@ -132,10 +133,6 @@ const Home = () => {
             </div>
           </div>
 
-        </div>
-
-        <div className="film-view-btn-row">
-          <Link to="/films" className="btn-premium">View Films</Link>
         </div>
 
       </section>
