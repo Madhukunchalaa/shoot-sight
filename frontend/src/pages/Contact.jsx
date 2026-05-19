@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,6 +10,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const container = useRef();
+  const [form, setForm] = useState({
+    names: '',
+    email: '',
+    date: '',
+    venue: '',
+    vision: '',
+    investment: ''
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   useGSAP(() => {
     // Elegant entrance reveal
@@ -33,7 +45,20 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Your narrative has been initiated. Our curation team will review your application shortly.");
+    const subject = encodeURIComponent(`New Commission Enquiry — ${form.names}`);
+    const body = encodeURIComponent(
+`New Commission Application — Shoot @ Sight
+
+Names: ${form.names}
+Email: ${form.email}
+Celebration Date: ${form.date}
+Destinations / Venues: ${form.venue}
+Investment Range: ${form.investment}
+
+Artistic Scope / Vision:
+${form.vision}`
+    );
+    window.location.href = `mailto:shootatsightweddings@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -104,62 +129,83 @@ const Contact = () => {
               
               <div className="form-input-group">
                 <label className="form-input-label">Your Names</label>
-                <input 
-                  type="text" 
-                  required 
-                  className="input-contact-chic" 
-                  placeholder="e.g. Aria & Alexander" 
+                <input
+                  type="text"
+                  name="names"
+                  value={form.names}
+                  onChange={handleChange}
+                  required
+                  className="input-contact-chic"
+                  placeholder="e.g. Aria & Alexander"
                 />
               </div>
 
               <div className="form-input-group">
                 <label className="form-input-label">Email Address</label>
-                <input 
-                  type="email" 
-                  required 
-                  className="input-contact-chic" 
-                  placeholder="e.g. aria@luxury.com" 
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  className="input-contact-chic"
+                  placeholder="e.g. aria@luxury.com"
                 />
               </div>
 
               <div className="form-double-fields">
                 <div className="form-input-group">
                   <label className="form-input-label">Celebration Date</label>
-                  <input 
-                    type="text" 
-                    required 
-                    className="input-contact-chic" 
-                    placeholder="DD.MM.YYYY" 
+                  <input
+                    type="text"
+                    name="date"
+                    value={form.date}
+                    onChange={handleChange}
+                    required
+                    className="input-contact-chic"
+                    placeholder="DD.MM.YYYY"
                   />
                 </div>
                 <div className="form-input-group">
                   <label className="form-input-label">Destinations / Venues</label>
-                  <input 
-                    type="text" 
-                    required 
-                    className="input-contact-chic" 
-                    placeholder="e.g. Lake Como, Italy" 
+                  <input
+                    type="text"
+                    name="venue"
+                    value={form.venue}
+                    onChange={handleChange}
+                    required
+                    className="input-contact-chic"
+                    placeholder="e.g. Lake Como, Italy"
                   />
                 </div>
               </div>
 
               <div className="form-input-group">
                 <label className="form-input-label">Artistic Scope / Vision</label>
-                <textarea 
-                  rows="4" 
-                  required 
-                  className="textarea-contact-chic" 
+                <textarea
+                  rows="4"
+                  name="vision"
+                  value={form.vision}
+                  onChange={handleChange}
+                  required
+                  className="textarea-contact-chic"
                   placeholder="Tell us about the atmosphere, the styling, and what draws you to our raw visual signature..."
                 />
               </div>
 
               <div className="form-input-group">
                 <label className="form-input-label">Investment Range</label>
-                <select className="select-contact-chic" required>
-                  <option value="" disabled selected>Select Your Curation Tier</option>
-                  <option value="essential">Signature Photo Journal (Starting at $8,000)</option>
-                  <option value="cinematic">Editorial Photo + Cinema Curation (Starting at $14,000)</option>
-                  <option value="multi-day">Multi-day Global Archive (Starting at $25,000)</option>
+                <select
+                  name="investment"
+                  value={form.investment}
+                  onChange={handleChange}
+                  className="select-contact-chic"
+                  required
+                >
+                  <option value="" disabled>Select Your Curation Tier</option>
+                  <option value="Signature Photo Journal (Starting at $8,000)">Signature Photo Journal (Starting at $8,000)</option>
+                  <option value="Editorial Photo + Cinema Curation (Starting at $14,000)">Editorial Photo + Cinema Curation (Starting at $14,000)</option>
+                  <option value="Multi-day Global Archive (Starting at $25,000)">Multi-day Global Archive (Starting at $25,000)</option>
                 </select>
               </div>
 

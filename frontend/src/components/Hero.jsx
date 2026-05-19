@@ -5,9 +5,9 @@ import './Hero.css';
 
 const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7441.webp";
 const img2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD07968.webp";
-const img3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4399.webp";
-const img4 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4761_-_Copy.webp";
-const img5 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp";
+const img3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_6193.webp";
+const img4 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6398.webp";
+const img5 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A8309.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
