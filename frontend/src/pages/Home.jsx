@@ -36,82 +36,106 @@ const Home = () => {
   }, []);
 
   useGSAP(() => {
-    // 1. Elegant side-by-side pinning: lock left-hand text content while right-hand videos scroll past
-    ScrollTrigger.create({
-      trigger: ".film-section-editorial",
-      start: "top 120px",  // Pins when the top of the editorial section reaches 120px from screen top
-      end: "bottom 95%",  // Unpins when the bottom of the section reaches 95% of viewport
-      pin: ".film-text-content",
-      pinSpacing: false,   // Prevents empty dead-space layout shifting
-      invalidateOnRefresh: true
-    });
+    // All film-section animations are desktop-only.
+    // On mobile the layout is single-column, so pinning .film-text-content
+    // causes it to float out of flow and overlap adjacent sections.
+    ScrollTrigger.matchMedia({
 
-    // 2. Elegant staggered reveal for film text content items (only triggers once)
-    gsap.from(".film-text-content > *", {
-      y: 40,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 1.2,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".film-section-editorial",
-        start: "top 80%",
-        toggleActions: "play none none none"
-      }
-    });
+      // ── Desktop only (> 1024px) ──────────────────────────────────────────
+      "(min-width: 1025px)": function () {
 
-    // 3. Parallax sliding effect for the massive background word "CINEMA"
-    gsap.fromTo(".massive-bg-word",
-      { xPercent: -15 },
-      {
-        xPercent: 15,
-        scrollTrigger: {
+        // 1. Side-by-side pin: lock left text while right videos scroll past
+        ScrollTrigger.create({
           trigger: ".film-section-editorial",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.2
-        }
+          start: "top 120px",
+          end: "bottom 95%",
+          pin: ".film-text-content",
+          pinSpacing: false,
+          invalidateOnRefresh: true
+        });
+
+        // 2. Staggered reveal for film text items
+        gsap.from(".film-text-content > *", {
+          y: 40,
+          opacity: 0,
+          stagger: 0.15,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".film-section-editorial",
+            start: "top 80%",
+            toggleActions: "play none none none"
+          }
+        });
+
+        // 3. Parallax background word "CINEMA"
+        gsap.fromTo(".massive-bg-word",
+          { xPercent: -15 },
+          {
+            xPercent: 15,
+            scrollTrigger: {
+              trigger: ".film-section-editorial",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.2
+            }
+          }
+        );
+
+        // 4. Cinematic spotlight focus on video items
+        gsap.utils.toArray('.film-video-item').forEach((item) => {
+          gsap.fromTo(item,
+            { scale: 0.96, opacity: 0.4 },
+            {
+              scale: 1.03,
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: item,
+                start: "top 70%",
+                end: "bottom 30%",
+                scrub: 0.8,
+                toggleActions: "play reverse play reverse"
+              }
+            }
+          );
+        });
+
+        // 5. Subtle parallax on video backdrops
+        gsap.utils.toArray('.video-backdrop').forEach((backdrop) => {
+          gsap.fromTo(backdrop,
+            { yPercent: -8, scaleY: 0.95 },
+            {
+              yPercent: 8,
+              scaleY: 1.05,
+              scrollTrigger: {
+                trigger: backdrop,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1
+              }
+            }
+          );
+        });
+      },
+
+      // ── Mobile (≤ 1024px): simple fade-in only, no pinning ──────────────
+      "(max-width: 1024px)": function () {
+        gsap.from(".film-text-content > *", {
+          y: 30,
+          opacity: 0,
+          stagger: 0.12,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".film-section-editorial",
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
       }
-    );
 
-    // 4. Cinematic Spotlight Focus Parallax for the videos!
-    // As each video card scrolls into the center of the screen, it highlights/zooms up smoothly.
-    const videoItems = gsap.utils.toArray('.film-video-item');
-    videoItems.forEach((item) => {
-      gsap.fromTo(item,
-        { scale: 0.96, opacity: 0.4 },
-        {
-          scale: 1.03,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 70%",   // Highlights when top of video reaches 70% viewport
-            end: "bottom 30%",  // Dims out when bottom of video leaves 30% viewport
-            scrub: 0.8,         // Silky smooth scrubbing matching the user's scroll speed
-            toggleActions: "play reverse play reverse"
-          }
-        }
-      );
-    });
-
-    // 5. Parallax subtle scaling and vertical drift on the backdrop element inside each video item
-    const backdrops = gsap.utils.toArray('.video-backdrop');
-    backdrops.forEach((backdrop) => {
-      gsap.fromTo(backdrop,
-        { yPercent: -8, scaleY: 0.95 },
-        {
-          yPercent: 8,
-          scaleY: 1.05,
-          scrollTrigger: {
-            trigger: backdrop,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1
-          }
-        }
-      );
     });
   }, []);
 
