@@ -5,7 +5,7 @@ import './OurStory.css';
 
 const story1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
 const story2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4849-2.webp";
-const story3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC02320.webp";
+const story3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
