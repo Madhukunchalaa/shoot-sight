@@ -265,6 +265,18 @@ p {
   padding: 160px 0;
 }
 
+@media (max-width: 1024px) {
+  .section-padding {
+    padding: 80px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .section-padding {
+    padding: 60px 0;
+  }
+}
+
 /* Buttons */
 .btn-premium {
   display: inline-block;

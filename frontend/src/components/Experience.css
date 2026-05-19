@@ -1,7 +1,7 @@
 /* ─── Experience Section ─── */
 .experience-section {
   width: 100%;
-  padding: 120px 0;
+  padding: 120px 0 80px;
   background: var(--bg-color);
   position: relative;
 }
