@@ -75,12 +75,6 @@ body {
 .footer-logo {
   height: 60px;
   width: auto;
-  filter: grayscale(1);
-  transition: filter 0.3s ease;
-}
-
-.footer-logo:hover {
-  filter: grayscale(0);
 }
 
 .footer-nav {

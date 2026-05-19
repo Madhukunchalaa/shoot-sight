@@ -36,15 +36,12 @@ const Home = () => {
   }, []);
 
   useGSAP(() => {
-    // All film-section animations are desktop-only.
-    // On mobile the layout is single-column, so pinning .film-text-content
-    // causes it to float out of flow and overlap adjacent sections.
     ScrollTrigger.matchMedia({
 
       // ── Desktop only (> 1024px) ──────────────────────────────────────────
       "(min-width: 1025px)": function () {
 
-        // 1. Side-by-side pin: lock left text while right videos scroll past
+        // 1. Pin left text while right video stays in view
         ScrollTrigger.create({
           trigger: ".film-section-editorial",
           start: "top 120px",
@@ -150,96 +147,35 @@ const Home = () => {
       <Experience />
       
       {/* Featured Films Section */}
-      <section className="section-padding container film-section-editorial">
+      <section className="container film-section-editorial">
         <div className="massive-bg-word">CINEMA</div>
         <div className="film-editorial-grid">
-          
+
           <div className="film-text-content">
             <span className="subtitle-accent">03 // FEATURED FILMS</span>
-            <h2 className="section-title-large">Cinematic <br /><i>Poetry</i></h2>
+            <h2 className="film-section-heading">Cinematic <i>Poetry</i></h2>
             <p className="film-description">
               Experience the raw emotion, the fleeting glances, and the symphony of love in motion. Our films are crafted not just to document, but to make you feel.
             </p>
-            <Link to="/portfolio" className="btn-premium">Explore Films</Link>
+            <Link to="/films" className="btn-premium">View Films</Link>
           </div>
 
-          <div className="film-videos-column">
-            
-            {/* Video 1 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">DIRECTOR'S CUT // MONACO</div>
+          <div className="film-video-item">
+            <div className="video-backdrop"></div>
+            <div className="video-responsive">
+              <iframe
+                src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1"
+                title="Director's Cut — Monaco"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
             </div>
-
-            {/* Video 2 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/wLqHwzM9ABo?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=wLqHwzM9ABo&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">CINEMATIC ESSENCE // TUSCANY</div>
-            </div>
-
-            {/* Video 3 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/a94LGkUt3Pg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=a94LGkUt3Pg&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">THE SYMPHONY // PARIS</div>
-            </div>
-
-            {/* Video 4 */}
-            <div className="film-video-item">
-              <div className="video-backdrop"></div>
-              <div className="video-responsive">
-                <iframe 
-                  width="560" 
-                  height="315" 
-                  src="https://www.youtube.com/embed/b58Iizh8Dfg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=b58Iizh8Dfg&playsinline=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="floating-film-label">ETERNAL NARRATIVE // AMALFI</div>
-            </div>
-
           </div>
 
         </div>
+
       </section>
 
       {/* Testimonials (Kudos & Praise) */}

@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const teamImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/team.webp";
-const founderImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_1351jpg.webp";
+const founderImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/founder%20(1).webp";
 const aboutHeroBg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC01641_-_Copy.webp";
 const philosophyBg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/camera_lens_detail.webp";
 import './About.css';
@@ -146,73 +146,37 @@ const About = () => {
         </div>
       </section>
 
-      {/* Magazine Spread Hero */}
-      <section className="about-hero-spread container section-padding">
-        <div className="about-hero-grid">
-          <div className="about-hero-text">
-            <span className="subtitle-accent">02 // THE STUDIO</span>
-            <h1 className="about-main-title">
-              <span className="about-title-word">Curating <i>Legacy</i></span><br/>
-              <span className="about-title-word">Through Light.</span>
-            </h1>
-            <p className="about-hero-desc about-title-word">
-              Founded in 2018, Shoot @ Sight is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.
-            </p>
-          </div>
-          
-          <div className="about-hero-img">
-            <div className="about-team-card-container">
-              {/* Sideways Text Tag */}
-              <div className="about-team-vertical-tag">CREATIVE COLLECTIVE // EST. 2018</div>
-              
-              {/* Offset Decorative Border */}
-              <div className="about-team-backdrop"></div>
-              
-              <div className="about-img-mask">
-                <img src={teamImg} alt="Shoot @ Sight Studio Team" />
-              </div>
-            </div>
-            <div className="img-caption">The Shoot @ Sight Creative Collective, 2026</div>
-          </div>
-        </div>
-      </section>
-
       {/* The Founder Section */}
       <section className="about-founder-section section-padding">
         <div className="container">
           <div className="founder-grid">
-            
+
             <div className="founder-image-col">
               <div className="founder-card-container">
-                {/* Vertical Tag */}
                 <div className="founder-vertical-tag">CREATIVE DIRECTOR // PAVITRA</div>
-                
-                {/* Decorative Offset Outline Frame */}
                 <div className="founder-backdrop-frame"></div>
-                
                 <div className="founder-img-wrapper">
-                  <img src={founderImg} alt="Pavitra — Founder & Director" />
+                  <img src={founderImg} alt="Pavithra — Founder & Director" />
                 </div>
               </div>
             </div>
 
             <div className="founder-content-col">
               <span className="subtitle-accent">MEET THE FOUNDER</span>
-              <h2 className="founder-main-title">Pavitra</h2>
+              <h2 className="founder-main-title">Pavithra</h2>
               <p className="founder-sub-headline">Lead Visual Director & Founder</p>
-              
+
               <h3 className="founder-quote">"We do not merely take photographs. We curate the timeless <i>poetry</i> of your celebration."</h3>
-              
+
               <div className="founder-bio">
                 <p className="bio-paragraph dropcap-para">
-                  As the visionary behind Shoot @ Sight, Pavitra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.
+                  As the visionary behind Shoot @ Sight, Pavithra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.
                 </p>
                 <p className="bio-paragraph">
-                  Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavitra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.
+                  Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavithra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.
                 </p>
               </div>
 
-              {/* Core Attributes */}
               <div className="founder-pillars">
                 <div className="pillar-item">
                   <span className="pillar-num">01 /</span>
@@ -231,11 +195,38 @@ const About = () => {
               </div>
 
               <div className="founder-signature-block">
-                <span className="founder-name">Pavitra</span>
+                <span className="founder-name">Pavithra</span>
                 <span className="founder-title">FOUNDER // SHOOT @ SIGHT</span>
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* Team / Magazine Spread */}
+      <section className="about-hero-spread container section-padding">
+        <div className="about-hero-grid">
+          <div className="about-hero-text">
+            <span className="subtitle-accent">02 // THE STUDIO</span>
+            <h1 className="about-main-title">
+              <span className="about-title-word">Curating <i>Legacy</i></span><br/>
+              <span className="about-title-word">Through Light.</span>
+            </h1>
+            <p className="about-hero-desc about-title-word">
+              Founded in 2018, Shoot @ Sight is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.
+            </p>
+          </div>
+
+          <div className="about-hero-img">
+            <div className="about-team-card-container">
+              <div className="about-team-vertical-tag">CREATIVE COLLECTIVE // EST. 2018</div>
+              <div className="about-team-backdrop"></div>
+              <div className="about-img-mask">
+                <img src={teamImg} alt="Shoot @ Sight Studio Team" />
+              </div>
+            </div>
+            <div className="img-caption">The Shoot @ Sight Creative Collective, 2026</div>
           </div>
         </div>
       </section>

@@ -3,6 +3,7 @@ import { useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Home from './pages/Home';
+import Films from './pages/Films';
 import About from './pages/About';
 import ShootDetail from './pages/ShootDetail';
 import Portfolio from './pages/Portfolio';
@@ -39,6 +40,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/films" element={<Films />} />
           <Route path="/about" element={<About />} />
           <Route path="/shoot/:id" element={<ShootDetail />} />
           <Route path="/portfolio" element={<Portfolio />} />

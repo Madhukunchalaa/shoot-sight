@@ -1,64 +1,47 @@
-.hero-dual-reveal {
+.hero-full {
   height: 100vh;
   width: 100%;
-  display: flex;
   position: relative;
   overflow: hidden;
   background: var(--text-primary);
 }
 
-.hero-side {
-  width: 50%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.side-img-container {
+/* ─── Background slides ──────────────────────────────── */
+.hero-bg-slide {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   opacity: 0;
   transition: opacity 1.5s ease-in-out;
   z-index: 1;
 }
 
-.side-img-container.active {
+.hero-bg-slide.active {
   opacity: 1;
   z-index: 2;
 }
 
-.side-img {
+.hero-bg-img {
   width: 100%;
-  height: 130%; /* For parallax */
+  height: 130%; /* extra height for parallax travel */
   object-fit: cover;
   position: absolute;
   top: -15%;
 }
 
-.side-overlay {
+/* ─── Overlay ────────────────────────────────────────── */
+.hero-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(60, 48, 36, 0.3), rgba(60, 48, 36, 0.1));
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(30, 22, 14, 0.35) 0%,
+    rgba(30, 22, 14, 0.15) 50%,
+    rgba(30, 22, 14, 0.5)  100%
+  );
   z-index: 5;
 }
 
-.center-line {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 1px;
-  height: 60%;
-  background: rgba(255,255,255,0.2);
-  z-index: 6;
-}
-
+/* ─── Text ───────────────────────────────────────────── */
 .hero-center-content {
   position: absolute;
   top: 50%;
@@ -76,16 +59,16 @@
 }
 
 .brand-main {
-  font-size: clamp(40px, 10vw, 100px); /* Reduced Size */
+  font-size: clamp(40px, 10vw, 110px);
   font-weight: 900;
   color: #ffffff;
   text-transform: uppercase;
-  letter-spacing: 4px; /* Increased Spacing */
-  text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  letter-spacing: 6px;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
 }
 
 .brand-accent {
-  font-size: clamp(30px, 8vw, 80px); /* Reduced Size */
+  font-size: clamp(30px, 8vw, 88px);
   font-weight: 300;
   color: #ffffff;
 }
@@ -94,9 +77,9 @@
   font-family: var(--font-serif);
   font-weight: 400;
   font-style: italic;
-  color: #d4af37; /* Champagne Gold */
+  color: #d4af37;
   margin-left: 10px;
-  text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  text-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
 .hero-tagline-luxury {
@@ -104,36 +87,13 @@
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 6px;
-  color: #fdf8f3; /* Soft Cream */
+  color: #fdf8f3;
   margin-top: 40px;
   opacity: 0.8;
 }
 
-.hero-corner-detail {
-  position: absolute;
-  padding: 40px 60px;
-  font-family: var(--font-sans);
-  font-size: 10px;
-  letter-spacing: 4px;
-  color: #fdf8f3; /* Soft Cream */
-  opacity: 0.6;
-  z-index: 11;
-}
-
-.top-left { top: 0; left: 0; }
-.top-right { top: 0; right: 0; }
-.bottom-left { bottom: 0; left: 0; }
-.bottom-right { bottom: 0; right: 0; }
-
+/* ─── Mobile ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .hero-dual-reveal {
-    flex-direction: column;
-  }
-  .hero-side {
-    width: 100%;
-    height: 50%;
-  }
-  .center-line {
-    display: none;
-  }
+  .brand-main    { letter-spacing: 3px; }
+  .hero-tagline-luxury { letter-spacing: 4px; font-size: 9px; }
 }

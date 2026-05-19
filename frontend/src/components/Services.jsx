@@ -19,9 +19,9 @@ const Services = () => {
       const { clientX, clientY } = e;
       // Pushing it further to the right (+150) and higher up (-300)
       gsap.to(imageRef.current, {
-        x: clientX + 150, 
+        x: clientX + 150,
         y: clientY - 300,
-        rotation: 3, 
+        rotation: 0,
         duration: 1,
         ease: "power2.out"
       });
