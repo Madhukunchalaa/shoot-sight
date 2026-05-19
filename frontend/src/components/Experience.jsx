@@ -14,66 +14,54 @@ const Experience = () => {
   const containerRef = useRef(null);
 
   useGSAP(() => {
-    const panels = gsap.utils.toArray('.experience-layer', containerRef.current);
-    if (panels.length === 0) return;
-
-    // Trigger and pin the stacking container directly to place the pin-spacer outside the element
-    const tl = gsap.timeline({
+    // Simple scroll-reveal for the section header
+    gsap.from('.exp-section-header', {
+      y: 60,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power3.out',
       scrollTrigger: {
-        trigger: containerRef.current, // Trigger directly on the container
-        start: "top top",
-        end: () => `+=${(panels.length - 1) * 100}%`, // Scroll for exactly 3 transitions (300vh)
-        pin: true, // Pin the container directly
-        scrub: true,
-        pinSpacing: true,
-        invalidateOnRefresh: true, // Dynamically recalibrates coordinates on viewport updates
+        trigger: '.exp-section-header',
+        start: 'top 85%',
+        once: true,
       }
     });
 
-    // Build the sequential card stack reveals
-    panels.forEach((panel, i) => {
-      if (i > 0) {
-        // Slide the current panel up from offscreen
-        tl.fromTo(panel,
-          { yPercent: 100 },
-          { 
-            yPercent: 0,
-            ease: "none"
-          },
-          `+=0`
-        );
-
-        // Simultaneously scale down and fade the previous layer to create premium 3D depth-of-field stacking!
-        tl.to(panels[i - 1], {
-          scale: 0.95,
-          opacity: 0.4,
-          ease: "power1.inOut"
-        }, `<`); // Align with the start of the current panel's slide-up
-      }
+    // Staggered reveal for each card
+    gsap.utils.toArray('.exp-card', containerRef.current).forEach((card, i) => {
+      gsap.from(card, {
+        y: 80,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          once: true,
+        },
+        delay: i * 0.1,
+      });
     });
 
   }, { scope: containerRef, dependencies: [] });
 
   return (
-    <div className="experience-isolation-wrapper">
-      <section ref={containerRef} className="experience-stack-container">
-        
-        {/* INTRO LAYER */}
-        <div className="experience-layer intro-layer">
-          <div className="layer-content-centered">
-            <span className="subtitle-accent">02 // THE EXPERIENCE</span>
-            <h2 className="section-title-large">How We <br /><i>Manifest</i> Magic</h2>
-            <div className="scroll-indicator-boutique">
-              <span className="line"></span>
-              <span className="txt">SCROLL TO UNVEIL</span>
-            </div>
-          </div>
+    <section ref={containerRef} className="experience-section">
+      <div className="container">
+
+        {/* Section Header */}
+        <div className="exp-section-header">
+          <span className="subtitle-accent">02 // THE EXPERIENCE</span>
+          <h2 className="exp-main-title">How We <i>Manifest</i> Magic</h2>
+          <p className="exp-subtitle">Three deliberate phases, crafted to create timeless imagery.</p>
         </div>
 
-        {/* STEP 01 */}
-        <div className="experience-layer step-layer color-1">
-          <div className="layer-grid container">
-            <div className="layer-text-side">
+        {/* Cards Grid */}
+        <div className="exp-cards-grid">
+
+          {/* Phase 01 */}
+          <div className="exp-card exp-card--reverse">
+            <div className="exp-card__text">
               <span className="layer-num">Phase 01 // Curation</span>
               <h3 className="layer-heading">The Curation</h3>
               <p className="layer-desc">We begin by understanding the soul of your story, selecting the perfect aesthetic tone and light for your unique celebration.</p>
@@ -83,23 +71,21 @@ const Experience = () => {
                 <span className="exp-tag">Styling Harmony</span>
               </div>
             </div>
-            <div className="layer-img-side">
+            <div className="exp-card__image">
               <div className="img-reveal-wrapper">
                 <img src={curationImg} alt="The Curation Process" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* STEP 02 */}
-        <div className="experience-layer step-layer color-2">
-          <div className="layer-grid container">
-            <div className="layer-img-side">
+          {/* Phase 02 */}
+          <div className="exp-card">
+            <div className="exp-card__image">
               <div className="img-reveal-wrapper">
                 <img src={captureImg} alt="Cinematic Capture" loading="lazy" decoding="async" />
               </div>
             </div>
-            <div className="layer-text-side">
+            <div className="exp-card__text">
               <span className="layer-num">Phase 02 // Capture</span>
               <h3 className="layer-heading">The Capture</h3>
               <p className="layer-desc">Discreet, immersive, and refined. We capture the moments that feel like a whisper, and the ones that roar across time.</p>
@@ -110,12 +96,10 @@ const Experience = () => {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* STEP 03 */}
-        <div className="experience-layer step-layer color-3">
-          <div className="layer-grid container">
-            <div className="layer-text-side">
+          {/* Phase 03 */}
+          <div className="exp-card exp-card--reverse">
+            <div className="exp-card__text">
               <span className="layer-num">Phase 03 // Heirloom</span>
               <h3 className="layer-heading">The Heirloom</h3>
               <p className="layer-desc">Final delivery of high-fidelity, processed imagery designed to last for generations. Your legacy, preserved in light.</p>
@@ -125,16 +109,16 @@ const Experience = () => {
                 <span className="exp-tag">Digital Vault</span>
               </div>
             </div>
-            <div className="layer-img-side">
+            <div className="exp-card__image">
               <div className="img-reveal-wrapper">
                 <img src={heirloomImg} alt="Timeless Heirloom Delivery" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>
-        </div>
 
-      </section>
-    </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
