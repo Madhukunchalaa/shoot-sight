@@ -112,7 +112,7 @@ const Blog = () => {
     );
 
     // Parallax on large background numbers
-    gsap.utils.toArray('.bg-number').forEach((num) => {
+    gsap.utils.toArray('.bg-number', container.current).forEach((num) => {
       gsap.to(num, {
         y: -100,
         scrollTrigger: {
@@ -123,7 +123,7 @@ const Blog = () => {
     });
 
     // Image Mask Reveals
-    gsap.utils.toArray('.blog-img-box').forEach((box) => {
+    gsap.utils.toArray('.blog-img-box', container.current).forEach((box) => {
       gsap.from(box, {
         clipPath: 'inset(100% 0% 0% 0%)',
         duration: 1.5,

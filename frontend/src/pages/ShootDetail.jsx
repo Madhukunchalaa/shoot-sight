@@ -212,7 +212,7 @@ const ShootDetail = () => {
       });
 
       // Gallery Scroll reveal
-      gsap.utils.toArray('.exhibition-gallery-item').forEach(item => {
+      gsap.utils.toArray('.exhibition-gallery-item', container.current).forEach(item => {
         gsap.from(item, {
           y: 100,
           opacity: 0,

@@ -12,7 +12,7 @@ const PortfolioPreview = () => {
 
   useGSAP(() => {
     // Image Mask Reveals
-    gsap.utils.toArray('.item-image-wrapper').forEach((wrapper) => {
+    gsap.utils.toArray('.item-image-wrapper', container.current).forEach((wrapper) => {
       gsap.from(wrapper, {
         clipPath: 'inset(100% 0% 0% 0%)',
         duration: 1.5,
@@ -25,7 +25,7 @@ const PortfolioPreview = () => {
     });
 
     // Parallax on images
-    gsap.utils.toArray('.item-image').forEach((img) => {
+    gsap.utils.toArray('.item-image', container.current).forEach((img) => {
       gsap.to(img, {
         y: -50,
         ease: 'none',
@@ -47,7 +47,7 @@ const PortfolioPreview = () => {
         start: 'top 70%',
       }
     });
-  }, { scope: container });
+  }, { scope: container, dependencies: [] });
 
   const items = [
     { id: 1, title: 'Summer Eternal', cat: 'Wedding Story', img: img1 },

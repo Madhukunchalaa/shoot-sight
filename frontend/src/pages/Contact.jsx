@@ -29,7 +29,7 @@ const Contact = () => {
       ease: 'power3.out'
     });
 
-  }, { scope: container });
+  }, { scope: container, dependencies: [] });
 
   const handleSubmit = (e) => {
     e.preventDefault();

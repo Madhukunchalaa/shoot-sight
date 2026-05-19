@@ -124,7 +124,7 @@ const About = () => {
         once: true
       }
     });
-  }, { scope: container });
+  }, { scope: container, dependencies: [] });
 
   return (
     <div ref={container} className="about-page-editorial">

@@ -14,7 +14,7 @@ const Experience = () => {
   const containerRef = useRef(null);
 
   useGSAP(() => {
-    const panels = gsap.utils.toArray('.experience-layer');
+    const panels = gsap.utils.toArray('.experience-layer', containerRef.current);
     if (panels.length === 0) return;
 
     // Trigger and pin the stacking container directly to place the pin-spacer outside the element
@@ -52,7 +52,7 @@ const Experience = () => {
       }
     });
 
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [] });
 
   return (
     <div className="experience-isolation-wrapper">
