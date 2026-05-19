@@ -21,8 +21,8 @@ const Footer = () => {
             </div>
             <div className="footer-col">
               <h4>CONNECT</h4>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer">Youtube</a>
+              <a href="https://www.instagram.com/shootatsightweddings" target="_blank" rel="noreferrer">Instagram</a>
+              <a href="https://www.youtube.com/@shootatsightweddings" target="_blank" rel="noreferrer">Youtube</a>
               <a href="mailto:hello@shootatsight.com">Email Us</a>
             </div>
           </div>

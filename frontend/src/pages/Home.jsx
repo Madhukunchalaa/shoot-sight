@@ -51,8 +51,8 @@ const Home = () => {
           invalidateOnRefresh: true
         });
 
-        // 2. Staggered reveal for film text items
-        gsap.from(".film-text-content > *", {
+        // 2. Staggered reveal for film text items (excludes button — it has no GSAP initial state)
+        gsap.from(".film-text-content .subtitle-accent, .film-text-content .film-section-heading, .film-text-content .film-description", {
           y: 40,
           opacity: 0,
           stagger: 0.15,
@@ -119,7 +119,7 @@ const Home = () => {
 
       // ── Mobile (≤ 1024px): simple fade-in only, no pinning ──────────────
       "(max-width: 1024px)": function () {
-        gsap.from(".film-text-content > *", {
+        gsap.from(".film-text-content .subtitle-accent, .film-text-content .film-section-heading, .film-text-content .film-description", {
           y: 30,
           opacity: 0,
           stagger: 0.12,
