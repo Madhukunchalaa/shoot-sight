@@ -3,10 +3,10 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-  background: #090604;
+  background: #000000;
 }
 
-/* ─── Background Video ───────────────────────────────── */
+/* ─── Background Video & Focus Hunt Simulation ───────── */
 .hero-video-container {
   position: absolute;
   inset: 0;
@@ -14,12 +14,20 @@
   z-index: 1;
   opacity: 1;
   filter: blur(0px) scale(1);
-  transition: opacity 1.2s ease, filter 1.2s ease, transform 1.2s ease;
+  transition: filter 1.2s ease, transform 1.2s ease;
 }
 
-.hero-video-container.fade-out {
-  opacity: 0;
-  filter: blur(25px) scale(1.05);
+.hero-video-container.unfocused {
+  filter: blur(0px) scale(1);
+}
+
+.hero-video-container.focus-hunting {
+  filter: blur(4px) scale(1.02);
+}
+
+.hero-video-container.focused {
+  filter: blur(0px) scale(1);
+  transition: filter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .hero-video-container iframe {
@@ -33,70 +41,150 @@
   pointer-events: none;
 }
 
-/* ─── Romantic Golden Bokeh Background ───────────────── */
-.hero-bokeh-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  opacity: 0;
-  filter: scale(1.02);
-  transition: opacity 1.2s ease-in-out, filter 1.2s ease-in-out;
-}
-
-.hero-bokeh-bg.visible,
-.hero-bokeh-bg.fade-in {
-  opacity: 1;
-  filter: scale(1);
-}
-
-.hero-bokeh-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: bokehDrift 24s ease-in-out infinite;
-}
-
-@keyframes bokehDrift {
-  0% { transform: scale(1.02) translate(0, 0); }
-  50% { transform: scale(1.08) translate(-1%, -1%); }
-  100% { transform: scale(1.02) translate(0, 0); }
-}
-
-/* ─── Overlay ────────────────────────────────────────── */
+/* ─── Dark Overlay ───────────────────────────────────── */
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
     rgba(14, 10, 7, 0.45) 0%,
-    rgba(14, 10, 7, 0.2) 50%,
-    rgba(14, 10, 7, 0.65) 100%
+    rgba(14, 10, 7, 0.25) 50%,
+    rgba(14, 10, 7, 0.55) 100%
   );
   z-index: 3;
 }
 
-/* ─── Quotation Screen & Typography ─────────────────── */
+/* ─── Viewfinder Auto-Focus Brackets ─────────────────── */
+.center-focus-brackets {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  z-index: 8;
+  border: 1px dashed rgba(212, 175, 55, 0);
+  border-radius: 8px;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  margin-top: -110px; /* Aligns with the lens center */
+}
+
+.center-focus-brackets::before,
+.center-focus-brackets::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #d4af37;
+  border-style: solid;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+/* Top-left bracket corner */
+.center-focus-brackets::before {
+  top: -4px;
+  left: -4px;
+  border-width: 2px 0 0 2px;
+}
+
+/* Bottom-right bracket corner */
+.center-focus-brackets::after {
+  bottom: -4px;
+  right: -4px;
+  border-width: 0 2px 2px 0;
+}
+
+/* Focus hunting state: show brackets and blink */
+.center-focus-brackets.focus-hunting {
+  border: 1px dashed rgba(212, 175, 55, 0.25);
+  animation: bracketBlink 1s ease-in-out infinite;
+}
+
+.center-focus-brackets.focus-hunting::before,
+.center-focus-brackets.focus-hunting::after {
+  opacity: 0.8;
+}
+
+/* Focused state: brackets turn green, shrink slightly and lock */
+.center-focus-brackets.focused {
+  border: 1px solid rgba(37, 211, 102, 0.25);
+  width: 176px;
+  height: 176px;
+}
+
+.center-focus-brackets.focused::before,
+.center-focus-brackets.focused::after {
+  opacity: 1;
+  border-color: #25D366; /* DSLR Focus Lock Green */
+  filter: drop-shadow(0 0 4px #25D366);
+}
+
+@keyframes bracketBlink {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ─── Realistic Camera Lens ──────────────────────────── */
+.realistic-lens-container {
+  width: 136px;
+  height: 136px;
+  margin-bottom: 24px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 175, 55, 0.25);
+  background: #000000;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  opacity: 0;
+  transform: scale(0.7);
+  filter: blur(12px);
+  overflow: hidden;
+}
+
+.realistic-lens-container.focus-hunting {
+  opacity: 0.65;
+  transform: scale(0.9);
+  filter: blur(5px);
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+.realistic-lens-container.focused {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  border-color: rgba(212, 175, 55, 0.65);
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.15);
+}
+
+.realistic-lens-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: screen;
+}
+
+/* ─── Hero Content Overlay ───────────────────────────── */
 .hero-quote-content {
   position: absolute;
-  top: 55%; /* Centered slightly lower to make space for the lens */
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
   text-align: center;
-  width: min(850px, 90%);
+  width: min(850px, 95%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 1.2s ease;
 }
 
-.hero-quote-content.active {
-  opacity: 1;
-  pointer-events: auto;
-  top: 50%;
+/* ─── Ultra-Stylish Text Display ─────────────────────── */
+.quote-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .quote-tagline {
@@ -106,35 +194,92 @@
   letter-spacing: 5px;
   color: #d4af37;
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.8s ease;
+  transition-delay: 0.2s;
 }
 
-.quote-main-title {
+.quote-text-wrapper.active .quote-tagline {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+
+.quote-line-top,
+.quote-line-bottom {
+  overflow: hidden;
+  height: clamp(34px, 5.5vw, 68px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.quote-text-inner {
   font-family: var(--font-serif);
-  font-size: clamp(24px, 4vw, 52px);
+  font-size: clamp(20px, 3.8vw, 48px);
   font-weight: 300;
-  line-height: 1.4;
   color: #ffffff;
-  margin-bottom: 35px;
-  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin: 0;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
-.quote-main-title i {
+.quote-text-inner i {
   font-style: italic;
   font-weight: 400;
 }
 
-.quote-main-title span {
+.quote-text-inner span {
   color: #d4af37;
   font-style: italic;
   font-weight: 400;
-  text-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
 }
 
+/* Sliding entries */
+.quote-line-top .quote-text-inner {
+  transform: translateY(105%);
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transition-delay: 0.4s;
+}
+
+.quote-line-bottom .quote-text-inner {
+  transform: translateY(-105%);
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transition-delay: 0.6s;
+}
+
+/* Divider Line */
+.quote-divider-line {
+  width: 280px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0) 0%, rgba(212, 175, 55, 0.85) 50%, rgba(212, 175, 55, 0) 100%);
+  transform: scaleX(0);
+  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+  transition-delay: 0.3s;
+  margin: 16px 0;
+}
+
+/* Active transitions */
+.quote-text-wrapper.active .quote-divider-line {
+  transform: scaleX(1);
+}
+
+.quote-text-wrapper.active .quote-line-top .quote-text-inner {
+  transform: translateY(0);
+}
+
+.quote-text-wrapper.active .quote-line-bottom .quote-text-inner {
+  transform: translateY(0);
+}
+
+/* ─── Actions & Replay Button ────────────────────────── */
 .quote-actions {
   display: flex;
   justify-content: center;
+  margin-top: 32px;
 }
 
 .replay-btn {
@@ -142,13 +287,16 @@
   align-items: center;
   gap: 10px;
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.25);
   color: #ffffff;
   backdrop-filter: blur(8px);
-  padding: 13px 26px;
+  padding: 12px 24px;
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
+  opacity: 0;
+  animation: fadeInButton 0.8s ease forwards;
+  animation-delay: 1.5s;
 }
 
 .replay-btn:hover {
@@ -162,157 +310,33 @@
   height: 14px;
 }
 
-/* ─── Skip Button ────────────────────────────────────── */
-.skip-video-btn {
-  position: absolute;
-  bottom: 45px;
-  left: 45px;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  padding: 10px 18px;
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  border-radius: 40px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
-}
-
-.skip-video-btn:hover {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
-}
-
-.btn-icon-arrow {
-  width: 12px;
-  height: 12px;
-}
-
-/* ─── Luxury Camera Lens Vector Animation ────────────── */
-.camera-lens-animation-wrap {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  background: radial-gradient(circle, rgba(20, 15, 10, 0.95) 0%, rgba(5, 3, 2, 0.98) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: scale(0.8) rotate(-45deg);
-  opacity: 0;
-}
-
-.camera-lens-animation-wrap.active {
-  transform: scale(1) rotate(0deg);
-  opacity: 1;
-  border-color: rgba(212, 175, 55, 0.55);
-  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15), 0 0 30px rgba(212, 175, 55, 0.05);
-}
-
-.luxury-lens-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.lens-rim-outer {
-  stroke: #d4af37;
-  stroke-width: 1.2;
-  opacity: 0.8;
-}
-
-.lens-rim-inner {
-  stroke: #d4af37;
-  stroke-width: 0.6;
-  opacity: 0.4;
-}
-
-.lens-glass-edge {
-  stroke: rgba(255, 255, 255, 0.15);
-  stroke-width: 0.8;
-}
-
-.lens-focus-ring {
-  stroke: #d4af37;
-  stroke-width: 0.8;
-  opacity: 0.45;
-  transform-origin: 60px 60px;
-  animation: rotateFocusRing 40s linear infinite;
-}
-
-@keyframes rotateFocusRing {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.aperture-blades-group {
-  transform-origin: 60px 60px;
-}
-
-.aperture-blade {
-  fill: #15100c;
-  stroke: #d4af37;
-  stroke-width: 0.8;
-  opacity: 0.92;
-  transform-origin: 60px 60px;
-  transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1), fill 1.2s ease;
-}
-
-/* Shutter contraction and expansion actions */
-.camera-lens-animation-wrap.closing .aperture-blade {
-  transform: scale(1.18) rotate(18deg);
-  fill: #0d0907;
-}
-
-.camera-lens-animation-wrap.opening .aperture-blade {
-  transform: scale(0.92) rotate(-12deg);
-}
-
-.lens-aperture-opening {
-  fill: rgba(0, 0, 0, 0.7);
-  stroke: rgba(212, 175, 55, 0.25);
-  stroke-width: 0.5;
-}
-
-.lens-flare-dot {
-  fill: #ffffff;
-  opacity: 0.75;
-  filter: drop-shadow(0 0 2px #ffffff);
-}
-
-.lens-glass-reflection {
-  position: absolute;
-  inset: 8px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 50%, rgba(212, 175, 55, 0.04) 100%);
-  pointer-events: none;
-  z-index: 2;
+@keyframes fadeInButton {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── Responsive adjustments ─────────────────────────── */
 @media (max-width: 768px) {
-  .skip-video-btn {
-    bottom: 90px;
-    left: 20px;
+  .center-focus-brackets {
+    margin-top: -95px;
+    width: 170px;
+    height: 170px;
   }
-  .camera-lens-animation-wrap {
-    width: 100px;
-    height: 100px;
+  .center-focus-brackets.focused {
+    width: 146px;
+    height: 146px;
+  }
+  .realistic-lens-container {
+    width: 110px;
+    height: 110px;
     margin-bottom: 20px;
   }
-  .quote-main-title {
-    margin-bottom: 28px;
+  .quote-divider-line {
+    width: 180px;
+    margin: 12px 0;
+  }
+  .quote-line-top,
+  .quote-line-bottom {
+    height: clamp(26px, 6vw, 44px);
   }
 }

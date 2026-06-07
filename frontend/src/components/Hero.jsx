@@ -7,37 +7,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const containerRef = useRef(null);
-  const [showVideo, setShowVideo] = useState(true);
-  const [transitioning, setTransitioning] = useState(false);
-  const [lensState, setLensState] = useState('idle'); // 'idle', 'closing', 'opening'
+  const [focusState, setFocusState] = useState('unfocused'); // 'unfocused', 'focus-hunting', 'focused'
+  const timerRef = useRef(null);
 
-  const autoTransitionRef = useRef(null);
-
-  const startAutoTransition = () => {
-    if (autoTransitionRef.current) clearTimeout(autoTransitionRef.current);
-    autoTransitionRef.current = setTimeout(() => {
-      triggerTransition(false); // transition to quote
-    }, 12000); // 12 seconds of video
-  };
-
-  const triggerTransition = (toVideo) => {
-    setTransitioning(true);
-    setLensState('closing');
+  const startFocusSequence = () => {
+    setFocusState('unfocused');
     
-    // After 1s, swap the content and set lens state to opening
-    setTimeout(() => {
-      setShowVideo(toVideo);
-      setLensState('opening');
+    // Start focus hunting after 2.5s
+    timerRef.current = setTimeout(() => {
+      setFocusState('focus-hunting');
       
-      // Complete the transition shortly after
-      setTimeout(() => {
-        setTransitioning(false);
-        setLensState('idle');
-        if (toVideo) {
-          startAutoTransition();
-        }
-      }, 1000);
-    }, 1000);
+      // Lock focus after another 2.5s (total 5s)
+      timerRef.current = setTimeout(() => {
+        setFocusState('focused');
+      }, 2500);
+    }, 2500);
   };
 
   // Scroll pin
@@ -56,108 +40,72 @@ const Hero = () => {
     return () => ctx.revert();
   }, []);
 
-  // GSAP animations for the quotation text fading in
+  // Run the focus animation sequence on mount
   useEffect(() => {
-    if (!showVideo) {
-      gsap.fromTo(".quote-tagline", 
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 1, delay: 0.2, ease: "power2.out" }
-      );
-      gsap.fromTo(".quote-main-title", 
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1.2, delay: 0.4, ease: "power3.out" }
-      );
-      gsap.fromTo(".quote-actions", 
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1, delay: 0.8, ease: "power2.out" }
-      );
-    }
-  }, [showVideo]);
-
-  // Start the auto transition on mount
-  useEffect(() => {
-    startAutoTransition();
+    startFocusSequence();
     return () => {
-      if (autoTransitionRef.current) clearTimeout(autoTransitionRef.current);
+      if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
 
   return (
     <section ref={containerRef} className="hero-full">
-      {/* Background Video (Muted, looping YouTube) */}
-      {showVideo && (
-        <div className={`hero-video-container ${transitioning ? 'fade-out' : ''}`}>
-          <iframe
-            src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1&start=0"
-            title="Hero Background Video"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
-        </div>
-      )}
-
-      {/* Romantic Golden Bokeh Background (fades in as video blurs out) */}
-      <div className={`hero-bokeh-bg ${!showVideo ? 'visible' : ''} ${transitioning ? 'fade-in' : ''}`}>
-        <img src="/luxury_bokeh.png" alt="Luxury Bokeh" className="hero-bokeh-img" />
+      {/* Background Video (Plays continuously) */}
+      <div className={`hero-video-container ${focusState}`}>
+        <iframe
+          src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1&start=0"
+          title="Hero Background Video"
+          frameBorder="0"
+          allow="autoplay; encrypted-media"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
       </div>
 
       {/* Dark overlay */}
       <div className="hero-overlay" />
 
-      {/* High-end Camera Lens & Quotation Screen */}
-      {(!showVideo || transitioning) && (
-        <div className={`hero-quote-content ${!showVideo ? 'active' : ''}`}>
-          
-          {/* Custom Luxury Camera Lens Vector Animation */}
-          <div className={`camera-lens-animation-wrap ${lensState} ${!showVideo ? 'active' : ''}`}>
-            <div className="lens-glass-reflection"></div>
-            <svg className="luxury-lens-svg" viewBox="0 0 120 120">
-              <circle cx="60" cy="60" r="54" className="lens-rim-outer" />
-              <circle cx="60" cy="60" r="50" className="lens-rim-inner" />
-              <circle cx="60" cy="60" r="44" className="lens-glass-edge" />
-              <circle cx="60" cy="60" r="38" className="lens-focus-ring" strokeDasharray="2 4" />
-              
-              <g className="aperture-blades-group">
-                <path d="M60 22 L88 38 L78 60 Z" className="aperture-blade blade-1" />
-                <path d="M88 38 L88 72 L66 72 Z" className="aperture-blade blade-2" />
-                <path d="M88 72 L60 88 L60 66 Z" className="aperture-blade blade-3" />
-                <path d="M60 88 L32 72 L42 50 Z" className="aperture-blade blade-4" />
-                <path d="M32 72 L32 38 L54 38 Z" className="aperture-blade blade-5" />
-                <path d="M32 38 L60 22 L60 44 Z" className="aperture-blade blade-6" />
-              </g>
+      {/* Viewfinder auto-focus HUD brackets */}
+      <div className={`center-focus-brackets ${focusState}`} />
 
-              <circle cx="60" cy="60" r="22" className="lens-aperture-opening" />
-              <circle cx="50" cy="50" r="2" className="lens-flare-dot" />
-            </svg>
-          </div>
+      {/* High-end Camera Lens & Quotation Screen overlay */}
+      <div className="hero-quote-content">
+        
+        {/* Realistic camera lens element */}
+        <div className={`realistic-lens-container ${focusState}`}>
+          <img src="/realistic_lens.png" alt="Realistic Lens" className="realistic-lens-img" />
+        </div>
 
+        {/* Ultra-stylish text display */}
+        <div className={`quote-text-wrapper ${focusState === 'focused' ? 'active' : ''}`}>
           <span className="quote-tagline">SHOOT @ SIGHT // THE ART OF PRESERVATION</span>
-          <h2 className="quote-main-title">
-            We Don't Just <i>Capture</i> Weddings.<br />
-            We Preserve <span>Emotions</span> Forever.
-          </h2>
           
-          <div className="quote-actions">
-            <button className="btn-premium replay-btn" onClick={() => triggerTransition(true)}>
-              <svg viewBox="0 0 24 24" className="btn-icon">
-                <path fill="currentColor" d="M8 5v14l11-7z" />
-              </svg>
-              Replay Cinematic Film
-            </button>
+          <div className="quote-line-top">
+            <h2 className="quote-text-inner">
+              We Don't Just <i>Capture</i> Weddings.
+            </h2>
+          </div>
+          
+          <div className="quote-divider-line"></div>
+          
+          <div className="quote-line-bottom">
+            <h2 className="quote-text-inner">
+              We Preserve <span>Emotions</span> Forever.
+            </h2>
           </div>
         </div>
-      )}
 
-      {/* Skip button for video */}
-      {showVideo && !transitioning && (
-        <button className="skip-video-btn" onClick={() => triggerTransition(false)}>
-          Skip Video
-          <svg viewBox="0 0 24 24" className="btn-icon-arrow">
-            <path fill="none" stroke="currentColor" strokeWidth="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      )}
+        {/* Replay focusing animation action */}
+        {focusState === 'focused' && (
+          <div className="quote-actions">
+            <button className="btn-premium replay-btn" onClick={startFocusSequence}>
+              <svg viewBox="0 0 24 24" className="btn-icon">
+                <path fill="currentColor" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v-3l4 4-4-4v3c-3.31 0-6-2.69-6-6z" />
+              </svg>
+              Replay Focus
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   );
 };
