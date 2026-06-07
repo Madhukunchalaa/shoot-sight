@@ -65,6 +65,54 @@
   font-weight: 500;
 }
 
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tooltip-whatsapp-icon {
+  width: 14px;
+  height: 14px;
+  color: #25D366;
+}
+
+/* WhatsApp notification badge on the drone */
+.drone-whatsapp-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 32px;
+  height: 32px;
+  background-color: #25D366;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+  border: 1.5px solid #ffffff;
+  z-index: 5;
+  animation: badgePulse 2s infinite;
+}
+
+.whatsapp-badge-icon {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes badgePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
 /* ── DRONE STRUCTURE MESH ── */
 .drone-mesh-wrapper {
   position: relative;
