@@ -3,29 +3,53 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-  background: var(--text-primary);
+  background: #000000;
 }
 
-/* ─── Background slides ──────────────────────────────── */
-.hero-bg-slide {
+/* ─── Background Video ───────────────────────────────── */
+.hero-video-container {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out;
+  overflow: hidden;
   z-index: 1;
 }
 
-.hero-bg-slide.active {
-  opacity: 1;
-  z-index: 2;
+.hero-video-container iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, 177.78vh);
+  height: max(56.25vw, 100vh);
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
 }
 
-.hero-bg-img {
-  width: 100%;
-  height: 130%; /* extra height for parallax travel */
-  object-fit: cover;
+/* ─── Camera Background Image & Drift ─────────────────── */
+.hero-camera-bg {
   position: absolute;
-  top: -15%;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-camera-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: cameraDrift 20s ease-in-out infinite;
+}
+
+@keyframes cameraDrift {
+  0% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.08) translateY(-1%);
+  }
+  100% {
+    transform: scale(1.02);
+  }
 }
 
 /* ─── Overlay ────────────────────────────────────────── */
@@ -34,14 +58,14 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(30, 22, 14, 0.35) 0%,
-    rgba(30, 22, 14, 0.15) 50%,
-    rgba(30, 22, 14, 0.5)  100%
+    rgba(14, 10, 7, 0.55) 0%,
+    rgba(14, 10, 7, 0.3) 50%,
+    rgba(14, 10, 7, 0.65) 100%
   );
   z-index: 5;
 }
 
-/* ─── Text ───────────────────────────────────────────── */
+/* ─── Text/Titles Overlay (Video Screen) ──────────────── */
 .hero-center-content {
   position: absolute;
   top: 50%;
@@ -64,7 +88,7 @@
   color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 6px;
-  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
 .brand-accent {
@@ -79,7 +103,7 @@
   font-style: italic;
   color: #d4af37;
   margin-left: 10px;
-  text-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
 .hero-tagline-luxury {
@@ -92,8 +116,186 @@
   opacity: 0.8;
 }
 
-/* ─── Mobile ─────────────────────────────────────────── */
+/* ─── Quotation Screen ────────────────────────────────── */
+.hero-quote-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  width: min(850px, 90%);
+}
+
+.quote-tagline {
+  font-family: var(--font-sans);
+  font-size: clamp(9px, 1.2vw, 11px);
+  font-weight: 500;
+  letter-spacing: 5px;
+  color: #d4af37;
+  display: block;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.quote-main-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4.2vw, 56px);
+  font-weight: 300;
+  line-height: 1.35;
+  color: #ffffff;
+  margin-bottom: 40px;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.quote-main-title i {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.quote-main-title span {
+  color: #d4af37;
+  font-style: italic;
+  font-weight: 400;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.quote-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.replay-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+  padding: 14px 28px;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.replay-btn:hover {
+  background: #ffffff;
+  color: #0c0806;
+  border-color: #ffffff;
+}
+
+.btn-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* ─── Skip Button ────────────────────────────────────── */
+.skip-video-btn {
+  position: absolute;
+  bottom: 45px;
+  left: 45px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 10px 18px;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.skip-video-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.btn-icon-arrow {
+  width: 12px;
+  height: 12px;
+}
+
+/* ─── Camera Iris Shutter Screen ──────────────────────── */
+.shutter-screen {
+  position: absolute;
+  inset: 0;
+  background-color: #0c0806;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.shutter-screen.closing,
+.shutter-screen.closed {
+  clip-path: circle(150% at 50% 50%);
+}
+
+.shutter-screen.opening {
+  clip-path: circle(0% at 50% 50%);
+}
+
+.lens-graphic {
+  width: min(240px, 50vw);
+  height: min(240px, 50vw);
+  opacity: 0;
+  transform: scale(0.5) rotate(0deg);
+  transition: all 1.2s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.shutter-screen.closing .lens-graphic,
+.shutter-screen.closed .lens-graphic {
+  opacity: 1;
+  transform: scale(1) rotate(180deg);
+}
+
+.shutter-screen.opening .lens-graphic {
+  opacity: 0;
+  transform: scale(0.5) rotate(360deg);
+}
+
+.shutter-brand-text {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: #d4af37;
+  margin-top: 24px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 1s ease;
+  transition-delay: 0.3s;
+}
+
+.shutter-screen.closing .shutter-brand-text,
+.shutter-screen.closed .shutter-brand-text {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+/* ─── Responsive adjustments ─────────────────────────── */
 @media (max-width: 768px) {
-  .brand-main    { letter-spacing: 3px; }
-  .hero-tagline-luxury { letter-spacing: 4px; font-size: 9px; }
+  .brand-main {
+    letter-spacing: 3px;
+  }
+  .hero-tagline-luxury {
+    letter-spacing: 4px;
+    font-size: 9px;
+  }
+  .skip-video-btn {
+    bottom: 90px;
+    left: 20px;
+  }
 }
