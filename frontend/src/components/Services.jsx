@@ -22,9 +22,8 @@ const Services = () => {
       const imageWidth = 400;
       const imageHeight = 550;
 
-      // Calculate the X position: align with the right side of the 1000px container
-      const containerRight = Math.min(viewportWidth - 40, (viewportWidth + containerWidth) / 2);
-      const targetX = containerRight - imageWidth;
+      // Place it 60px from the right edge of the viewport
+      const targetX = viewportWidth - imageWidth - 60;
 
       // Clamp Y position to keep it fully within the viewport
       const minY = 20;
