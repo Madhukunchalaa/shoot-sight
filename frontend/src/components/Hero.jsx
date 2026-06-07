@@ -5,22 +5,12 @@ import './Hero.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const slides = [
-  { t1: "TIMELESS",  t2: "MOMENTS"  },
-  { t1: "ETERNAL",   t2: "LEGACIES"  },
-  { t1: "PURE",      t2: "EMOTIONS"  },
-  { t1: "SAVORED",   t2: "SIGHTS"    },
-  { t1: "INFINITE",  t2: "VISIONS"   },
-];
-
 const Hero = () => {
   const containerRef = useRef(null);
   const [showVideo, setShowVideo] = useState(true);
   const [shutterState, setShutterState] = useState('open'); // 'open', 'closing', 'closed', 'opening'
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const autoTransitionRef = useRef(null);
-  const slideIntervalRef = useRef(null);
 
   const startAutoTransition = () => {
     if (autoTransitionRef.current) clearTimeout(autoTransitionRef.current);
@@ -67,32 +57,6 @@ const Hero = () => {
     return () => ctx.revert();
   }, []);
 
-  // Auto-advance slides for title text when video is active
-  useEffect(() => {
-    if (showVideo) {
-      slideIntervalRef.current = setInterval(() => {
-        gsap.to(".hero-center-title", {
-          opacity: 0,
-          y: -20,
-          duration: 0.8,
-          onComplete: () => {
-            setCurrentIndex((prev) => (prev + 1) % slides.length);
-            gsap.fromTo(".hero-center-title",
-              { opacity: 0, y: 20 },
-              { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
-            );
-          },
-        });
-      }, 4000);
-    } else {
-      if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
-    }
-
-    return () => {
-      if (slideIntervalRef.current) clearInterval(slideIntervalRef.current);
-    };
-  }, [showVideo]);
-
   // Start the 12-second auto-transition on mount
   useEffect(() => {
     startAutoTransition();
@@ -125,17 +89,6 @@ const Hero = () => {
 
       {/* Dark overlay */}
       <div className="hero-overlay" />
-
-      {/* Centered title slides text (only when video is playing) */}
-      {showVideo && (
-        <div className="hero-center-content">
-          <h1 className="hero-center-title">
-            <span className="brand-main">{slides[currentIndex].t1}</span>
-            <span className="brand-accent"><i>{slides[currentIndex].t2}</i></span>
-          </h1>
-          <p className="hero-tagline-luxury">SHOOT @ SIGHT // PRESERVING THE UNSPOKEN</p>
-        </div>
-      )}
 
       {/* High-end Quotation Screen (only when video is finished/skipped) */}
       {!showVideo && (
