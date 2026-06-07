@@ -88,7 +88,7 @@
   object-fit: cover;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
   /* Hide floating image on tablets/mobile for better UX */
   .floating-service-image {
     display: none;

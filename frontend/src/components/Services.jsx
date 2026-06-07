@@ -16,13 +16,26 @@ const Services = () => {
     const handleMouseMove = (e) => {
       if (!imageRef.current) return;
       
-      const { clientX, clientY } = e;
-      // Pushing it further to the right (+150) and higher up (-300)
+      const { clientY } = e;
+      const viewportWidth = window.innerWidth;
+      const containerWidth = 1000;
+      const imageWidth = 400;
+      const imageHeight = 550;
+
+      // Calculate the X position: align with the right side of the 1000px container
+      const containerRight = Math.min(viewportWidth - 40, (viewportWidth + containerWidth) / 2);
+      const targetX = containerRight - imageWidth;
+
+      // Clamp Y position to keep it fully within the viewport
+      const minY = 20;
+      const maxY = window.innerHeight - imageHeight - 20;
+      const targetY = Math.max(minY, Math.min(maxY, clientY - imageHeight / 2));
+
       gsap.to(imageRef.current, {
-        x: clientX + 150,
-        y: clientY - 300,
+        x: targetX,
+        y: targetY,
         rotation: 0,
-        duration: 1,
+        duration: 0.8,
         ease: "power2.out"
       });
     };
