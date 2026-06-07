@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
 import './Services.css';
 
 const weddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4399.webp";
@@ -8,29 +6,6 @@ const preWeddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/commo
 const droneImg = "/drone_aerial_coverage.png";
 
 const Services = () => {
-  const sectionRef = useRef(null);
-  const imageRef = useRef(null);
-  const [activeImage, setActiveImage] = useState(null);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!imageRef.current) return;
-      
-      const { clientX, clientY } = e;
-      // Pushing it further to the right (+150) and higher up (-300)
-      gsap.to(imageRef.current, {
-        x: clientX + 150,
-        y: clientY - 300,
-        rotation: 0,
-        duration: 1,
-        ease: "power2.out"
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   const services = [
     {
       title: "Wedding Photography",
@@ -59,45 +34,28 @@ const Services = () => {
   ];
 
   return (
-    <section 
-      ref={sectionRef} 
-      className="services-section section-padding"
-      onMouseLeave={() => {
-        // Force hide when mouse leaves the entire section
-        gsap.to(imageRef.current, { opacity: 0, scale: 0.8, duration: 0.4 });
-      }}
-    >
+    <section className="services-section section-padding">
       <div className="container">
         <div className="services-header">
           <span className="subtitle-accent">CRAFT & MASTERY</span>
           <h2 className="services-main-title">Our <i>Signature</i> Services</h2>
         </div>
 
-        <div className="services-list">
-          {services.map((service, index) => (
-            <div 
-              key={index} 
-              className="service-item"
-              onMouseEnter={() => {
-                setActiveImage(service.img);
-                gsap.to(imageRef.current, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" });
-              }}
-              onMouseLeave={() => {
-                gsap.to(imageRef.current, { opacity: 0, scale: 0.8, duration: 0.4, ease: "power2.in" });
-              }}
-            >
-              <div className="service-number">{service.num}</div>
-              <div className="service-content">
-                <h3 className="service-title">{service.title}</h3>
-                <p className="service-desc">{service.desc}</p>
+        <div className="services-showcase">
+          {services.map((service) => (
+            <div key={service.title} className="service-item">
+              <div className="service-image-wrap">
+                <img className="service-image" src={service.img} alt={service.title} />
+              </div>
+              <div className="service-copy">
+                <div className="service-number">{service.num}</div>
+                <div className="service-content">
+                  <h3 className="service-title">{service.title}</h3>
+                  <p className="service-desc">{service.desc}</p>
+                </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Floating Image Follower */}
-        <div ref={imageRef} className="floating-service-image">
-          {activeImage && <img src={activeImage} alt="Service Preview" />}
         </div>
       </div>
     </section>

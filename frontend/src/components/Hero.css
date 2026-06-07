@@ -6,69 +6,63 @@
   background: var(--text-primary);
 }
 
-/* ─── Background slides ──────────────────────────────── */
-.hero-bg-slide {
+.hero-video-bg {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out;
   z-index: 1;
+  overflow: hidden;
+  background: #000000;
 }
 
-.hero-bg-slide.active {
-  opacity: 1;
-  z-index: 2;
-}
-
-.hero-bg-img {
-  width: 100%;
-  height: 130%; /* extra height for parallax travel */
-  object-fit: cover;
+.hero-video-frame {
   position: absolute;
-  top: -15%;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, 177.78vh);
+  height: max(56.25vw, 100vh);
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
 }
 
-/* ─── Overlay ────────────────────────────────────────── */
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(30, 22, 14, 0.35) 0%,
-    rgba(30, 22, 14, 0.15) 50%,
-    rgba(30, 22, 14, 0.5)  100%
+    rgba(30, 22, 14, 0.46) 0%,
+    rgba(30, 22, 14, 0.2) 50%,
+    rgba(30, 22, 14, 0.62) 100%
   );
   z-index: 5;
 }
 
-/* ─── Text ───────────────────────────────────────────── */
 .hero-center-content {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: clamp(18px, 5vw, 72px);
+  bottom: clamp(54px, 8vw, 96px);
   z-index: 10;
-  text-align: center;
-  width: 100%;
+  text-align: left;
+  width: min(360px, calc(100% - 40px));
 }
 
 .hero-center-title {
   display: flex;
   flex-direction: column;
-  line-height: 0.75;
+  line-height: 0.95;
 }
 
 .brand-main {
-  font-size: clamp(40px, 10vw, 110px);
+  font-size: clamp(28px, 3vw, 42px);
   font-weight: 900;
   color: #ffffff;
   text-transform: uppercase;
-  letter-spacing: 6px;
+  letter-spacing: 3px;
   text-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
 }
 
 .brand-accent {
-  font-size: clamp(30px, 8vw, 88px);
+  font-size: clamp(26px, 2.8vw, 40px);
   font-weight: 300;
   color: #ffffff;
 }
@@ -86,14 +80,19 @@
   font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 500;
-  letter-spacing: 6px;
+  letter-spacing: 3px;
   color: #fdf8f3;
-  margin-top: 40px;
+  margin-top: 18px;
   opacity: 0.8;
 }
 
-/* ─── Mobile ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .brand-main    { letter-spacing: 3px; }
-  .hero-tagline-luxury { letter-spacing: 4px; font-size: 9px; }
+  .brand-main {
+    letter-spacing: 3px;
+  }
+
+  .hero-tagline-luxury {
+    letter-spacing: 4px;
+    font-size: 9px;
+  }
 }
