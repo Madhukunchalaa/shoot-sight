@@ -3,7 +3,7 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-  background: #000000;
+  background: #090604;
 }
 
 /* ─── Background Video ───────────────────────────────── */
@@ -12,6 +12,14 @@
   inset: 0;
   overflow: hidden;
   z-index: 1;
+  opacity: 1;
+  filter: blur(0px) scale(1);
+  transition: opacity 1.2s ease, filter 1.2s ease, transform 1.2s ease;
+}
+
+.hero-video-container.fade-out {
+  opacity: 0;
+  filter: blur(25px) scale(1.05);
 }
 
 .hero-video-container iframe {
@@ -25,31 +33,34 @@
   pointer-events: none;
 }
 
-/* ─── Camera Background Image & Drift ─────────────────── */
-.hero-camera-bg {
+/* ─── Romantic Golden Bokeh Background ───────────────── */
+.hero-bokeh-bg {
   position: absolute;
   inset: 0;
   z-index: 1;
   overflow: hidden;
+  opacity: 0;
+  filter: scale(1.02);
+  transition: opacity 1.2s ease-in-out, filter 1.2s ease-in-out;
 }
 
-.hero-camera-img {
+.hero-bokeh-bg.visible,
+.hero-bokeh-bg.fade-in {
+  opacity: 1;
+  filter: scale(1);
+}
+
+.hero-bokeh-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: cameraDrift 20s ease-in-out infinite;
+  animation: bokehDrift 24s ease-in-out infinite;
 }
 
-@keyframes cameraDrift {
-  0% {
-    transform: scale(1.02);
-  }
-  50% {
-    transform: scale(1.08) translateY(-1%);
-  }
-  100% {
-    transform: scale(1.02);
-  }
+@keyframes bokehDrift {
+  0% { transform: scale(1.02) translate(0, 0); }
+  50% { transform: scale(1.08) translate(-1%, -1%); }
+  100% { transform: scale(1.02) translate(0, 0); }
 }
 
 /* ─── Overlay ────────────────────────────────────────── */
@@ -58,73 +69,34 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(14, 10, 7, 0.55) 0%,
-    rgba(14, 10, 7, 0.3) 50%,
+    rgba(14, 10, 7, 0.45) 0%,
+    rgba(14, 10, 7, 0.2) 50%,
     rgba(14, 10, 7, 0.65) 100%
   );
-  z-index: 5;
+  z-index: 3;
 }
 
-/* ─── Text/Titles Overlay (Video Screen) ──────────────── */
-.hero-center-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  text-align: center;
-  width: 100%;
-}
-
-.hero-center-title {
-  display: flex;
-  flex-direction: column;
-  line-height: 0.75;
-}
-
-.brand-main {
-  font-size: clamp(40px, 10vw, 110px);
-  font-weight: 900;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 6px;
-  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
-}
-
-.brand-accent {
-  font-size: clamp(30px, 8vw, 88px);
-  font-weight: 300;
-  color: #ffffff;
-}
-
-.brand-accent i {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-style: italic;
-  color: #d4af37;
-  margin-left: 10px;
-  text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-}
-
-.hero-tagline-luxury {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 6px;
-  color: #fdf8f3;
-  margin-top: 40px;
-  opacity: 0.8;
-}
-
-/* ─── Quotation Screen ────────────────────────────────── */
+/* ─── Quotation Screen & Typography ─────────────────── */
 .hero-quote-content {
   position: absolute;
-  top: 50%;
+  top: 55%; /* Centered slightly lower to make space for the lens */
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
   text-align: center;
   width: min(850px, 90%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 1.2s ease;
+}
+
+.hero-quote-content.active {
+  opacity: 1;
+  pointer-events: auto;
+  top: 50%;
 }
 
 .quote-tagline {
@@ -134,17 +106,17 @@
   letter-spacing: 5px;
   color: #d4af37;
   display: block;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   text-transform: uppercase;
 }
 
 .quote-main-title {
   font-family: var(--font-serif);
-  font-size: clamp(28px, 4.2vw, 56px);
+  font-size: clamp(24px, 4vw, 52px);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: 1.4;
   color: #ffffff;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
   text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -157,7 +129,7 @@
   color: #d4af37;
   font-style: italic;
   font-weight: 400;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  text-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
 }
 
 .quote-actions {
@@ -173,9 +145,10 @@
   border-color: rgba(255, 255, 255, 0.3);
   color: #ffffff;
   backdrop-filter: blur(8px);
-  padding: 14px 28px;
-  font-size: 11px;
+  padding: 13px 26px;
+  font-size: 10px;
   letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .replay-btn:hover {
@@ -224,78 +197,122 @@
   height: 12px;
 }
 
-/* ─── Camera Iris Shutter Screen ──────────────────────── */
-.shutter-screen {
-  position: absolute;
-  inset: 0;
-  background-color: #0c0806;
-  z-index: 999;
+/* ─── Luxury Camera Lens Vector Animation ────────────── */
+.camera-lens-animation-wrap {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin-bottom: 28px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-  clip-path: circle(0% at 50% 50%);
-  transition: clip-path 1.2s cubic-bezier(0.76, 0, 0.24, 1);
-}
-
-.shutter-screen.closing,
-.shutter-screen.closed {
-  clip-path: circle(150% at 50% 50%);
-}
-
-.shutter-screen.opening {
-  clip-path: circle(0% at 50% 50%);
-}
-
-.lens-graphic {
-  width: min(240px, 50vw);
-  height: min(240px, 50vw);
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  background: radial-gradient(circle, rgba(20, 15, 10, 0.95) 0%, rgba(5, 3, 2, 0.98) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(0.8) rotate(-45deg);
   opacity: 0;
-  transform: scale(0.5) rotate(0deg);
-  transition: all 1.2s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.shutter-screen.closing .lens-graphic,
-.shutter-screen.closed .lens-graphic {
+.camera-lens-animation-wrap.active {
+  transform: scale(1) rotate(0deg);
   opacity: 1;
-  transform: scale(1) rotate(180deg);
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15), 0 0 30px rgba(212, 175, 55, 0.05);
 }
 
-.shutter-screen.opening .lens-graphic {
-  opacity: 0;
-  transform: scale(0.5) rotate(360deg);
+.luxury-lens-svg {
+  width: 100%;
+  height: 100%;
 }
 
-.shutter-brand-text {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  letter-spacing: 6px;
-  color: #d4af37;
-  margin-top: 24px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 1s ease;
-  transition-delay: 0.3s;
-}
-
-.shutter-screen.closing .shutter-brand-text,
-.shutter-screen.closed .shutter-brand-text {
+.lens-rim-outer {
+  stroke: #d4af37;
+  stroke-width: 1.2;
   opacity: 0.8;
-  transform: translateY(0);
+}
+
+.lens-rim-inner {
+  stroke: #d4af37;
+  stroke-width: 0.6;
+  opacity: 0.4;
+}
+
+.lens-glass-edge {
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 0.8;
+}
+
+.lens-focus-ring {
+  stroke: #d4af37;
+  stroke-width: 0.8;
+  opacity: 0.45;
+  transform-origin: 60px 60px;
+  animation: rotateFocusRing 40s linear infinite;
+}
+
+@keyframes rotateFocusRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.aperture-blades-group {
+  transform-origin: 60px 60px;
+}
+
+.aperture-blade {
+  fill: #15100c;
+  stroke: #d4af37;
+  stroke-width: 0.8;
+  opacity: 0.92;
+  transform-origin: 60px 60px;
+  transition: transform 1.2s cubic-bezier(0.76, 0, 0.24, 1), fill 1.2s ease;
+}
+
+/* Shutter contraction and expansion actions */
+.camera-lens-animation-wrap.closing .aperture-blade {
+  transform: scale(1.18) rotate(18deg);
+  fill: #0d0907;
+}
+
+.camera-lens-animation-wrap.opening .aperture-blade {
+  transform: scale(0.92) rotate(-12deg);
+}
+
+.lens-aperture-opening {
+  fill: rgba(0, 0, 0, 0.7);
+  stroke: rgba(212, 175, 55, 0.25);
+  stroke-width: 0.5;
+}
+
+.lens-flare-dot {
+  fill: #ffffff;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 2px #ffffff);
+}
+
+.lens-glass-reflection {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 50%, rgba(212, 175, 55, 0.04) 100%);
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* ─── Responsive adjustments ─────────────────────────── */
 @media (max-width: 768px) {
-  .brand-main {
-    letter-spacing: 3px;
-  }
-  .hero-tagline-luxury {
-    letter-spacing: 4px;
-    font-size: 9px;
-  }
   .skip-video-btn {
     bottom: 90px;
     left: 20px;
+  }
+  .camera-lens-animation-wrap {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+  .quote-main-title {
+    margin-bottom: 28px;
   }
 }

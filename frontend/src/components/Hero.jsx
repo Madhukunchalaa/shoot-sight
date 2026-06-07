@@ -8,37 +8,36 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const containerRef = useRef(null);
   const [showVideo, setShowVideo] = useState(true);
-  const [shutterState, setShutterState] = useState('open'); // 'open', 'closing', 'closed', 'opening'
+  const [transitioning, setTransitioning] = useState(false);
+  const [lensState, setLensState] = useState('idle'); // 'idle', 'closing', 'opening'
 
   const autoTransitionRef = useRef(null);
 
   const startAutoTransition = () => {
     if (autoTransitionRef.current) clearTimeout(autoTransitionRef.current);
     autoTransitionRef.current = setTimeout(() => {
-      triggerShutterTransition(false); // transition to camera/quote
+      triggerTransition(false); // transition to quote
     }, 12000); // 12 seconds of video
   };
 
-  const triggerShutterTransition = (toVideo) => {
-    setShutterState('closing');
+  const triggerTransition = (toVideo) => {
+    setTransitioning(true);
+    setLensState('closing');
     
-    // After 1.2s (shutter closed), switch screen and start opening
+    // After 1s, swap the content and set lens state to opening
     setTimeout(() => {
       setShowVideo(toVideo);
-      setShutterState('closed');
+      setLensState('opening');
       
-      // Small buffer, then open the shutter
+      // Complete the transition shortly after
       setTimeout(() => {
-        setShutterState('opening');
-        // Reset state after opening animation completes (1.2s)
-        setTimeout(() => {
-          setShutterState('open');
-          if (toVideo) {
-            startAutoTransition();
-          }
-        }, 1200);
-      }, 100);
-    }, 1200);
+        setTransitioning(false);
+        setLensState('idle');
+        if (toVideo) {
+          startAutoTransition();
+        }
+      }, 1000);
+    }, 1000);
   };
 
   // Scroll pin
@@ -57,7 +56,25 @@ const Hero = () => {
     return () => ctx.revert();
   }, []);
 
-  // Start the 12-second auto-transition on mount
+  // GSAP animations for the quotation text fading in
+  useEffect(() => {
+    if (!showVideo) {
+      gsap.fromTo(".quote-tagline", 
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 1, delay: 0.2, ease: "power2.out" }
+      );
+      gsap.fromTo(".quote-main-title", 
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1.2, delay: 0.4, ease: "power3.out" }
+      );
+      gsap.fromTo(".quote-actions", 
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1, delay: 0.8, ease: "power2.out" }
+      );
+    }
+  }, [showVideo]);
+
+  // Start the auto transition on mount
   useEffect(() => {
     startAutoTransition();
     return () => {
@@ -69,7 +86,7 @@ const Hero = () => {
     <section ref={containerRef} className="hero-full">
       {/* Background Video (Muted, looping YouTube) */}
       {showVideo && (
-        <div className="hero-video-container">
+        <div className={`hero-video-container ${transitioning ? 'fade-out' : ''}`}>
           <iframe
             src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1&start=0"
             title="Hero Background Video"
@@ -80,26 +97,49 @@ const Hero = () => {
         </div>
       )}
 
-      {/* Luxury camera background image (after shutter transition) */}
-      {!showVideo && (
-        <div className="hero-camera-bg">
-          <img src="/luxury_camera.png" alt="Luxury Camera" className="hero-camera-img" />
-        </div>
-      )}
+      {/* Romantic Golden Bokeh Background (fades in as video blurs out) */}
+      <div className={`hero-bokeh-bg ${!showVideo ? 'visible' : ''} ${transitioning ? 'fade-in' : ''}`}>
+        <img src="/luxury_bokeh.png" alt="Luxury Bokeh" className="hero-bokeh-img" />
+      </div>
 
       {/* Dark overlay */}
       <div className="hero-overlay" />
 
-      {/* High-end Quotation Screen (only when video is finished/skipped) */}
-      {!showVideo && (
-        <div className="hero-quote-content">
+      {/* High-end Camera Lens & Quotation Screen */}
+      {(!showVideo || transitioning) && (
+        <div className={`hero-quote-content ${!showVideo ? 'active' : ''}`}>
+          
+          {/* Custom Luxury Camera Lens Vector Animation */}
+          <div className={`camera-lens-animation-wrap ${lensState} ${!showVideo ? 'active' : ''}`}>
+            <div className="lens-glass-reflection"></div>
+            <svg className="luxury-lens-svg" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" className="lens-rim-outer" />
+              <circle cx="60" cy="60" r="50" className="lens-rim-inner" />
+              <circle cx="60" cy="60" r="44" className="lens-glass-edge" />
+              <circle cx="60" cy="60" r="38" className="lens-focus-ring" strokeDasharray="2 4" />
+              
+              <g className="aperture-blades-group">
+                <path d="M60 22 L88 38 L78 60 Z" className="aperture-blade blade-1" />
+                <path d="M88 38 L88 72 L66 72 Z" className="aperture-blade blade-2" />
+                <path d="M88 72 L60 88 L60 66 Z" className="aperture-blade blade-3" />
+                <path d="M60 88 L32 72 L42 50 Z" className="aperture-blade blade-4" />
+                <path d="M32 72 L32 38 L54 38 Z" className="aperture-blade blade-5" />
+                <path d="M32 38 L60 22 L60 44 Z" className="aperture-blade blade-6" />
+              </g>
+
+              <circle cx="60" cy="60" r="22" className="lens-aperture-opening" />
+              <circle cx="50" cy="50" r="2" className="lens-flare-dot" />
+            </svg>
+          </div>
+
           <span className="quote-tagline">SHOOT @ SIGHT // THE ART OF PRESERVATION</span>
           <h2 className="quote-main-title">
             We Don't Just <i>Capture</i> Weddings.<br />
             We Preserve <span>Emotions</span> Forever.
           </h2>
+          
           <div className="quote-actions">
-            <button className="btn-premium replay-btn" onClick={() => triggerShutterTransition(true)}>
+            <button className="btn-premium replay-btn" onClick={() => triggerTransition(true)}>
               <svg viewBox="0 0 24 24" className="btn-icon">
                 <path fill="currentColor" d="M8 5v14l11-7z" />
               </svg>
@@ -110,38 +150,14 @@ const Hero = () => {
       )}
 
       {/* Skip button for video */}
-      {showVideo && (
-        <button className="skip-video-btn" onClick={() => triggerShutterTransition(false)}>
+      {showVideo && !transitioning && (
+        <button className="skip-video-btn" onClick={() => triggerTransition(false)}>
           Skip Video
           <svg viewBox="0 0 24 24" className="btn-icon-arrow">
             <path fill="none" stroke="currentColor" strokeWidth="2" d="M9 5l7 7-7 7" />
           </svg>
         </button>
       )}
-
-      {/* Camera Iris Shutter Screen Overlay */}
-      <div className={`shutter-screen ${shutterState}`}>
-        <svg className="lens-graphic" viewBox="0 0 100 100" fill="none" stroke="#d4af37" strokeWidth="1.2">
-          <circle cx="50" cy="50" r="45" strokeDasharray="3 3" opacity="0.6" />
-          <circle cx="50" cy="50" r="38" strokeWidth="0.8" opacity="0.8" />
-          <circle cx="50" cy="50" r="30" />
-          
-          {/* Shutter Blades */}
-          <path d="M50 20 C65 20, 75 30, 75 50" strokeWidth="1" />
-          <path d="M75 50 C75 65, 65 75, 50 75" strokeWidth="1" />
-          <path d="M50 75 C35 75, 25 65, 25 50" strokeWidth="1" />
-          <path d="M25 50 C25 35, 35 20, 50 20" strokeWidth="1" />
-          
-          <path d="M50 20 L80 35" opacity="0.5" />
-          <path d="M80 50 L65 80" opacity="0.5" />
-          <path d="M50 80 L20 65" opacity="0.5" />
-          <path d="M20 50 L35 20" opacity="0.5" />
-          
-          <path d="M30 30 A28 28 0 0 1 70 30" stroke="#ffffff" strokeWidth="0.8" opacity="0.4" />
-          <circle cx="45" cy="45" r="2" fill="#ffffff" opacity="0.7" />
-        </svg>
-        <div className="shutter-brand-text">SHOOT @ SIGHT</div>
-      </div>
     </section>
   );
 };
