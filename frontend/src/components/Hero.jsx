@@ -7,76 +7,88 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const containerRef = useRef(null);
-  const [focusState, setFocusState] = useState('hidden'); // 'hidden', 'unfocused', 'focus-hunting', 'focused'
+  const [showVideo, setShowVideo] = useState(true);
+  const [focusState, setFocusState] = useState('hidden'); // 'hidden', 'lens-zoom', 'focused'
   const timerRef = useRef(null);
 
   const startFocusSequence = () => {
+    setShowVideo(true);
     setFocusState('hidden');
     if (timerRef.current) clearTimeout(timerRef.current);
     
     // Play video completely cleanly for 12 seconds first
     timerRef.current = setTimeout(() => {
-      setFocusState('unfocused');
+      // Zoom lens to full size and spin
+      setFocusState('lens-zoom');
       
-      // Start focus hunting after 2 seconds
+      // After 1.2 seconds of full zoom, transition video to couple photo and shrink lens
       timerRef.current = setTimeout(() => {
-        setFocusState('focus-hunting');
-        
-        // Lock focus after another 2 seconds (total 16 seconds)
-        timerRef.current = setTimeout(() => {
-          setFocusState('focused');
-        }, 2000);
-      }, 2000);
+        setShowVideo(false);
+        setFocusState('focused');
+      }, 1200);
     }, 12000);
   };
 
-  // Scroll pin
+  // Set scroll restoration and reset scroll position early
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-        scrub: true,
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    ScrollTrigger.clearScrollMemory();
   }, []);
 
-  // Run the focus animation sequence on mount
+  // Start the auto transition on mount
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    // Safety refresh after a short delay to align with Lenis
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
     startFocusSequence();
+    
     return () => {
+      clearTimeout(refreshTimer);
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
 
   return (
     <section ref={containerRef} className="hero-full">
-      {/* Background Video (Plays continuously) */}
-      <div className={`hero-video-container ${focusState}`}>
-        <iframe
-          src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1&start=0"
-          title="Hero Background Video"
-          frameBorder="0"
-          allow="autoplay; encrypted-media"
-          referrerPolicy="strict-origin-when-cross-origin"
-        />
-      </div>
+      {/* Background Video (Plays continuously for first 12s) */}
+      {showVideo && (
+        <div className={`hero-video-container ${focusState}`}>
+          <iframe
+            src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1&start=0"
+            title="Hero Background Video"
+            frameBorder="0"
+            allow="autoplay; encrypted-media"
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
+          <div className="hero-video-blocker" />
+        </div>
+      )}
+
+      {/* Realistic Couple Background (Pavithra) */}
+      {!showVideo && (
+        <div className="hero-couple-bg">
+          <img 
+            src="https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC2178_-_Copy.webp" 
+            alt="Pavithra Founder" 
+            className="hero-couple-img" 
+          />
+        </div>
+      )}
 
       {/* Dark overlay */}
       <div className="hero-overlay" />
 
-      {/* Viewfinder auto-focus HUD brackets */}
-      <div className={`center-focus-brackets ${focusState}`} />
-
       {/* High-end Camera Lens & Quotation Screen overlay */}
       <div className="hero-quote-content">
         
-        {/* Realistic camera lens element */}
+        {/* Realistic camera lens element (zooms, spins, then shrinks back) */}
         <div className={`realistic-lens-container ${focusState}`}>
           <img src="/realistic_lens.png" alt="Realistic Lens" className="realistic-lens-img" />
         </div>

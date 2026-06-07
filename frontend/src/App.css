@@ -248,3 +248,10 @@
     gap: 40px;
   }
 }
+
+/* Home Content Wrapper to stack above sticky Hero */
+.home-content-wrapper {
+  position: relative;
+  z-index: 2;
+  background: var(--bg-color);
+}
