@@ -37,6 +37,16 @@ const AdminDashboard = () => {
   const [uploadProgress, setUploadProgress] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Testimonials Management State
+  const [testimonials, setTestimonials] = useState([]);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
+  const [testimonialNum, setTestimonialNum] = useState('');
+  const [testimonialQuote, setTestimonialQuote] = useState('');
+  const [testimonialAuthor, setTestimonialAuthor] = useState('');
+  const [testimonialLocation, setTestimonialLocation] = useState('');
+  const [testimonialTags, setTestimonialTags] = useState('');
+  const [editingTestimonial, setEditingTestimonial] = useState(null);
   
 
   useEffect(() => {
@@ -48,7 +58,25 @@ const AdminDashboard = () => {
     }
     fetchShoots();
     fetchBlogs();
+    fetchTestimonials();
   }, [navigate]);
+
+  const fetchTestimonials = async () => {
+    setLoadingTestimonials(true);
+    try {
+      const res = await fetch(`${API_URL}/testimonials`);
+      const data = await res.json();
+      if (res.ok) {
+        setTestimonials(data.testimonials || []);
+      } else {
+        setError('Failed to fetch testimonials.');
+      }
+    } catch (err) {
+      setError('Could not connect to the server.');
+    } finally {
+      setLoadingTestimonials(false);
+    }
+  };
 
   const fetchShoots = async () => {
     setLoadingList(true);
@@ -450,6 +478,106 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleTestimonialSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setUploading(true);
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/testimonials`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          num: testimonialNum,
+          quote: testimonialQuote,
+          author: testimonialAuthor,
+          location: testimonialLocation,
+          tags: testimonialTags.split(',').map(t => t.trim()).filter(Boolean)
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to publish testimonial');
+      setSuccess(`Successfully published testimonial by "${testimonialAuthor}"!`);
+      setTestimonialNum('');
+      setTestimonialQuote('');
+      setTestimonialAuthor('');
+      setTestimonialLocation('');
+      setTestimonialTags('');
+      fetchTestimonials();
+      setTimeout(() => { setActiveTab('testimonials-list'); setSuccess(''); }, 2000);
+    } catch (err) {
+      setError(err.message || 'Failed to submit testimonial.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleEditTestimonialSubmit = async (e) => {
+    e.preventDefault();
+    setEditUploading(true);
+    setEditMsg('Updating testimonial...');
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/testimonials/${editingTestimonial._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          num: editingTestimonial.num,
+          quote: editingTestimonial.quote,
+          author: editingTestimonial.author,
+          location: editingTestimonial.location,
+          tags: Array.isArray(editingTestimonial.tags)
+            ? editingTestimonial.tags
+            : editingTestimonial.tags.split(',').map(t => t.trim()).filter(Boolean)
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTestimonials(prev => prev.map(t => t._id === editingTestimonial._id ? data.testimonial : t));
+        setEditingTestimonial(null);
+        setSuccess('✅ Testimonial updated successfully!');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setEditMsg(`❌ ${data.message || 'Update failed'}`);
+      }
+    } catch {
+      setEditMsg('❌ Connection error');
+    } finally {
+      setEditUploading(false);
+    }
+  };
+
+  const handleDeleteTestimonial = async (id, author) => {
+    if (!window.confirm(`Are you sure you want to delete the testimonial from "${author}"?`)) {
+      return;
+    }
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/testimonials/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        setSuccess('Testimonial deleted successfully.');
+        setTestimonials(testimonials.filter(t => t._id !== id));
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('Testimonial deletion failed.');
+      }
+    } catch (err) {
+      setError('Connection to server failed during deletion.');
+    }
+  };
+
   return (
     <div className="dashboard-wrapper">
       {/* Sidebar / Topbar Header */}
@@ -498,6 +626,20 @@ const AdminDashboard = () => {
             disabled={uploading}
           >
             Write Blog Post
+          </button>
+          <button 
+            className={`dash-tab-btn ${activeTab === 'testimonials-list' ? 'active' : ''}`}
+            onClick={() => { setActiveTab('testimonials-list'); fetchTestimonials(); }}
+            disabled={uploading}
+          >
+            Testimonials ({testimonials.length})
+          </button>
+          <button 
+            className={`dash-tab-btn ${activeTab === 'create-testimonial' ? 'active' : ''}`}
+            onClick={() => setActiveTab('create-testimonial')}
+            disabled={uploading}
+          >
+            Add Testimonial
           </button>
         </div>
 
@@ -794,6 +936,129 @@ const AdminDashboard = () => {
             </form>
           </div>
         )}
+
+        {/* Tab content 5: Testimonials List */}
+        {activeTab === 'testimonials-list' && (
+          <div className="tab-content list-tab">
+            {loadingTestimonials ? (
+              <div className="dash-loader">Retrieving testimonials...</div>
+            ) : testimonials.length === 0 ? (
+              <div className="dash-empty-state">
+                <p>No testimonials found in database. Add your first testimonial!</p>
+                <button onClick={() => setActiveTab('create-testimonial')} className="btn-premium-action">Add First Testimonial</button>
+              </div>
+            ) : (
+              <div className="admin-shoots-grid">
+                {testimonials.map((t) => (
+                  <div key={t._id} className="admin-shoot-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '20px', minHeight: '220px', background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--accent)' }}>#{t.num}</span>
+                      <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6 }}>{t.location}</span>
+                    </div>
+                    <p style={{ fontSize: '0.82rem', fontStyle: 'italic', color: '#eaeaea', display: '-webkit-box', WebkitLineClamp: '4', WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis', margin: '10px 0', lineHeight: '1.5' }}>
+                      "{t.quote}"
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '15px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px' }}>
+                      <h4 style={{ fontSize: '0.85rem', color: '#ffffff', margin: 0 }}>{t.author}</h4>
+                      <div className="card-actions-framer" style={{ display: 'flex', gap: '8px', margin: 0 }}>
+                        <button onClick={() => setEditingTestimonial({ ...t, tags: Array.isArray(t.tags) ? t.tags.join(', ') : t.tags })} className="btn-edit-gallery" style={{ padding: '6px 12px', fontSize: '0.75rem' }}>
+                          Edit
+                        </button>
+                        <button onClick={() => handleDeleteTestimonial(t._id, t.author)} className="btn-delete-card" style={{ padding: '6px 12px', fontSize: '0.75rem' }}>
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Tab content 6: Create Testimonial */}
+        {activeTab === 'create-testimonial' && (
+          <div className="tab-content form-tab">
+            <form onSubmit={handleTestimonialSubmit} className="admin-chic-form">
+              <div className="form-double-column">
+                <div className="input-group-chic">
+                  <label htmlFor="testNum">Number (Order index, e.g. 01, 02)</label>
+                  <input
+                    type="text"
+                    id="testNum"
+                    required
+                    placeholder="e.g., 05"
+                    value={testimonialNum}
+                    onChange={(e) => setTestimonialNum(e.target.value)}
+                    disabled={uploading}
+                  />
+                </div>
+                <div className="input-group-chic">
+                  <label htmlFor="testAuthor">Couple Names (Author)</label>
+                  <input
+                    type="text"
+                    id="testAuthor"
+                    required
+                    placeholder="e.g., Srinidhi & Ramya"
+                    value={testimonialAuthor}
+                    onChange={(e) => setTestimonialAuthor(e.target.value)}
+                    disabled={uploading}
+                  />
+                </div>
+              </div>
+
+              <div className="form-double-column">
+                <div className="input-group-chic">
+                  <label htmlFor="testLocation">Wedding Event Title (Location)</label>
+                  <input
+                    type="text"
+                    id="testLocation"
+                    required
+                    placeholder="e.g., THE FINE ART LEGACY"
+                    value={testimonialLocation}
+                    onChange={(e) => setTestimonialLocation(e.target.value)}
+                    disabled={uploading}
+                  />
+                </div>
+                <div className="input-group-chic">
+                  <label htmlFor="testTags">Editorial Tags (Comma separated)</label>
+                  <input
+                    type="text"
+                    id="testTags"
+                    placeholder="e.g., Fine Art Legacy, Color Grading"
+                    value={testimonialTags}
+                    onChange={(e) => setTestimonialTags(e.target.value)}
+                    disabled={uploading}
+                  />
+                </div>
+              </div>
+
+              <div className="input-group-chic">
+                <label htmlFor="testQuote">The Praise / Testimonial Quote</label>
+                <textarea
+                  id="testQuote"
+                  required
+                  rows="5"
+                  placeholder="Capture the client's wonderful feedback..."
+                  value={testimonialQuote}
+                  onChange={(e) => setTestimonialQuote(e.target.value)}
+                  disabled={uploading}
+                />
+              </div>
+
+              {uploading && (
+                <div className="upload-progress-card">
+                  <div className="progress-spinner"></div>
+                  <p className="progress-text">Saving testimonial to database...</p>
+                </div>
+              )}
+
+              <button type="submit" className="btn-premium-submit" disabled={uploading}>
+                {uploading ? 'Publishing...' : 'Publish Testimonial'}
+              </button>
+            </form>
+          </div>
+        )}
       </main>
 
       {/* ── SPACIOUS FULL-SCREEN PORTFOLIO EDIT MODAL ── */}
@@ -958,6 +1223,91 @@ const AdminDashboard = () => {
 
               <button type="submit" className="btn-premium-submit" style={{ width: '100%', padding: '16px', background: '#ffeaa7', color: '#111' }} disabled={editUploading}>
                 {editUploading ? 'Saving changes...' : 'Save Blog Post Changes'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── SPACIOUS FULL-SCREEN TESTIMONIAL EDIT MODAL ── */}
+      {editingTestimonial && (
+        <div className="premium-edit-modal-overlay" onClick={() => setEditingTestimonial(null)}>
+          <div className="premium-edit-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
+            <button className="modal-close-btn" onClick={() => setEditingTestimonial(null)}>✕</button>
+            
+            <div className="edit-panel-header" style={{ marginBottom: '10px' }}>
+              <span style={{ fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#c9b57f' }}>Edit Testimonial</span>
+              {editMsg && <span className={`edit-msg ${editMsg.startsWith('✅') ? 'ok' : 'err'}`}>{editMsg}</span>}
+            </div>
+
+            <h2 className="modal-title-editorial">
+              Editing Testimonial: <i>{editingTestimonial.author}</i>
+            </h2>
+
+            <form onSubmit={handleEditTestimonialSubmit} className="modal-body-scrollable" data-lenis-prevent>
+              <div className="form-double-column edit-section" style={{ gap: '20px' }}>
+                <div>
+                  <label className="edit-section-label">Number / Order (e.g. 01)</label>
+                  <input
+                    type="text"
+                    required
+                    className="input-chic"
+                    value={editingTestimonial.num}
+                    onChange={(e) => setEditingTestimonial(prev => ({ ...prev, num: e.target.value }))}
+                    disabled={editUploading}
+                  />
+                </div>
+                <div>
+                  <label className="edit-section-label">Author / Names</label>
+                  <input
+                    type="text"
+                    required
+                    className="input-chic"
+                    value={editingTestimonial.author}
+                    onChange={(e) => setEditingTestimonial(prev => ({ ...prev, author: e.target.value }))}
+                    disabled={editUploading}
+                  />
+                </div>
+              </div>
+
+              <div className="form-double-column edit-section" style={{ gap: '20px' }}>
+                <div>
+                  <label className="edit-section-label">Event / Location</label>
+                  <input
+                    type="text"
+                    required
+                    className="input-chic"
+                    value={editingTestimonial.location}
+                    onChange={(e) => setEditingTestimonial(prev => ({ ...prev, location: e.target.value }))}
+                    disabled={editUploading}
+                  />
+                </div>
+                <div>
+                  <label className="edit-section-label">Tags (comma separated)</label>
+                  <input
+                    type="text"
+                    className="input-chic"
+                    value={editingTestimonial.tags}
+                    onChange={(e) => setEditingTestimonial(prev => ({ ...prev, tags: e.target.value }))}
+                    disabled={editUploading}
+                  />
+                </div>
+              </div>
+
+              <div className="edit-section">
+                <label className="edit-section-label">Testimonial Quote</label>
+                <textarea
+                  required
+                  rows="5"
+                  className="textarea-chic"
+                  value={editingTestimonial.quote}
+                  onChange={(e) => setEditingTestimonial(prev => ({ ...prev, quote: e.target.value }))}
+                  disabled={editUploading}
+                />
+              </div>
+
+              <button type="submit" className="btn-premium-submit" style={{ width: '100%', padding: '16px', background: '#ffeaa7', color: '#111' }} disabled={editUploading}>
+                {editUploading ? 'Saving changes...' : 'Save Testimonial Changes'}
               </button>
             </form>
           </div>

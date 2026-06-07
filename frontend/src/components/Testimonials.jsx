@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import './Testimonials.css';
 
 const testimonialsData = [
@@ -33,21 +34,43 @@ const testimonialsData = [
 ];
 
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState(testimonialsData);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % testimonialsData.length);
-    }, 6500); // Shift every 6.5s
-    return () => clearInterval(timer);
+    const fetchDbTestimonials = async () => {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3000);
+        const res = await fetch(`${API_URL}/testimonials`, { signal: controller.signal });
+        clearTimeout(timeout);
+        const data = await res.json();
+        if (res.ok && data.testimonials && data.testimonials.length > 0) {
+          setTestimonials(data.testimonials);
+        }
+      } catch (err) {
+        // Fallback to local testimonialsData (already set as default state)
+      }
+    };
+    fetchDbTestimonials();
   }, []);
 
+  useEffect(() => {
+    if (testimonials.length === 0) return;
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6500); // Shift every 6.5s
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
+
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % testimonialsData.length);
+    if (testimonials.length === 0) return;
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
   };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonialsData.length) % testimonialsData.length);
+    if (testimonials.length === 0) return;
+    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
   return (
@@ -66,7 +89,7 @@ const Testimonials = () => {
 
           {/* Numerical Slide Selector */}
           <div className="testimonial-selectors">
-            {testimonialsData.map((t, idx) => (
+            {testimonials.map((t, idx) => (
               <button 
                 key={idx}
                 className={`selector-num-btn ${idx === activeIndex ? 'active' : ''}`}
@@ -84,7 +107,7 @@ const Testimonials = () => {
             <div className="card-border-backing"></div>
             
             <div className="testimonial-card-inner">
-              {testimonialsData.map((t, idx) => (
+              {testimonials.map((t, idx) => (
                 <div 
                   key={idx} 
                   className={`testimonial-slide-item ${idx === activeIndex ? 'slide-active' : 'slide-inactive'}`}
@@ -97,7 +120,7 @@ const Testimonials = () => {
                   </div>
 
                   <div className="testimonial-card-tags">
-                    {t.tags.map((tag, tagIdx) => (
+                    {t.tags && t.tags.map((tag, tagIdx) => (
                       <span key={tagIdx} className="card-tag-pill">{tag}</span>
                     ))}
                   </div>

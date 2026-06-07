@@ -63,7 +63,7 @@
 
   /* Active State Curation */
   .mobile-tab-item.active {
-    color: #b89f65; /* Pure Gold highlight */
+    color: var(--accent); /* Pure Gold highlight */
   }
 
   .mobile-tab-item.active .tab-icon {
@@ -83,9 +83,9 @@
     top: 4px;
     width: 4px;
     height: 4px;
-    background: #b89f65;
+    background: var(--accent);
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(184, 159, 101, 0.8);
+    box-shadow: 0 0 8px rgba(198, 161, 91, 0.8);
   }
 
   /* Luxury Aperture Rotation Hover Effect */

@@ -294,7 +294,7 @@
     font-family: var(--font-sans);
     font-size: 0.75rem;
     font-weight: 800;
-    color: #b89f65; /* Elegant Gold Numbering */
+    color: var(--accent); /* Elegant Gold Numbering */
     margin-right: 15px;
     letter-spacing: 1px;
   }

@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
   --bg-color: #fdf8f3;      /* Soft Cream Background */
   --bg-secondary: #dcd0c0;  /* Muted Tan Header/Sections */
   --text-primary: #3c3024;  /* Deep Earthy Brown Text */
   --text-secondary: #5e4d3b; /* Medium Brown Text */
-  --accent: #8d6e63;        /* Warm Accent Brown */
-  --accent-light: #bcaaa4;   /* For lighter accents */
-  --font-serif: 'Playfair Display', serif; 
+  --accent: #C6A15B;        /* Premium gold accent */
+  --accent-light: #D4B77C;   /* Lighter gold accent */
+  --font-serif: 'Cormorant Garamond', serif; 
+  --font-display: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
   --transition-smooth: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
@@ -47,7 +49,7 @@ html {
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-poppins);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -172,16 +174,17 @@ html.lenis, html.lenis body {
 
 /* Typography */
 h1, h2, h3, h4 {
-  font-family: var(--font-sans);
-  font-weight: 600;
+  font-family: var(--font-serif);
+  font-weight: 500;
   line-height: 1.2;
   color: var(--text-primary);
   letter-spacing: -0.5px;
 }
 
 h1 i, h2 i, h3 i, h4 i {
+  font-family: var(--font-display);
   color: var(--accent);
-  font-style: normal;
+  font-style: italic;
 }
 
 /* Global Section Headings */
@@ -213,15 +216,15 @@ h1 i, h2 i, h3 i, h4 i {
 }
 
 .section-title-large i {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-style: italic;
   font-weight: 400;
   color: var(--accent);
-  padding-left: 0.3em;
+  padding-left: 0.1em;
 }
 
 p {
-  font-family: var(--font-sans);
+  font-family: var(--font-poppins);
   font-weight: 400; /* Increased weight from 300 for better visibility */
   line-height: 1.7;
   color: var(--text-secondary);
