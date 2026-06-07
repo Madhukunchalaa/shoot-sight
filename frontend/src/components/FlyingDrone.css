@@ -307,25 +307,51 @@
   100% { transform: scale(1); box-shadow: 0 0 6px #00cec9; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .flying-drone-container {
-    bottom: 90px; /* Positions it nicely above the 68px sticky bottom app tab bar! */
-    right: 20px;
-    width: 70px;
-    height: 70px;
+    bottom: 45px;
+    right: 30px;
+    width: 100px;
+    height: 100px;
   }
   
   .drone-mesh-wrapper {
-    transform: scale(0.85); /* Slightly smaller for mobile screens */
+    transform: scale(1.05); /* Increased drone size for tablet/mobile */
+  }
+
+  .drone-social-badge {
+    width: 24px;  /* Reduced WhatsApp/Instagram badge size */
+    height: 24px; /* Reduced WhatsApp/Instagram badge size */
+    top: 6px;
+  }
+
+  .whatsapp-badge {
+    left: 2px;
+  }
+
+  .instagram-badge {
+    right: 2px;
+  }
+
+  .social-badge-icon {
+    width: 13px;  /* Reduced icon size inside badge */
+    height: 13px; /* Reduced icon size inside badge */
   }
 
   .drone-tooltip {
-    bottom: 90px;
+    bottom: 105px;
     right: -10px;
     padding: 8px 12px;
   }
 
   .tooltip-text {
     font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .flying-drone-container {
+    bottom: 95px; /* Stay clear of the 68px sticky bottom mobile app tab bar */
+    right: 20px;
   }
 }
