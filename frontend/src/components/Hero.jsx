@@ -7,21 +7,27 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const containerRef = useRef(null);
-  const [focusState, setFocusState] = useState('unfocused'); // 'unfocused', 'focus-hunting', 'focused'
+  const [focusState, setFocusState] = useState('hidden'); // 'hidden', 'unfocused', 'focus-hunting', 'focused'
   const timerRef = useRef(null);
 
   const startFocusSequence = () => {
-    setFocusState('unfocused');
+    setFocusState('hidden');
+    if (timerRef.current) clearTimeout(timerRef.current);
     
-    // Start focus hunting after 2.5s
+    // Play video completely cleanly for 12 seconds first
     timerRef.current = setTimeout(() => {
-      setFocusState('focus-hunting');
+      setFocusState('unfocused');
       
-      // Lock focus after another 2.5s (total 5s)
+      // Start focus hunting after 2 seconds
       timerRef.current = setTimeout(() => {
-        setFocusState('focused');
-      }, 2500);
-    }, 2500);
+        setFocusState('focus-hunting');
+        
+        // Lock focus after another 2 seconds (total 16 seconds)
+        timerRef.current = setTimeout(() => {
+          setFocusState('focused');
+        }, 2000);
+      }, 2000);
+    }, 12000);
   };
 
   // Scroll pin
