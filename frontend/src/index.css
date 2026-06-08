@@ -3,8 +3,8 @@
 :root {
   --bg-color: #fdf8f3;      /* Soft Cream Background */
   --bg-secondary: #dcd0c0;  /* Muted Tan Header/Sections */
-  --text-primary: #3c3024;  /* Deep Earthy Brown Text */
-  --text-secondary: #5e4d3b; /* Medium Brown Text */
+  --text-primary: #1e1813;  /* Premium Deep Dark Brown (Footer Dark Color) */
+  --text-secondary: #4a3b32; /* Rich Dark Brown for secondary copy */
   --accent: #C6A15B;        /* Premium gold accent */
   --accent-light: #D4B77C;   /* Lighter gold accent */
   --font-serif: 'Cormorant Garamond', serif; 
