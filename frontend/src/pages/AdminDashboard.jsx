@@ -47,7 +47,7 @@ const AdminDashboard = () => {
   const [testimonialLocation, setTestimonialLocation] = useState('');
   const [testimonialTags, setTestimonialTags] = useState('');
   const [editingTestimonial, setEditingTestimonial] = useState(null);
-  
+  const [confirmModal, setConfirmModal] = useState(null);
 
   useEffect(() => {
     // Auth Guard
@@ -127,6 +127,19 @@ const AdminDashboard = () => {
     navigate('/admin/login');
   };
 
+  const requestConfirm = ({ title, message, confirmLabel = 'Confirm', onConfirm }) => {
+    setConfirmModal({ title, message, confirmLabel, onConfirm });
+  };
+
+  const closeConfirmModal = () => setConfirmModal(null);
+
+  const handleConfirmAction = () => {
+    if (!confirmModal?.onConfirm) return;
+    const action = confirmModal.onConfirm;
+    setConfirmModal(null);
+    action();
+  };
+
   const handleHeroChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setHeroImage(e.target.files[0]);
@@ -139,31 +152,34 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDelete = async (shootId, shootTitle) => {
-    if (!window.confirm(`Are you sure you want to delete "${shootTitle}" and all its uploaded images?`)) {
-      return;
-    }
+  const handleDelete = (shootId, shootTitle) => {
+    requestConfirm({
+      title: 'Delete Story Archive',
+      message: `Are you sure you want to delete "${shootTitle}" and all its uploaded images? This cannot be undone.`,
+      confirmLabel: 'Delete Archive',
+      onConfirm: async () => {
+        const token = localStorage.getItem('adminToken');
+        try {
+          const res = await fetch(`${API_URL}/shoots/${shootId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
 
-    const token = localStorage.getItem('adminToken');
-    try {
-      const res = await fetch(`${API_URL}/shoots/${shootId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
+          const data = await res.json();
+          if (res.ok) {
+            setSuccess('Shoot deleted successfully.');
+            setShoots(shoots.filter(s => s._id !== shootId));
+            setTimeout(() => setSuccess(''), 3000);
+          } else {
+            setError(data.message || 'Deletion failed.');
+          }
+        } catch (err) {
+          setError('Connection to server failed during deletion.');
         }
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setSuccess('Shoot deleted successfully.');
-        setShoots(shoots.filter(s => s._id !== shootId));
-        setTimeout(() => setSuccess(''), 3000);
-      } else {
-        setError(data.message || 'Deletion failed.');
-      }
-    } catch (err) {
-      setError('Connection to server failed during deletion.');
-    }
+      },
+    });
   };
 
   // ── Gallery Edit Handlers ────────────────────────────────────────────────
@@ -198,27 +214,33 @@ const AdminDashboard = () => {
     finally { setEditUploading(false); e.target.value = ''; }
   };
 
-  const handleRemoveGalleryImage = async (imageUrl) => {
-    if (!window.confirm('Remove this image from the gallery?')) return;
-    setEditUploading(true);
-    setEditMsg('Removing image...');
-    const token = localStorage.getItem('adminToken');
-    try {
-      const res = await fetch(`${API_URL}/shoots/${editingShoot._id}/gallery`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageUrl }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setEditingShoot(prev => ({ ...prev, gallery: data.gallery }));
-        setShoots(prev => prev.map(s => s._id === editingShoot._id ? { ...s, gallery: data.gallery } : s));
-        setEditMsg('✅ Image removed.');
-      } else {
-        setEditMsg(`❌ ${data.message || 'Remove failed'}`);
-      }
-    } catch { setEditMsg('❌ Connection error'); }
-    finally { setEditUploading(false); }
+  const handleRemoveGalleryImage = (imageUrl) => {
+    requestConfirm({
+      title: 'Remove Gallery Image',
+      message: 'Remove this image from the gallery? The file will be permanently deleted from storage.',
+      confirmLabel: 'Remove Image',
+      onConfirm: async () => {
+        setEditUploading(true);
+        setEditMsg('Removing image...');
+        const token = localStorage.getItem('adminToken');
+        try {
+          const res = await fetch(`${API_URL}/shoots/${editingShoot._id}/gallery`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageUrl }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            setEditingShoot(prev => ({ ...prev, gallery: data.gallery }));
+            setShoots(prev => prev.map(s => s._id === editingShoot._id ? { ...s, gallery: data.gallery } : s));
+            setEditMsg('✅ Image removed.');
+          } else {
+            setEditMsg(`❌ ${data.message || 'Remove failed'}`);
+          }
+        } catch { setEditMsg('❌ Connection error'); }
+        finally { setEditUploading(false); }
+      },
+    });
   };
 
   const handleChangeHero = async (e) => {
@@ -343,30 +365,33 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteBlog = async (blogId, blogTitle) => {
-    if (!window.confirm(`Are you sure you want to delete blog "${blogTitle}"?`)) {
-      return;
-    }
+  const handleDeleteBlog = (blogId, blogTitle) => {
+    requestConfirm({
+      title: 'Delete Blog Article',
+      message: `Are you sure you want to delete "${blogTitle}"? This cannot be undone.`,
+      confirmLabel: 'Delete Article',
+      onConfirm: async () => {
+        const token = localStorage.getItem('adminToken');
+        try {
+          const res = await fetch(`${API_URL}/admin/blogs/${blogId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
 
-    const token = localStorage.getItem('adminToken');
-    try {
-      const res = await fetch(`${API_URL}/admin/blogs/${blogId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
+          if (res.ok) {
+            setSuccess('Blog deleted successfully.');
+            setBlogs(blogs.filter(b => b._id !== blogId));
+            setTimeout(() => setSuccess(''), 3000);
+          } else {
+            setError('Blog deletion failed.');
+          }
+        } catch (err) {
+          setError('Connection to server failed during deletion.');
         }
-      });
-
-      if (res.ok) {
-        setSuccess('Blog deleted successfully.');
-        setBlogs(blogs.filter(b => b._id !== blogId));
-        setTimeout(() => setSuccess(''), 3000);
-      } else {
-        setError('Blog deletion failed.');
-      }
-    } catch (err) {
-      setError('Connection to server failed during deletion.');
-    }
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -554,28 +579,32 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteTestimonial = async (id, author) => {
-    if (!window.confirm(`Are you sure you want to delete the testimonial from "${author}"?`)) {
-      return;
-    }
-    const token = localStorage.getItem('adminToken');
-    try {
-      const res = await fetch(`${API_URL}/admin/testimonials/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
+  const handleDeleteTestimonial = (id, author) => {
+    requestConfirm({
+      title: 'Delete Testimonial',
+      message: `Are you sure you want to delete the testimonial from "${author}"? This cannot be undone.`,
+      confirmLabel: 'Delete Testimonial',
+      onConfirm: async () => {
+        const token = localStorage.getItem('adminToken');
+        try {
+          const res = await fetch(`${API_URL}/admin/testimonials/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (res.ok) {
+            setSuccess('Testimonial deleted successfully.');
+            setTestimonials(testimonials.filter(t => t._id !== id));
+            setTimeout(() => setSuccess(''), 3000);
+          } else {
+            setError('Testimonial deletion failed.');
+          }
+        } catch (err) {
+          setError('Connection to server failed during deletion.');
         }
-      });
-      if (res.ok) {
-        setSuccess('Testimonial deleted successfully.');
-        setTestimonials(testimonials.filter(t => t._id !== id));
-        setTimeout(() => setSuccess(''), 3000);
-      } else {
-        setError('Testimonial deletion failed.');
-      }
-    } catch (err) {
-      setError('Connection to server failed during deletion.');
-    }
+      },
+    });
   };
 
   return (
@@ -1310,6 +1339,24 @@ const AdminDashboard = () => {
                 {editUploading ? 'Saving changes...' : 'Save Testimonial Changes'}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {confirmModal && (
+        <div className="confirm-modal-overlay" onClick={closeConfirmModal}>
+          <div className="confirm-modal-content" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+            <span className="confirm-modal-accent">CONFIRM ACTION</span>
+            <h3 id="confirm-modal-title" className="confirm-modal-title">{confirmModal.title}</h3>
+            <p className="confirm-modal-message">{confirmModal.message}</p>
+            <div className="confirm-modal-actions">
+              <button type="button" className="btn-confirm-cancel" onClick={closeConfirmModal}>
+                Cancel
+              </button>
+              <button type="button" className="btn-confirm-danger" onClick={handleConfirmAction}>
+                {confirmModal.confirmLabel}
+              </button>
+            </div>
           </div>
         </div>
       )}
