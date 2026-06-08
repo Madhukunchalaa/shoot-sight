@@ -1,11 +1,11 @@
 .boutique-footer {
-  background: var(--bg-color); /* Matches premium cream theme */
+  background: #1e1813; /* Rich dark chocolate brown instead of pitch black */
   padding: 100px 0 40px 0;
-  color: var(--text-primary);
+  color: #fdf8f3; /* Warm cream text */
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-top: 1px solid rgba(60, 48, 36, 0.1);
+  border-top: 1px solid rgba(253, 248, 243, 0.08);
 }
 
 .footer-top {
@@ -18,14 +18,15 @@
   height: 80px;
   margin-bottom: 20px;
   opacity: 0.9;
-  /* Removed inversion filters to show native dark luxury logo colors */
+  /* Invert filters to show clear white text on the dark brown background */
+  filter: invert(1) hue-rotate(180deg) saturate(3) brightness(1.15);
 }
 
 .footer-slogan {
   font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: 5px;
-  color: var(--text-secondary);
+  color: rgba(253, 248, 243, 0.8);
   opacity: 0.8;
   margin-top: 15px;
 }
@@ -41,7 +42,7 @@
   letter-spacing: 3px;
   margin-bottom: 25px;
   color: var(--accent); /* Premium luxury gold accent */
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .footer-col a {
@@ -51,13 +52,13 @@
   letter-spacing: 1px;
   margin-bottom: 12px;
   text-decoration: none;
-  color: var(--text-secondary);
+  color: rgba(253, 248, 243, 0.6);
   font-weight: 400;
   transition: all 0.3s ease;
 }
 
 .footer-col a:hover {
-  color: var(--text-primary);
+  color: #ffffff;
   transform: translateX(5px);
 }
 
@@ -68,9 +69,9 @@
   line-height: 0.9;
   text-align: center;
   margin: 80px 0 60px 0;
-  color: rgba(60, 48, 36, 0.04); /* Faint watermark effect */
+  color: rgba(253, 248, 243, 0.03); /* Extremely faint watermark effect */
   letter-spacing: -3px;
-  border-top: 1px solid rgba(60, 48, 36, 0.1);
+  border-top: 1px solid rgba(253, 248, 243, 0.08);
   padding-top: 80px;
   white-space: nowrap;
 }
@@ -80,11 +81,11 @@
   font-weight: 300;
   color: var(--accent);
   padding-left: 0.2em;
-  opacity: 0.25;
+  opacity: 0.2;
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(60, 48, 36, 0.1);
+  border-top: 1px solid rgba(253, 248, 243, 0.08);
   padding-top: 30px;
 }
 
@@ -94,7 +95,7 @@
   font-family: var(--font-sans);
   font-size: 9px;
   letter-spacing: 3px;
-  color: var(--text-secondary);
+  color: rgba(253, 248, 243, 0.5);
   opacity: 0.8;
   text-transform: uppercase;
 }
