@@ -18,13 +18,17 @@ const Hero = () => {
     
     // Play video completely cleanly for 12 seconds first
     timerRef.current = setTimeout(() => {
-      // Zoom lens to full size and spin
+      // Start transition state (dims the video)
       setFocusState('lens-zoom');
       
-      // After 1.2 seconds of full zoom, transition video to couple photo and shrink lens
+      // After 1.2 seconds of dimming, swap focused state to fade video completely and show text
       timerRef.current = setTimeout(() => {
-        setShowVideo(false);
         setFocusState('focused');
+        
+        // Wait 1 second for the CSS opacity transition to finish, then unmount video
+        timerRef.current = setTimeout(() => {
+          setShowVideo(false);
+        }, 1000);
       }, 1200);
     }, 12000);
   };
@@ -57,11 +61,20 @@ const Hero = () => {
 
   return (
     <section ref={containerRef} className="hero-full">
+      {/* Realistic Couple Background (Pavithra) - Rendered behind the video */}
+      <div className="hero-couple-bg">
+        <img 
+          src="https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC2178_-_Copy.webp" 
+          alt="Pavithra Founder" 
+          className="hero-couple-img" 
+        />
+      </div>
+
       {/* Background Video (Plays continuously for first 12s) */}
       {showVideo && (
         <div className={`hero-video-container ${focusState}`}>
           <iframe
-            src="https://www.youtube.com/embed/E6mpqvgMyUY?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=E6mpqvgMyUY&playsinline=1&start=0"
+            src="https://www.youtube.com/embed/uJYT8dm1YKg?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=uJYT8dm1YKg&playsinline=1&start=0"
             title="Hero Background Video"
             frameBorder="0"
             allow="autoplay; encrypted-media"
@@ -71,28 +84,12 @@ const Hero = () => {
         </div>
       )}
 
-      {/* Realistic Couple Background (Pavithra) */}
-      {!showVideo && (
-        <div className="hero-couple-bg">
-          <img 
-            src="https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC2178_-_Copy.webp" 
-            alt="Pavithra Founder" 
-            className="hero-couple-img" 
-          />
-        </div>
-      )}
-
       {/* Dark overlay */}
       <div className="hero-overlay" />
 
-      {/* High-end Camera Lens & Quotation Screen overlay */}
+      {/* High-end Quotation Screen overlay */}
       <div className="hero-quote-content">
         
-        {/* Realistic camera lens element (zooms, spins, then shrinks back) */}
-        <div className={`realistic-lens-container ${focusState}`}>
-          <img src="/realistic_lens.png" alt="Realistic Lens" className="realistic-lens-img" />
-        </div>
-
         {/* Ultra-stylish text display */}
         <div className={`quote-text-wrapper ${focusState === 'focused' ? 'active' : ''}`}>
           <span className="quote-tagline">SHOOT @ SIGHT // THE ART OF PRESERVATION</span>

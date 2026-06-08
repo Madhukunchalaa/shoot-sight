@@ -13,9 +13,9 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
   opacity: 1;
-  transition: opacity 0.8s ease;
+  transition: opacity 1s ease;
 }
 
 .hero-video-blocker {
@@ -26,7 +26,11 @@
 }
 
 .hero-video-container.lens-zoom {
-  opacity: 0.3; /* dim slightly while zoom transition occurs */
+  opacity: 0.5; /* dim slightly while zoom transition occurs */
+}
+
+.hero-video-container.focused {
+  opacity: 0; /* fully fade out video once transition completes */
 }
 
 .hero-video-container iframe {
