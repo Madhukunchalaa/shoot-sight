@@ -299,6 +299,13 @@
 
 /* ─── Responsive adjustments ─────────────────────────── */
 @media (max-width: 768px) {
+  /* Zoom out on portrait mobile — default cover sizing crops too aggressively */
+  .hero-video-container iframe {
+    width: max(100vw, 115vh);
+    height: max(56.25vw, 100vh);
+    transform: translate(-50%, -50%) scale(0.88);
+  }
+
   .hero-quote-content {
     padding: 30px 20px;
     width: min(480px, 92%);

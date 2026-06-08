@@ -9,7 +9,7 @@ import FlyingDrone from '../components/FlyingDrone';
 import Testimonials from '../components/Testimonials';
 import { Link } from 'react-router-dom';
 
-const landingFilmId = "wLqHwzM9ABo";
+const landingFilmId = "a94LGkUt3Pg";
 
 const Home = () => {
   useEffect(() => {
@@ -50,6 +50,8 @@ const Home = () => {
               frameBorder="0"
               allow="autoplay; encrypted-media"
               referrerPolicy="strict-origin-when-cross-origin"
+              tabIndex="-1"
+              aria-hidden="true"
             />
           </div>
 
