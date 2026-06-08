@@ -337,21 +337,59 @@ module.exports = {
   updateHeroImage,
 };
 
-// ─── HELPER: find shoot by id or slug (mongo + local fallback) ───────────────
+// ─── HELPERS: find & persist shoots (mongo + local JSON fallback) ────────────
+function findLocalShootIndex(idOrSlug, localShoots) {
+  return localShoots.findIndex((s) => s._id === idOrSlug || s.slug === idOrSlug);
+}
+
 async function findShoot(idOrSlug) {
-  let shoot = null;
   try {
-    if (idOrSlug.match(/^[0-9a-fA-F]{24}$/)) shoot = await Shoot.findById(idOrSlug);
-    if (!shoot) shoot = await Shoot.findOne({ slug: idOrSlug });
-  } catch (_) {}
-  return shoot;
+    if (idOrSlug.match(/^[0-9a-fA-F]{24}$/)) {
+      const byId = await Shoot.findById(idOrSlug);
+      if (byId) return { shoot: byId, storage: 'mongo' };
+    }
+    const bySlug = await Shoot.findOne({ slug: idOrSlug });
+    if (bySlug) return { shoot: bySlug, storage: 'mongo' };
+  } catch (err) {
+    console.warn('⚠️ MongoDB lookup failed, checking local shoots-db.json fallback...');
+  }
+
+  const localShoots = readLocalShoots();
+  const localIndex = findLocalShootIndex(idOrSlug, localShoots);
+  if (localIndex !== -1) {
+    return { shoot: localShoots[localIndex], storage: 'local', localIndex };
+  }
+
+  return null;
+}
+
+async function persistShoot(found, updates) {
+  if (found.storage === 'mongo') {
+    Object.assign(found.shoot, updates);
+    await found.shoot.save();
+    return found.shoot;
+  }
+
+  const localShoots = readLocalShoots();
+  const localIndex = findLocalShootIndex(found.shoot._id || found.shoot.slug, localShoots);
+  if (localIndex === -1) {
+    throw new Error('Shoot not found in local database');
+  }
+
+  localShoots[localIndex] = {
+    ...localShoots[localIndex],
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  };
+  writeLocalShoots(localShoots);
+  return localShoots[localIndex];
 }
 
 // 5. ADD IMAGES TO GALLERY
 async function addGalleryImages(req, res, next) {
   try {
-    const shoot = await findShoot(req.params.id);
-    if (!shoot) return res.status(404).json({ success: false, message: 'Shoot not found' });
+    const found = await findShoot(req.params.id);
+    if (!found) return res.status(404).json({ success: false, message: 'Shoot not found' });
 
     const files = req.files?.['gallery'] || [];
     if (files.length === 0)
@@ -364,49 +402,50 @@ async function addGalleryImages(req, res, next) {
       })
     );
 
-    shoot.gallery.push(...newUrls);
-    await shoot.save();
-    return res.json({ success: true, gallery: shoot.gallery });
+    const gallery = [...(found.shoot.gallery || []), ...newUrls];
+    const updated = await persistShoot(found, { gallery });
+    return res.json({ success: true, gallery: updated.gallery });
   } catch (err) { next(err); }
 }
 
 // 6. REMOVE ONE IMAGE FROM GALLERY
 async function removeGalleryImage(req, res, next) {
   try {
-    const shoot = await findShoot(req.params.id);
-    if (!shoot) return res.status(404).json({ success: false, message: 'Shoot not found' });
+    const found = await findShoot(req.params.id);
+    if (!found) return res.status(404).json({ success: false, message: 'Shoot not found' });
 
     const { imageUrl } = req.body;
-    const idx = shoot.gallery.indexOf(imageUrl);
+    const gallery = [...(found.shoot.gallery || [])];
+    const idx = gallery.indexOf(imageUrl);
     if (idx === -1) return res.status(404).json({ success: false, message: 'Image not in gallery' });
 
-    shoot.gallery.splice(idx, 1);
-    await shoot.save();
+    gallery.splice(idx, 1);
+    const updated = await persistShoot(found, { gallery });
 
     // Delete from R2/local storage (non-blocking)
     deleteStoredImage(imageUrl).catch(() => {});
 
-    return res.json({ success: true, gallery: shoot.gallery });
+    return res.json({ success: true, gallery: updated.gallery });
   } catch (err) { next(err); }
 }
 
 // 7. UPDATE HERO / COVER IMAGE
 async function updateHeroImage(req, res, next) {
   try {
-    const shoot = await findShoot(req.params.id);
-    if (!shoot) return res.status(404).json({ success: false, message: 'Shoot not found' });
+    const found = await findShoot(req.params.id);
+    if (!found) return res.status(404).json({ success: false, message: 'Shoot not found' });
 
     const heroFile = req.files?.['heroImage']?.[0];
     if (!heroFile) return res.status(400).json({ success: false, message: 'No hero image provided' });
 
-    const oldHero = shoot.heroImage;
+    const oldHero = found.shoot.heroImage;
     const filename = `${uuidv4()}.webp`;
-    shoot.heroImage = await processAndStoreImage(heroFile.buffer, filename, req);
-    await shoot.save();
+    const heroImageUrl = await processAndStoreImage(heroFile.buffer, filename, req);
+    const updated = await persistShoot(found, { heroImage: heroImageUrl });
 
     // Delete old hero from R2 (non-blocking)
     if (oldHero) deleteStoredImage(oldHero).catch(() => {});
 
-    return res.json({ success: true, heroImage: shoot.heroImage });
+    return res.json({ success: true, heroImage: updated.heroImage });
   } catch (err) { next(err); }
 }
