@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import './Services.css';
 
-const weddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4399.webp";
-const cinematicImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4761_-_Copy.webp";
-const preWeddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
-const droneImg = "/drone_aerial_coverage.png";
+const weddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/VIJ01478.jpg.webp";
+const cinematicImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_9199-2.jpg.webp";
+const preWeddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC00238-Edit%20(1).jpg.webp";
+const droneImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DJI_20260429175238_0374_D-_1_.jpg.webp";
 
 const Services = () => {
   const sectionRef = useRef(null);

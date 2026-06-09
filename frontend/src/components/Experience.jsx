@@ -5,8 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Experience.css';
 
 const curationImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4382.webp";
-const captureImg = "/perfect_capture.png";
-const heirloomImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4285.webp";
+const captureImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/KRP_9557.jpg.webp";
+const heirloomImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_8454.jpg.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -111,7 +111,7 @@ const Experience = () => {
             </div>
             <div className="exp-card__image">
               <div className="img-reveal-wrapper">
-                <img src={heirloomImg} alt="Timeless Heirloom Delivery" loading="lazy" decoding="async" />
+                <img className="heirloom-img" src={heirloomImg} alt="Timeless Heirloom Delivery" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>

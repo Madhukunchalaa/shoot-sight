@@ -17,6 +17,7 @@
   position: relative;
   display: flex;
   justify-content: flex-start;
+  margin-top: -70px; /* Shift the entire images collage section to the top */
 }
 
 .story-img-wrapper {
@@ -29,8 +30,8 @@
 }
 
 .story-img-wrapper.type-1 {
-  width: 75%;
-  height: 80vh;
+  width: 90%; /* Increased width */
+  height: 90vh; /* Increased height so subjects in the portrait image don't get cutoff */
   z-index: 1;
 }
 
@@ -38,7 +39,7 @@
   width: 45%;
   height: 35vh;
   position: absolute;
-  top: 15%;
+  top: 15%; /* Restored to original */
   right: -5%;
   z-index: 3;
   border: 10px solid var(--bg-color);
@@ -49,7 +50,7 @@
   width: 45%;
   height: 35vh;
   position: absolute;
-  top: calc(15% + 35vh + 24px);
+  top: calc(15% + 35vh + 24px); /* Restored to original */
   right: -5%;
   z-index: 3;
   border: 10px solid var(--bg-color);

@@ -45,9 +45,9 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`New Commission Enquiry — ${form.names}`);
+    const subject = encodeURIComponent(`New Wedding Enquiry - ${form.names}`);
     const body = encodeURIComponent(
-`New Commission Application — Shoot @ Sight
+`New Wedding Enquiry - Shoot @ Sight
 
 Names: ${form.names}
 Email: ${form.email}
@@ -109,7 +109,7 @@ ${form.vision}`
             </div>
             <div className="direct-item">
               <span className="direct-label">DIRECT CHANNELS</span>
-              <a href="mailto:hello@shootatsight.com" className="direct-link">hello@shootatsight.com</a>
+              <a href="mailto:shootatsightweddings@gmail.com" className="direct-link">shootatsightweddings@gmail.com</a>
               <a href="tel:+919900233338" className="direct-link">+91 9900233338</a>
             </div>
           </div>
@@ -121,7 +121,7 @@ ${form.vision}`
           <div className="contact-form-glass-card">
             
             <div className="form-card-header">
-              <h2 className="form-card-title">Apply for Commission</h2>
+              <h2 className="form-card-title">Start a Conversation</h2>
               <p className="form-card-sub">We accept limited bookings annually to protect our artistic devotion.</p>
             </div>
 
