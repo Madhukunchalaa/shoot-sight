@@ -8,10 +8,29 @@ import Experience from '../components/Experience';
 import FlyingDrone from '../components/FlyingDrone';
 import Testimonials from '../components/Testimonials';
 import { Link } from 'react-router-dom';
-
-const landingFilmId = "a94LGkUt3Pg";
+import { useSiteConfig } from '../context/SiteConfigContext';
 
 const Home = () => {
+  const { config } = useSiteConfig();
+
+  const featuredFilmContent = config?.featured_film || {
+    filmId: 'a94LGkUt3Pg',
+    tagline: '03 // FEATURED FILMS',
+    headingMain: 'Cinematic',
+    headingHighlight: 'Poetry',
+    description: 'Experience the raw emotion, the fleeting glances, and the symphony of love in motion.',
+    buttonText: 'View Films'
+  };
+
+  const ctaContent = config?.cta || {
+    headingMain: "Let's create",
+    headingHighlight: 'eternal',
+    subtext: 'Now booking luxury wedding experiences for 2026/27.',
+    bgText: 'CONTACT',
+    buttonText: 'Start a Conversation',
+    bgImage: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/KRP_7298.jpg.webp'
+  };
+
   useEffect(() => {
     const timer1 = setTimeout(() => {
       ScrollTrigger.refresh();
@@ -32,6 +51,8 @@ const Home = () => {
     };
   }, []);
 
+  const filmId = featuredFilmContent.filmId;
+
   return (
     <>
       <Hero />
@@ -45,7 +66,7 @@ const Home = () => {
         <section className="landing-film-section">
           <div className="landing-film-video">
             <iframe
-              src={`https://www.youtube.com/embed/${landingFilmId}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${landingFilmId}&playsinline=1&start=1`}
+              src={`https://www.youtube.com/embed/${filmId}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${filmId}&playsinline=1&start=1`}
               title="Featured Shoot @ Sight film"
               frameBorder="0"
               allow="autoplay; encrypted-media"
@@ -56,28 +77,35 @@ const Home = () => {
           </div>
 
           <div className="landing-film-overlay">
-            <span className="subtitle-accent">03 // FEATURED FILMS</span>
-            <h2 className="film-section-heading">Cinematic <i>Poetry</i></h2>
+            <span className="subtitle-accent">{featuredFilmContent.tagline}</span>
+            <h2 className="film-section-heading">
+              {featuredFilmContent.headingMain} <i>{featuredFilmContent.headingHighlight}</i>
+            </h2>
             <p className="film-description">
-              Experience the raw emotion, the fleeting glances, and the symphony of love in motion.
+              {featuredFilmContent.description}
             </p>
-            <Link to="/films" className="btn-premium">View Films</Link>
+            <Link to="/films" className="btn-premium">{featuredFilmContent.buttonText}</Link>
           </div>
         </section>
 
         <Testimonials />
 
-        <section className="cta-section section-padding">
+        <section 
+          className="cta-section section-padding"
+          style={{ backgroundImage: `url(${ctaContent.bgImage})` }}
+        >
           <div className="container">
             <div className="cta-content">
-              <h2 className="section-title-large">Let's create <br />something <i>eternal</i>.</h2>
-              <p>Now booking luxury wedding experiences for 2026/27.</p>
+              <h2 className="section-title-large">
+                {ctaContent.headingMain} <br />something <i>{ctaContent.headingHighlight}</i>.
+              </h2>
+              <p>{ctaContent.subtext}</p>
               <div className="cta-actions">
-                <Link to="/contact" className="btn-premium">Start a Conversation</Link>
+                <Link to="/contact" className="btn-premium">{ctaContent.buttonText}</Link>
               </div>
             </div>
           </div>
-          <div className="cta-bg-text">CONTACT</div>
+          <div className="cta-bg-text">{ctaContent.bgText}</div>
         </section>
       </div>
 

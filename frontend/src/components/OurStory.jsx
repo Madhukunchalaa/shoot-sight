@@ -1,16 +1,29 @@
 import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useSiteConfig } from '../context/SiteConfigContext';
 import './OurStory.css';
-
-const story1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/SYD08443%20(3).jpg.webp";
-const story2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_0347-_2_.jpg.webp";
-const story3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/NGD_5981-_1_.jpg.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const OurStory = () => {
   const containerRef = useRef(null);
+  const { config } = useSiteConfig();
+
+  const storyContent = config?.about_philosophy || {
+    tagline: '01 // OUR PHILOSOPHY',
+    titleMain: 'The Art',
+    titleHighlight: 'Observing',
+    pLead: 'We approach each wedding not as a checklist, but as a living, breathing narrative. Our lenses are drawn to the quiet glances, the unscripted laughter, and the fleeting tears.',
+    pBody: "We believe the most profound moments aren't the ones directed, but the ones discovered. Our approach is quiet, immersive, and deeply intentional.",
+    stat1Num: '10+',
+    stat1Label: 'YEARS OF MASTERY',
+    stat2Num: '500+',
+    stat2Label: 'ETERNAL STORIES',
+    img1: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/SYD08443%20(3).jpg.webp',
+    img2: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_0347-_2_.jpg.webp',
+    img3: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/NGD_5981-_1_.jpg.webp'
+  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -72,38 +85,37 @@ const OurStory = () => {
           {/* VISUALS NOW ON THE LEFT */}
           <div className="story-visuals-new">
             <div className="story-img-wrapper type-1">
-              <img src={story1} alt="Master Shot" />
+              <img src={storyContent.img1} alt="Master Shot" />
             </div>
             <div className="story-img-wrapper type-2">
-              <img src={story2} alt="Detail Frame" />
+              <img src={storyContent.img2} alt="Detail Frame" />
             </div>
             <div className="story-img-wrapper type-3">
-              <img src={story3} alt="Candid Moment" loading="lazy" decoding="async" />
+              <img src={storyContent.img3} alt="Candid Moment" loading="lazy" decoding="async" />
             </div>
           </div>
 
           {/* CONTENT NOW ON THE RIGHT */}
           <div className="story-content-new">
-            <div className="vertical-label">01 // OUR PHILOSOPHY</div>
-            <h2 className="section-title-large" style={{ marginBottom: '40px' }}>The Art <br />of <i>Observing</i></h2>
+            <div className="vertical-label">{storyContent.tagline}</div>
+            <h2 className="section-title-large" style={{ marginBottom: '40px' }}>
+              {storyContent.titleMain} <br />of <i>{storyContent.titleHighlight}</i>
+            </h2>
             <p className="story-p-lead">
-              We approach each wedding not as a checklist, but as a living, breathing narrative. 
-              Our lenses are drawn to the quiet glances, the unscripted laughter, and the fleeting tears.
+              {storyContent.pLead}
             </p>
             <p className="story-p-new">
-              We believe the most profound moments aren't the ones directed, 
-              but the ones discovered. Our approach is quiet, immersive, 
-              and deeply intentional.
+              {storyContent.pBody}
             </p>
             
             <div className="story-stats-row">
               <div className="stat-item">
-                <span className="stat-num">10+</span>
-                <span className="stat-label">YEARS OF MASTERY</span>
+                <span className="stat-num">{storyContent.stat1Num}</span>
+                <span className="stat-label">{storyContent.stat1Label}</span>
               </div>
               <div className="stat-item">
-                <span className="stat-num">500+</span>
-                <span className="stat-label">ETERNAL STORIES</span>
+                <span className="stat-num">{storyContent.stat2Num}</span>
+                <span className="stat-label">{storyContent.stat2Label}</span>
               </div>
             </div>
           </div>

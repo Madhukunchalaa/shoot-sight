@@ -49,6 +49,12 @@ const AdminDashboard = () => {
   const [editingTestimonial, setEditingTestimonial] = useState(null);
   const [confirmModal, setConfirmModal] = useState(null);
 
+  // Site Editor State
+  const [editorSubTab, setEditorSubTab] = useState('home'); // 'home', 'films', 'about', 'contact'
+  const [siteConfig, setSiteConfig] = useState(null);
+  const [loadingConfig, setLoadingConfig] = useState(false);
+  const [editorSaving, setEditorSaving] = useState(false);
+
   useEffect(() => {
     // Auth Guard
     const token = localStorage.getItem('adminToken');
@@ -60,6 +66,121 @@ const AdminDashboard = () => {
     fetchBlogs();
     fetchTestimonials();
   }, [navigate]);
+
+  const fetchEditorConfig = async () => {
+    setLoadingConfig(true);
+    try {
+      const res = await fetch(`${API_URL}/site-config`);
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSiteConfig(data.config);
+      } else {
+        setError('Failed to fetch site configurations.');
+      }
+    } catch (err) {
+      setError('Could not fetch site configurations.');
+    } finally {
+      setLoadingConfig(false);
+    }
+  };
+
+  const uploadImage = async (file) => {
+    const token = localStorage.getItem('adminToken');
+    const fd = new FormData();
+    fd.append('image', file);
+    try {
+      const res = await fetch(`${API_URL}/images/upload`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: fd
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        return data.url;
+      } else {
+        throw new Error(data.message || 'Image upload failed');
+      }
+    } catch (err) {
+      throw new Error(err.message || 'Image upload failed');
+    }
+  };
+
+  const handleConfigChange = (sectionKey, field, value) => {
+    setSiteConfig(prev => ({
+      ...prev,
+      [sectionKey]: {
+        ...prev[sectionKey],
+        [field]: value
+      }
+    }));
+  };
+
+  const handleConfigArrayChange = (sectionKey, arrayField, index, field, value) => {
+    setSiteConfig(prev => {
+      const updatedArray = [...prev[sectionKey][arrayField]];
+      updatedArray[index] = {
+        ...updatedArray[index],
+        [field]: value
+      };
+      return {
+        ...prev,
+        [sectionKey]: {
+          ...prev[sectionKey],
+          [arrayField]: updatedArray
+        }
+      };
+    });
+  };
+
+  const handleConfigImageUpload = async (e, sectionKey, field, index = null, arrayField = null) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setUploading(true);
+    setUploadProgress(`Uploading image for ${field}...`);
+    try {
+      const url = await uploadImage(file);
+      if (index !== null && arrayField) {
+        handleConfigArrayChange(sectionKey, arrayField, index, field, url);
+      } else {
+        handleConfigChange(sectionKey, field, url);
+      }
+      setSuccess('Image uploaded successfully!');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      setError(err.message || 'Image upload failed.');
+      setTimeout(() => setError(''), 4000);
+    } finally {
+      setUploading(false);
+      setUploadProgress('');
+    }
+  };
+
+  const saveSectionConfig = async (sectionKey) => {
+    setEditorSaving(true);
+    const token = localStorage.getItem('adminToken');
+    try {
+      const res = await fetch(`${API_URL}/admin/site-config/${sectionKey}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(siteConfig[sectionKey])
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSuccess(`✅ Section config for "${sectionKey}" saved successfully!`);
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError(data.message || 'Failed to save section.');
+      }
+    } catch (err) {
+      setError('Connection to server failed.');
+    } finally {
+      setEditorSaving(false);
+    }
+  };
 
   const fetchTestimonials = async () => {
     setLoadingTestimonials(true);
@@ -670,6 +791,13 @@ const AdminDashboard = () => {
           >
             Add Testimonial
           </button>
+          <button 
+            className={`dash-tab-btn ${activeTab === 'site-editor' ? 'active' : ''}`}
+            onClick={() => { setActiveTab('site-editor'); fetchEditorConfig(); }}
+            disabled={uploading}
+          >
+            Site Editor
+          </button>
         </div>
 
         {/* Tab content 1: Shoots List */}
@@ -1086,6 +1214,1302 @@ const AdminDashboard = () => {
                 {uploading ? 'Publishing...' : 'Publish Testimonial'}
               </button>
             </form>
+          </div>
+        )}
+
+        {/* Tab content 7: Site Editor */}
+        {activeTab === 'site-editor' && (
+          <div className="tab-content site-editor-tab" style={{ background: '#090909', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '30px', marginTop: '20px' }}>
+            <div className="editor-sub-tabs" style={{ display: 'flex', gap: '15px', marginBottom: '30px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '10px' }}>
+              {['home', 'films', 'about', 'contact'].map(tab => (
+                <button
+                  key={tab}
+                  type="button"
+                  className={`editor-sub-tab-btn ${editorSubTab === tab ? 'active' : ''}`}
+                  onClick={() => setEditorSubTab(tab)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: editorSubTab === tab ? 'var(--accent)' : '#a0a0a0',
+                    fontSize: '0.9rem',
+                    fontWeight: 'bold',
+                    padding: '8px 16px',
+                    cursor: 'pointer',
+                    borderBottom: editorSubTab === tab ? '2px solid var(--accent)' : 'none',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
+                  }}
+                >
+                  {tab} Page
+                </button>
+              ))}
+            </div>
+
+            {loadingConfig || !siteConfig ? (
+              <div className="dash-loader">Retrieving editor configuration...</div>
+            ) : (
+              <div className="site-editor-workspace">
+                {/* ─── SUB-TAB: HOME PAGE ─── */}
+                {editorSubTab === 'home' && (
+                  <div>
+                    {/* SECTION 1: HERO */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>01 // Hero Header</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Tagline (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.hero?.tagline || ''}
+                            onChange={(e) => handleConfigChange('hero', 'tagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>YouTube Background Video ID</label>
+                          <input
+                            type="text"
+                            value={siteConfig.hero?.videoUrl || ''}
+                            onChange={(e) => handleConfigChange('hero', 'videoUrl', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Line 1 Main (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.hero?.line1Main || ''}
+                            onChange={(e) => handleConfigChange('hero', 'line1Main', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Line 1 Italic Highlight (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.hero?.line1Italic || ''}
+                            onChange={(e) => handleConfigChange('hero', 'line1Italic', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Line 1 End (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.hero?.line1End || ''}
+                            onChange={(e) => handleConfigChange('hero', 'line1End', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Line 2 Main (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.hero?.line2Main || ''}
+                            onChange={(e) => handleConfigChange('hero', 'line2Main', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Line 2 Gold Highlight (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.hero?.line2Highlight || ''}
+                            onChange={(e) => handleConfigChange('hero', 'line2Highlight', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Line 2 End (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.hero?.line2End || ''}
+                            onChange={(e) => handleConfigChange('hero', 'line2End', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic upload-box-chic" style={{ marginTop: '15px' }}>
+                        <label>Fallback Background Cover Image</label>
+                        <div className="file-input-wrapper">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleConfigImageUpload(e, 'hero', 'bgImage')}
+                          />
+                          <div className="custom-file-label">
+                            {siteConfig.hero?.bgImage ? '✅ Change Cover Photo' : 'Choose Cover Photo'}
+                          </div>
+                        </div>
+                        {siteConfig.hero?.bgImage && (
+                          <div className="hero-preview-row" style={{ marginTop: '15px' }}>
+                            <img src={siteConfig.hero.bgImage} alt="hero bg" className="hero-thumb-edit" style={{ width: '160px', height: '100px', borderRadius: '4px' }} />
+                          </div>
+                        )}
+                      </div>
+
+                      <button type="button" className="btn-edit-gallery" style={{ marginTop: '20px', padding: '10px 20px' }} onClick={() => saveSectionConfig('hero')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save Hero Config'}
+                      </button>
+                    </div>
+
+                    {/* SECTION 2: ABOUT PHILOSOPHY */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>02 // About Philosophy</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Section Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.about_philosophy?.tagline || ''}
+                            onChange={(e) => handleConfigChange('about_philosophy', 'tagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Main (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.about_philosophy?.titleMain || ''}
+                            onChange={(e) => handleConfigChange('about_philosophy', 'titleMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Italic Highlight (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.about_philosophy?.titleHighlight || ''}
+                            onChange={(e) => handleConfigChange('about_philosophy', 'titleHighlight', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Lead Paragraph (max 250 chars)</label>
+                        <textarea
+                          rows={3}
+                          maxLength={250}
+                          value={siteConfig.about_philosophy?.pLead || ''}
+                          onChange={(e) => handleConfigChange('about_philosophy', 'pLead', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Body Paragraph (max 250 chars)</label>
+                        <textarea
+                          rows={3}
+                          maxLength={250}
+                          value={siteConfig.about_philosophy?.pBody || ''}
+                          onChange={(e) => handleConfigChange('about_philosophy', 'pBody', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Stat 1 Number (max 6 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={6}
+                            value={siteConfig.about_philosophy?.stat1Num || ''}
+                            onChange={(e) => handleConfigChange('about_philosophy', 'stat1Num', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Stat 1 Label (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.about_philosophy?.stat1Label || ''}
+                            onChange={(e) => handleConfigChange('about_philosophy', 'stat1Label', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Stat 2 Number (max 6 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={6}
+                            value={siteConfig.about_philosophy?.stat2Num || ''}
+                            onChange={(e) => handleConfigChange('about_philosophy', 'stat2Num', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Stat 2 Label (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.about_philosophy?.stat2Label || ''}
+                            onChange={(e) => handleConfigChange('about_philosophy', 'stat2Label', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginTop: '15px' }}>
+                        {['img1', 'img2', 'img3'].map((imgKey, idx) => (
+                          <div key={imgKey} className="input-group-chic upload-box-chic">
+                            <label>Philosophy Photo {idx + 1}</label>
+                            <div className="file-input-wrapper">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleConfigImageUpload(e, 'about_philosophy', imgKey)}
+                              />
+                              <div className="custom-file-label">
+                                {siteConfig.about_philosophy?.[imgKey] ? '✅ Change Photo' : 'Choose Photo'}
+                              </div>
+                            </div>
+                            {siteConfig.about_philosophy?.[imgKey] && (
+                              <div className="hero-preview-row" style={{ marginTop: '10px' }}>
+                                <img src={siteConfig.about_philosophy[imgKey]} alt="preview" className="hero-thumb-edit" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      <button type="button" className="btn-edit-gallery" style={{ marginTop: '20px', padding: '10px 20px' }} onClick={() => saveSectionConfig('about_philosophy')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save Philosophy Config'}
+                      </button>
+                    </div>
+
+                    {/* SECTION 3: SERVICES */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>03 // Services Section</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Section Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.services?.tagline || ''}
+                            onChange={(e) => handleConfigChange('services', 'tagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Main (max 45 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={45}
+                            value={siteConfig.services?.titleMain || ''}
+                            onChange={(e) => handleConfigChange('services', 'titleMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Highlight (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.services?.titleHighlight || ''}
+                            onChange={(e) => handleConfigChange('services', 'titleHighlight', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title End (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.services?.titleEnd || ''}
+                            onChange={(e) => handleConfigChange('services', 'titleEnd', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <h4 style={{ color: '#eaeaea', marginTop: '25px', marginBottom: '15px' }}>Service Offerings List:</h4>
+                      {siteConfig.services?.list?.map((service, index) => (
+                        <div key={index} style={{ background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '8px', padding: '15px', marginBottom: '15px' }}>
+                          <div className="form-double-column">
+                            <div className="input-group-chic">
+                              <label>Service Number</label>
+                              <input
+                                type="text"
+                                maxLength={5}
+                                value={service.num || ''}
+                                onChange={(e) => handleConfigArrayChange('services', 'list', index, 'num', e.target.value)}
+                              />
+                            </div>
+                            <div className="input-group-chic">
+                              <label>Service Title (max 35 chars)</label>
+                              <input
+                                type="text"
+                                maxLength={35}
+                                value={service.title || ''}
+                                onChange={(e) => handleConfigArrayChange('services', 'list', index, 'title', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div className="input-group-chic">
+                            <label>Service Description (max 250 chars)</label>
+                            <textarea
+                              rows={2}
+                              maxLength={250}
+                              value={service.desc || ''}
+                              onChange={(e) => handleConfigArrayChange('services', 'list', index, 'desc', e.target.value)}
+                            />
+                          </div>
+                          <div className="input-group-chic upload-box-chic">
+                            <label>Floating Preview Image</label>
+                            <div className="file-input-wrapper">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleConfigImageUpload(e, 'services', 'img', index, 'list')}
+                              />
+                              <div className="custom-file-label">
+                                {service.img ? '✅ Change Service Photo' : 'Choose Photo'}
+                              </div>
+                            </div>
+                            {service.img && (
+                              <div className="hero-preview-row" style={{ marginTop: '10px' }}>
+                                <img src={service.img} alt="service" className="hero-thumb-edit" style={{ width: '120px', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+
+                      <button type="button" className="btn-edit-gallery" style={{ marginTop: '10px', padding: '10px 20px' }} onClick={() => saveSectionConfig('services')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save Services Config'}
+                      </button>
+                    </div>
+
+                    {/* SECTION 4: EXPERIENCE */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>04 // Experience Section</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Section Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.experience?.tagline || ''}
+                            onChange={(e) => handleConfigChange('experience', 'tagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Main (max 45 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={45}
+                            value={siteConfig.experience?.titleMain || ''}
+                            onChange={(e) => handleConfigChange('experience', 'titleMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Highlight (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.experience?.titleHighlight || ''}
+                            onChange={(e) => handleConfigChange('experience', 'titleHighlight', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title End (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.experience?.titleEnd || ''}
+                            onChange={(e) => handleConfigChange('experience', 'titleEnd', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Subtitle / Description Paragraph (max 150 chars)</label>
+                        <input
+                          type="text"
+                          maxLength={150}
+                          value={siteConfig.experience?.subtitle || ''}
+                          onChange={(e) => handleConfigChange('experience', 'subtitle', e.target.value)}
+                        />
+                      </div>
+
+                      <h4 style={{ color: '#eaeaea', marginTop: '25px', marginBottom: '15px' }}>Three deliberate phases:</h4>
+                      {siteConfig.experience?.phases?.map((phase, index) => (
+                        <div key={index} style={{ background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '8px', padding: '15px', marginBottom: '15px' }}>
+                          <div className="form-double-column">
+                            <div className="input-group-chic">
+                              <label>Phase Number / Tagline (max 35 chars)</label>
+                              <input
+                                type="text"
+                                maxLength={35}
+                                value={phase.num || ''}
+                                onChange={(e) => handleConfigArrayChange('experience', 'phases', index, 'num', e.target.value)}
+                              />
+                            </div>
+                            <div className="input-group-chic">
+                              <label>Heading (max 35 chars)</label>
+                              <input
+                                type="text"
+                                maxLength={35}
+                                value={phase.heading || ''}
+                                onChange={(e) => handleConfigArrayChange('experience', 'phases', index, 'heading', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div className="input-group-chic">
+                            <label>Description (max 180 chars)</label>
+                            <textarea
+                              rows={2}
+                              maxLength={180}
+                              value={phase.desc || ''}
+                              onChange={(e) => handleConfigArrayChange('experience', 'phases', index, 'desc', e.target.value)}
+                            />
+                          </div>
+                          <div className="input-group-chic">
+                            <label>Tags (comma-separated list, e.g. Lighting, Styling)</label>
+                            <input
+                              type="text"
+                              value={phase.tags?.join(', ') || ''}
+                              onChange={(e) => handleConfigArrayChange('experience', 'phases', index, 'tags', e.target.value.split(',').map(t => t.trim()))}
+                            />
+                          </div>
+                          <div className="input-group-chic upload-box-chic">
+                            <label>Phase Illustration Photo</label>
+                            <div className="file-input-wrapper">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleConfigImageUpload(e, 'experience', 'img', index, 'phases')}
+                              />
+                              <div className="custom-file-label">
+                                {phase.img ? '✅ Change Phase Photo' : 'Choose Photo'}
+                              </div>
+                            </div>
+                            {phase.img && (
+                              <div className="hero-preview-row" style={{ marginTop: '10px' }}>
+                                <img src={phase.img} alt="phase" className="hero-thumb-edit" style={{ width: '120px', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+
+                      <button type="button" className="btn-edit-gallery" style={{ marginTop: '10px', padding: '10px 20px' }} onClick={() => saveSectionConfig('experience')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save Experience Config'}
+                      </button>
+                    </div>
+
+                    {/* SECTION 5: FEATURED FILM */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>05 // Featured Film</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Featured YouTube Video ID</label>
+                          <input
+                            type="text"
+                            value={siteConfig.featured_film?.filmId || ''}
+                            onChange={(e) => handleConfigChange('featured_film', 'filmId', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Section Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.featured_film?.tagline || ''}
+                            onChange={(e) => handleConfigChange('featured_film', 'tagline', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Heading Main (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.featured_film?.headingMain || ''}
+                            onChange={(e) => handleConfigChange('featured_film', 'headingMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Heading Italic Highlight (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.featured_film?.headingHighlight || ''}
+                            onChange={(e) => handleConfigChange('featured_film', 'headingHighlight', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Button text (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.featured_film?.buttonText || ''}
+                            onChange={(e) => handleConfigChange('featured_film', 'buttonText', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Description Text (max 200 chars)</label>
+                        <textarea
+                          rows={2}
+                          maxLength={200}
+                          value={siteConfig.featured_film?.description || ''}
+                          onChange={(e) => handleConfigChange('featured_film', 'description', e.target.value)}
+                        />
+                      </div>
+
+                      <button type="button" className="btn-edit-gallery" style={{ marginTop: '20px', padding: '10px 20px' }} onClick={() => saveSectionConfig('featured_film')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save Featured Film Config'}
+                      </button>
+                    </div>
+
+                    {/* SECTION 6: CTA */}
+                    <div className="edit-section" style={{ paddingBottom: '10px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>06 // CTA Booking Block</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Heading Main (max 45 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={45}
+                            value={siteConfig.cta?.headingMain || ''}
+                            onChange={(e) => handleConfigChange('cta', 'headingMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Heading Italic Highlight (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.cta?.headingHighlight || ''}
+                            onChange={(e) => handleConfigChange('cta', 'headingHighlight', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Subtext (max 120 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={120}
+                            value={siteConfig.cta?.subtext || ''}
+                            onChange={(e) => handleConfigChange('cta', 'subtext', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Background Watermark Text (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.cta?.bgText || ''}
+                            onChange={(e) => handleConfigChange('cta', 'bgText', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Button Text (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.cta?.buttonText || ''}
+                            onChange={(e) => handleConfigChange('cta', 'buttonText', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic upload-box-chic" style={{ marginTop: '15px' }}>
+                        <label>CTA Section Background Image</label>
+                        <div className="file-input-wrapper">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleConfigImageUpload(e, 'cta', 'bgImage')}
+                          />
+                          <div className="custom-file-label">
+                            {siteConfig.cta?.bgImage ? '✅ Change CTA Photo' : 'Choose Photo'}
+                          </div>
+                        </div>
+                        {siteConfig.cta?.bgImage && (
+                          <div className="hero-preview-row" style={{ marginTop: '15px' }}>
+                            <img src={siteConfig.cta.bgImage} alt="cta bg" className="hero-thumb-edit" style={{ width: '160px', height: '100px', borderRadius: '4px' }} />
+                          </div>
+                        )}
+                      </div>
+
+                      <button type="button" className="btn-edit-gallery" style={{ marginTop: '20px', padding: '10px 20px' }} onClick={() => saveSectionConfig('cta')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save CTA Config'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* ─── SUB-TAB: FILMS PAGE ─── */}
+                {editorSubTab === 'films' && (
+                  <div>
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>Films Header & Metadata</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Section Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.films_page?.tagline || ''}
+                            onChange={(e) => handleConfigChange('films_page', 'tagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Heading Main (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.films_page?.headingMain || ''}
+                            onChange={(e) => handleConfigChange('films_page', 'headingMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Heading Italic Highlight (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.films_page?.headingHighlight || ''}
+                            onChange={(e) => handleConfigChange('films_page', 'headingHighlight', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Description Paragraph (max 200 chars)</label>
+                        <textarea
+                          rows={3}
+                          maxLength={200}
+                          value={siteConfig.films_page?.description || ''}
+                          onChange={(e) => handleConfigChange('films_page', 'description', e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="edit-section">
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>Video List (4 items)</h3>
+                      {siteConfig.films_page?.list?.map((film, index) => (
+                        <div key={index} style={{ background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '8px', padding: '15px', marginBottom: '15px' }}>
+                          <div className="form-double-column">
+                            <div className="input-group-chic">
+                              <label>Video Order Number (e.g. 01)</label>
+                              <input
+                                type="text"
+                                maxLength={5}
+                                value={film.num || ''}
+                                onChange={(e) => handleConfigArrayChange('films_page', 'list', index, 'num', e.target.value)}
+                              />
+                            </div>
+                            <div className="input-group-chic">
+                              <label>YouTube Video ID</label>
+                              <input
+                                type="text"
+                                value={film.id || ''}
+                                onChange={(e) => handleConfigArrayChange('films_page', 'list', index, 'id', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div className="form-double-column">
+                            <div className="input-group-chic">
+                              <label>Video Tag / Label (max 35 chars)</label>
+                              <input
+                                type="text"
+                                maxLength={35}
+                                value={film.label || ''}
+                                onChange={(e) => handleConfigArrayChange('films_page', 'list', index, 'label', e.target.value)}
+                              />
+                            </div>
+                            <div className="input-group-chic">
+                              <label>Location (max 25 chars)</label>
+                              <input
+                                type="text"
+                                maxLength={25}
+                                value={film.location || ''}
+                                onChange={(e) => handleConfigArrayChange('films_page', 'list', index, 'location', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      <button type="button" className="btn-premium-submit" style={{ marginTop: '20px' }} onClick={() => saveSectionConfig('films_page')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save Films Page Changes'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* ─── SUB-TAB: ABOUT PAGE ─── */}
+                {editorSubTab === 'about' && (
+                  <div>
+                    {/* SECTION 1: ABOUT HERO */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>01 // About Hero</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Hero Title Main (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.about_page?.heroTitleMain || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'heroTitleMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Hero Title Highlight (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.about_page?.heroTitleHighlight || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'heroTitleHighlight', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="input-group-chic">
+                        <label>Hero Subtitle / Tagline (max 60 chars)</label>
+                        <input
+                          type="text"
+                          maxLength={60}
+                          value={siteConfig.about_page?.heroTagline || ''}
+                          onChange={(e) => handleConfigChange('about_page', 'heroTagline', e.target.value)}
+                        />
+                      </div>
+                      <div className="input-group-chic upload-box-chic" style={{ marginTop: '15px' }}>
+                        <label>Hero Parallax Background Image</label>
+                        <div className="file-input-wrapper">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleConfigImageUpload(e, 'about_page', 'heroBg')}
+                          />
+                          <div className="custom-file-label">
+                            {siteConfig.about_page?.heroBg ? '✅ Change Hero background' : 'Choose Photo'}
+                          </div>
+                        </div>
+                        {siteConfig.about_page?.heroBg && (
+                          <div className="hero-preview-row" style={{ marginTop: '15px' }}>
+                            <img src={siteConfig.about_page.heroBg} alt="hero bg" className="hero-thumb-edit" style={{ width: '160px', height: '100px', borderRadius: '4px' }} />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* SECTION 2: THE FOUNDER */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>02 // The Founder Profile</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Founder Tagline (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.about_page?.founderTagline || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'founderTagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Founder Name (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.about_page?.founderName || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'founderName', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Founder Subtitle (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.about_page?.founderSub || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'founderSub', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Quote Main (max 150 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={150}
+                            value={siteConfig.about_page?.founderQuote || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'founderQuote', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Quote Highlight Word (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.about_page?.founderQuoteHighlight || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'founderQuoteHighlight', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Quote End (max 150 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={150}
+                            value={siteConfig.about_page?.founderQuoteEnd || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'founderQuoteEnd', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Bio Paragraph 1 (max 450 chars)</label>
+                        <textarea
+                          rows={4}
+                          maxLength={450}
+                          value={siteConfig.about_page?.founderBio1 || ''}
+                          onChange={(e) => handleConfigChange('about_page', 'founderBio1', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Bio Paragraph 2 (max 450 chars)</label>
+                        <textarea
+                          rows={4}
+                          maxLength={450}
+                          value={siteConfig.about_page?.founderBio2 || ''}
+                          onChange={(e) => handleConfigChange('about_page', 'founderBio2', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Pillar 1 Title (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.about_page?.pillar1Title || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'pillar1Title', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Pillar 1 Description (max 120 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={120}
+                            value={siteConfig.about_page?.pillar1Desc || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'pillar1Desc', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Pillar 2 Title (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.about_page?.pillar2Title || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'pillar2Title', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Pillar 2 Description (max 120 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={120}
+                            value={siteConfig.about_page?.pillar2Desc || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'pillar2Desc', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column" style={{ marginTop: '15px' }}>
+                        <div className="input-group-chic">
+                          <label>Signature Title Label (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.about_page?.signatureTitle || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'signatureTitle', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic upload-box-chic">
+                          <label>Founder Portrait Photo</label>
+                          <div className="file-input-wrapper">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleConfigImageUpload(e, 'about_page', 'founderImg')}
+                            />
+                            <div className="custom-file-label">
+                              {siteConfig.about_page?.founderImg ? '✅ Change Founder Photo' : 'Choose Photo'}
+                            </div>
+                          </div>
+                          {siteConfig.about_page?.founderImg && (
+                            <div className="hero-preview-row" style={{ marginTop: '10px' }}>
+                              <img src={siteConfig.about_page.founderImg} alt="founder" className="hero-thumb-edit" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '4px' }} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SECTION 3: THE STUDIO */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>03 // The Studio Spread</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Studio Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.about_page?.studioTagline || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'studioTagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Heading Main (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.about_page?.studioTitleMain || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'studioTitleMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Heading Italic Highlight (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.about_page?.studioTitleHighlight || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'studioTitleHighlight', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Heading End (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.about_page?.studioTitleEnd || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'studioTitleEnd', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Studio Narrative Paragraph (max 300 chars)</label>
+                        <textarea
+                          rows={3}
+                          maxLength={300}
+                          value={siteConfig.about_page?.studioDesc || ''}
+                          onChange={(e) => handleConfigChange('about_page', 'studioDesc', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="form-double-column" style={{ marginTop: '15px' }}>
+                        <div className="input-group-chic">
+                          <label>Team Image Caption (max 60 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={60}
+                            value={siteConfig.about_page?.teamCaption || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'teamCaption', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic upload-box-chic">
+                          <label>Team Collective Photo</label>
+                          <div className="file-input-wrapper">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleConfigImageUpload(e, 'about_page', 'teamImg')}
+                            />
+                            <div className="custom-file-label">
+                              {siteConfig.about_page?.teamImg ? '✅ Change Team Photo' : 'Choose Photo'}
+                            </div>
+                          </div>
+                          {siteConfig.about_page?.teamImg && (
+                            <div className="hero-preview-row" style={{ marginTop: '10px' }}>
+                              <img src={siteConfig.about_page.teamImg} alt="team" className="hero-thumb-edit" style={{ width: '120px', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SECTION 4: PHILOSOPHY */}
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>04 // Core Philosophy</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Section Tagline (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.about_page?.philosophyTagline || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'philosophyTagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Main (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.about_page?.philosophyTitleMain || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'philosophyTitleMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Highlight (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.about_page?.philosophyTitleHighlight || ''}
+                            onChange={(e) => handleConfigChange('about_page', 'philosophyTitleHighlight', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic upload-box-chic" style={{ marginTop: '15px' }}>
+                        <label>Philosophy Backdrop Photo</label>
+                        <div className="file-input-wrapper">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleConfigImageUpload(e, 'about_page', 'philosophyBg')}
+                          />
+                          <div className="custom-file-label">
+                            {siteConfig.about_page?.philosophyBg ? '✅ Change Photo' : 'Choose Photo'}
+                          </div>
+                        </div>
+                        {siteConfig.about_page?.philosophyBg && (
+                          <div className="hero-preview-row" style={{ marginTop: '10px' }}>
+                            <img src={siteConfig.about_page.philosophyBg} alt="philosophy" className="hero-thumb-edit" style={{ width: '120px', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
+                          </div>
+                        )}
+                      </div>
+
+                      <h4 style={{ color: '#eaeaea', marginTop: '25px', marginBottom: '15px' }}>Philosophy Pillars (3 items):</h4>
+                      {siteConfig.about_page?.philosophyPillars?.map((pillar, index) => (
+                        <div key={index} style={{ background: '#0e0e0e', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '8px', padding: '15px', marginBottom: '15px' }}>
+                          <div className="form-double-column">
+                            <div className="input-group-chic">
+                              <label>Pillar Index (e.g. 01 /)</label>
+                              <input
+                                type="text"
+                                maxLength={5}
+                                value={pillar.num || ''}
+                                onChange={(e) => handleConfigArrayChange('about_page', 'philosophyPillars', index, 'num', e.target.value)}
+                              />
+                            </div>
+                            <div className="input-group-chic">
+                              <label>Pillar Title (max 30 chars)</label>
+                              <input
+                                type="text"
+                                maxLength={30}
+                                value={pillar.title || ''}
+                                onChange={(e) => handleConfigArrayChange('about_page', 'philosophyPillars', index, 'title', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div className="input-group-chic">
+                            <label>Pillar Description (max 200 chars)</label>
+                            <textarea
+                              rows={2}
+                              maxLength={200}
+                              value={pillar.desc || ''}
+                              onChange={(e) => handleConfigArrayChange('about_page', 'philosophyPillars', index, 'desc', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* SECTION 5: CLOSING */}
+                    <div className="edit-section">
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>05 // Closing Editorial Quote</h3>
+                      <div className="input-group-chic">
+                        <label>Closing Quote (max 150 chars)</label>
+                        <input
+                          type="text"
+                          maxLength={150}
+                          value={siteConfig.about_page?.closingQuote || ''}
+                          onChange={(e) => handleConfigChange('about_page', 'closingQuote', e.target.value)}
+                        />
+                      </div>
+                      <div className="input-group-chic">
+                        <label>Signature Text (max 30 chars)</label>
+                        <input
+                          type="text"
+                          maxLength={30}
+                          value={siteConfig.about_page?.closingSignature || ''}
+                          onChange={(e) => handleConfigChange('about_page', 'closingSignature', e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <button type="button" className="btn-premium-submit" style={{ marginTop: '20px' }} onClick={() => saveSectionConfig('about_page')} disabled={editorSaving}>
+                      {editorSaving ? 'Saving...' : 'Save About Page Changes'}
+                    </button>
+                  </div>
+                )}
+
+                {/* ─── SUB-TAB: CONTACT PAGE ─── */}
+                {editorSubTab === 'contact' && (
+                  <div>
+                    <div className="edit-section">
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>Contact Details & Copy</h3>
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Section Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.contact_page?.tagline || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'tagline', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Main (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.contact_page?.heroTitleMain || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'heroTitleMain', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Highlight (max 30 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={30}
+                            value={siteConfig.contact_page?.heroTitleHighlight || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'heroTitleHighlight', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Attitude Bold Paragraph (max 150 chars)</label>
+                        <textarea
+                          rows={2}
+                          maxLength={150}
+                          value={siteConfig.contact_page?.pBold || ''}
+                          onChange={(e) => handleConfigChange('contact_page', 'pBold', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Attitude Light Paragraph (max 250 chars)</label>
+                        <textarea
+                          rows={3}
+                          maxLength={250}
+                          value={siteConfig.contact_page?.pLight || ''}
+                          onChange={(e) => handleConfigChange('contact_page', 'pLight', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="input-group-chic">
+                        <label>Attitude Gold Paragraph (max 200 chars)</label>
+                        <textarea
+                          rows={3}
+                          maxLength={200}
+                          value={siteConfig.contact_page?.pGold || ''}
+                          onChange={(e) => handleConfigChange('contact_page', 'pGold', e.target.value)}
+                        />
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Vertical Image Tagline (max 50 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={50}
+                            value={siteConfig.contact_page?.verticalLabel || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'verticalLabel', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Studio Location Text (max 60 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={60}
+                            value={siteConfig.contact_page?.studioInfo || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'studioInfo', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Direct Email Link (max 50 chars)</label>
+                          <input
+                            type="email"
+                            maxLength={50}
+                            value={siteConfig.contact_page?.email || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'email', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Direct Phone Channel (max 25 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={25}
+                            value={siteConfig.contact_page?.phone || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'phone', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Form Title (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.contact_page?.formTitle || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'formTitle', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Form Subtitle Description (max 120 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={120}
+                            value={siteConfig.contact_page?.formSub || ''}
+                            onChange={(e) => handleConfigChange('contact_page', 'formSub', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="input-group-chic upload-box-chic" style={{ marginTop: '15px' }}>
+                        <label>Side Editorial Showcase Photo</label>
+                        <div className="file-input-wrapper">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleConfigImageUpload(e, 'contact_page', 'contactImg')}
+                          />
+                          <div className="custom-file-label">
+                            {siteConfig.contact_page?.contactImg ? '✅ Change Photo' : 'Choose Photo'}
+                          </div>
+                        </div>
+                        {siteConfig.contact_page?.contactImg && (
+                          <div className="hero-preview-row" style={{ marginTop: '15px' }}>
+                            <img src={siteConfig.contact_page.contactImg} alt="contact" className="hero-thumb-edit" style={{ width: '120px', height: '160px', objectFit: 'cover', borderRadius: '4px' }} />
+                          </div>
+                        )}
+                      </div>
+
+                      <button type="button" className="btn-premium-submit" style={{ marginTop: '20px' }} onClick={() => saveSectionConfig('contact_page')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save Contact Page Changes'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </main>

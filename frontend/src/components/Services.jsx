@@ -1,16 +1,46 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { useSiteConfig } from '../context/SiteConfigContext';
 import './Services.css';
-
-const weddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/VIJ01478.jpg.webp";
-const cinematicImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_9199-2.jpg.webp";
-const preWeddingImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC00238-Edit%20(1).jpg.webp";
-const droneImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DJI_20260429175238_0374_D-_1_.jpg.webp";
 
 const Services = () => {
   const sectionRef = useRef(null);
   const imageRef = useRef(null);
   const [activeImage, setActiveImage] = useState(null);
+  const { config } = useSiteConfig();
+
+  const servicesContent = config?.services || {
+    tagline: 'CRAFT & MASTERY',
+    titleMain: 'Our',
+    titleHighlight: 'Signature',
+    titleEnd: 'Services',
+    list: [
+      {
+        num: '01',
+        title: 'Wedding Photography',
+        desc: 'Candid, emotional, and trend-forward photography that captures the soul of your celebration. We specialize in natural expressions, ethereal lighting, and storytelling frames that preserve your most intimate memories forever.',
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/VIJ01478.jpg.webp'
+      },
+      {
+        num: '02',
+        title: 'Cinematic Wedding Films',
+        desc: 'High-definition movies inspired by your unique love story. With artistic angles, cinematic drone perspectives, emotional pacing, and professional-grade color grading, we turn your wedding day into a timeless motion picture experience.',
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_9199-2.jpg.webp'
+      },
+      {
+        num: '03',
+        title: 'Pre-Wedding & Engagement',
+        desc: 'A bespoke, conceptual shoot that reflects the essence of your partnership. Whether urban, nature-focused, luxury, or minimalist aesthetic — we curate mood-driven visuals designed for your legacy and invites.',
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC00238-Edit%20(1).jpg.webp'
+      },
+      {
+        num: '04',
+        title: 'Drone & Aerial Coverage',
+        desc: 'Sweeping aerial views that provide a grand perspective of your wedding story. From majestic heritage venues to scenic outdoor landscapes, our advanced drone cinematography adds a breathtaking dimension to your visuals.',
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DJI_20260429175238_0374_D-_1_.jpg.webp'
+      }
+    ]
+  };
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -18,7 +48,6 @@ const Services = () => {
       
       const { clientY } = e;
       const viewportWidth = window.innerWidth;
-      const containerWidth = 1000;
       const imageWidth = 400;
       const imageHeight = 550;
 
@@ -43,32 +72,7 @@ const Services = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const services = [
-    {
-      title: "Wedding Photography",
-      desc: "Candid, emotional, and trend-forward photography that captures the soul of your celebration. We specialize in natural expressions, ethereal lighting, and storytelling frames that preserve your most intimate memories forever.",
-      num: "01",
-      img: weddingImg
-    },
-    {
-      title: "Cinematic Wedding Films",
-      desc: "High-definition movies inspired by your unique love story. With artistic angles, cinematic drone perspectives, emotional pacing, and professional-grade color grading, we turn your wedding day into a timeless motion picture experience.",
-      num: "02",
-      img: cinematicImg
-    },
-    {
-      title: "Pre-Wedding & Engagement",
-      desc: "A bespoke, conceptual shoot that reflects the essence of your partnership. Whether urban, nature-focused, luxury, or minimalist aesthetic — we curate mood-driven visuals designed for your legacy and invites.",
-      num: "03",
-      img: preWeddingImg
-    },
-    {
-      title: "Drone & Aerial Coverage",
-      desc: "Sweeping aerial views that provide a grand perspective of your wedding story. From majestic heritage venues to scenic outdoor landscapes, our advanced drone cinematography adds a breathtaking dimension to your visuals.",
-      num: "04",
-      img: droneImg
-    }
-  ];
+  const services = servicesContent.list;
 
   return (
     <section 
@@ -81,8 +85,10 @@ const Services = () => {
     >
       <div className="container">
         <div className="services-header">
-          <span className="subtitle-accent">CRAFT & MASTERY</span>
-          <h2 className="services-main-title">Our <i>Signature</i> Services</h2>
+          <span className="subtitle-accent">{servicesContent.tagline}</span>
+          <h2 className="services-main-title">
+            {servicesContent.titleMain} <i>{servicesContent.titleHighlight}</i> {servicesContent.titleEnd}
+          </h2>
         </div>
 
         <div className="services-list">

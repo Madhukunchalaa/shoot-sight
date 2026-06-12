@@ -2,16 +2,45 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useSiteConfig } from '../context/SiteConfigContext';
 import './Experience.css';
-
-const curationImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4382.webp";
-const captureImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/KRP_9557.jpg.webp";
-const heirloomImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_8454.jpg.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Experience = () => {
   const containerRef = useRef(null);
+  const { config } = useSiteConfig();
+
+  const expContent = config?.experience || {
+    tagline: '02 // THE EXPERIENCE',
+    titleMain: 'How We',
+    titleHighlight: 'Manifest',
+    titleEnd: 'Magic',
+    subtitle: 'Three deliberate phases, crafted to create timeless imagery.',
+    phases: [
+      {
+        num: 'Phase 01 // Curation',
+        heading: 'The Curation',
+        desc: 'We begin by understanding the soul of your story, selecting the perfect aesthetic tone and light for your unique celebration.',
+        tags: ['Moodboarding', 'Lighting Design', 'Styling Harmony'],
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC4382.webp'
+      },
+      {
+        num: 'Phase 02 // Capture',
+        heading: 'The Capture',
+        desc: 'Discreet, immersive, and refined. We capture the moments that feel like a whisper, and the ones that roar across time.',
+        tags: ['Discreet Presence', 'Candid Emotion', 'Cinematic Framing'],
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/KRP_9557.jpg.webp'
+      },
+      {
+        num: 'Phase 03 // Heirloom',
+        heading: 'The Heirloom',
+        desc: 'Final delivery of high-fidelity, processed imagery designed to last for generations. Your legacy, preserved in light.',
+        tags: ['Color Grading', 'Fine Art Prints', 'Digital Vault'],
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_8454.jpg.webp'
+      }
+    ]
+  };
 
   useGSAP(() => {
     // Simple scroll-reveal for the section header
@@ -43,7 +72,7 @@ const Experience = () => {
       });
     });
 
-  }, { scope: containerRef, dependencies: [] });
+  }, { scope: containerRef, dependencies: [expContent] });
 
   return (
     <section ref={containerRef} className="experience-section">
@@ -51,72 +80,61 @@ const Experience = () => {
 
         {/* Section Header */}
         <div className="exp-section-header">
-          <span className="subtitle-accent">02 // THE EXPERIENCE</span>
-          <h2 className="exp-main-title">How We <i>Manifest</i> Magic</h2>
-          <p className="exp-subtitle">Three deliberate phases, crafted to create timeless imagery.</p>
+          <span className="subtitle-accent">{expContent.tagline}</span>
+          <h2 className="exp-main-title">
+            {expContent.titleMain} <i>{expContent.titleHighlight}</i> {expContent.titleEnd}
+          </h2>
+          <p className="exp-subtitle">{expContent.subtitle}</p>
         </div>
 
         {/* Cards Grid */}
         <div className="exp-cards-grid">
-
-          {/* Phase 01 */}
-          <div className="exp-card exp-card--reverse">
-            <div className="exp-card__text">
-              <span className="layer-num">Phase 01 // Curation</span>
-              <h3 className="layer-heading">The Curation</h3>
-              <p className="layer-desc">We begin by understanding the soul of your story, selecting the perfect aesthetic tone and light for your unique celebration.</p>
-              <div className="layer-tags">
-                <span className="exp-tag">Moodboarding</span>
-                <span className="exp-tag">Lighting Design</span>
-                <span className="exp-tag">Styling Harmony</span>
+          {expContent.phases.map((phase, idx) => {
+            const isReverse = idx % 2 === 0;
+            return (
+              <div key={idx} className={`exp-card ${isReverse ? 'exp-card--reverse' : ''}`}>
+                {isReverse ? (
+                  <>
+                    <div className="exp-card__text">
+                      <span className="layer-num">{phase.num}</span>
+                      <h3 className="layer-heading">{phase.heading}</h3>
+                      <p className="layer-desc">{phase.desc}</p>
+                      <div className="layer-tags">
+                        {phase.tags && phase.tags.map((tag, tagIdx) => (
+                          <span key={tagIdx} className="exp-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="exp-card__image">
+                      <div className="img-reveal-wrapper">
+                        <img src={phase.img} alt={phase.heading} loading="lazy" decoding="async" />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="exp-card__image">
+                      <div className="img-reveal-wrapper">
+                        <img src={phase.img} alt={phase.heading} loading="lazy" decoding="async" />
+                      </div>
+                    </div>
+                    <div className="exp-card__text">
+                      <span className="layer-num">{phase.num}</span>
+                      <h3 className="layer-heading">{phase.heading}</h3>
+                      <p className="layer-desc">{phase.desc}</p>
+                      <div className="layer-tags">
+                        {phase.tags && phase.tags.map((tag, tagIdx) => (
+                          <span key={tagIdx} className="exp-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-            <div className="exp-card__image">
-              <div className="img-reveal-wrapper">
-                <img src={curationImg} alt="The Curation Process" loading="lazy" decoding="async" />
-              </div>
-            </div>
-          </div>
-
-          {/* Phase 02 */}
-          <div className="exp-card">
-            <div className="exp-card__image">
-              <div className="img-reveal-wrapper">
-                <img src={captureImg} alt="Cinematic Capture" loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <div className="exp-card__text">
-              <span className="layer-num">Phase 02 // Capture</span>
-              <h3 className="layer-heading">The Capture</h3>
-              <p className="layer-desc">Discreet, immersive, and refined. We capture the moments that feel like a whisper, and the ones that roar across time.</p>
-              <div className="layer-tags">
-                <span className="exp-tag">Discreet Presence</span>
-                <span className="exp-tag">Candid Emotion</span>
-                <span className="exp-tag">Cinematic Framing</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Phase 03 */}
-          <div className="exp-card exp-card--reverse">
-            <div className="exp-card__text">
-              <span className="layer-num">Phase 03 // Heirloom</span>
-              <h3 className="layer-heading">The Heirloom</h3>
-              <p className="layer-desc">Final delivery of high-fidelity, processed imagery designed to last for generations. Your legacy, preserved in light.</p>
-              <div className="layer-tags">
-                <span className="exp-tag">Color Grading</span>
-                <span className="exp-tag">Fine Art Prints</span>
-                <span className="exp-tag">Digital Vault</span>
-              </div>
-            </div>
-            <div className="exp-card__image">
-              <div className="img-reveal-wrapper">
-                <img className="heirloom-img" src={heirloomImg} alt="Timeless Heirloom Delivery" loading="lazy" decoding="async" />
-              </div>
-            </div>
-          </div>
-
+            );
+          })}
         </div>
+
       </div>
     </section>
   );

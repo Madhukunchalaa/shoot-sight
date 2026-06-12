@@ -15,6 +15,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SmoothScroll from './components/SmoothScroll';
 import MobileAppTabBar from './components/MobileAppTabBar';
+import { SiteConfigProvider } from './context/SiteConfigContext';
 import './App.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -34,7 +35,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <>
+    <SiteConfigProvider>
       <SmoothScroll />
       {!isAdminRoute && <Navbar />}
       <main>
@@ -56,7 +57,7 @@ function App() {
       </main>
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <MobileAppTabBar />}
-    </>
+    </SiteConfigProvider>
   );
 }
 

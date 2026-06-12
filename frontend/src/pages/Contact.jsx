@@ -2,14 +2,31 @@ import { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useSiteConfig } from '../context/SiteConfigContext';
 import './Contact.css';
-
-const contactImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const container = useRef();
+  const { config } = useSiteConfig();
+  
+  const contactContent = config?.contact_page || {
+    contactImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp',
+    tagline: '05 // THE INITIATION',
+    heroTitleMain: 'For those who value',
+    heroTitleHighlight: 'legacy over pixels.',
+    pBold: 'We do not accommodate traditional wedding checklists. We do not manufacture fake poses.',
+    pLight: 'We exist exclusively for couples who view their celebration as an uninhibited editorial work of art. Our visual signature is raw, cinematic, and unapologetic. We capture the high-fashion drama, the unscripted whispers, and the grand architectural scaling of your love.',
+    pGold: 'If you are ready to move past standard imagery and immortalize your history as a living masterpiece, let’s begin.',
+    verticalLabel: 'HIGH END EDITORIAL // RAW EMOTION',
+    studioInfo: 'Bengaluru, India // Global Commissions',
+    email: 'shootatsightweddings@gmail.com',
+    phone: '+91 9900233338',
+    formTitle: 'Start a Conversation',
+    formSub: 'We accept limited bookings annually to protect our artistic devotion.'
+  };
+
   const [form, setForm] = useState({
     names: '',
     email: '',
@@ -41,7 +58,7 @@ const Contact = () => {
       ease: 'power3.out'
     });
 
-  }, { scope: container, dependencies: [] });
+  }, { scope: container, dependencies: [contactContent] });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,7 +75,7 @@ Investment Range: ${form.investment}
 Artistic Scope / Vision:
 ${form.vision}`
     );
-    window.location.href = `mailto:shootatsightweddings@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${contactContent.email}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -70,34 +87,32 @@ ${form.vision}`
         <div className="contact-editorial-left">
           
           <div className="reveal-item">
-            <span className="contact-accent-tag">05 // THE INITIATION</span>
+            <span className="contact-accent-tag">{contactContent.tagline}</span>
           </div>
 
           <h1 className="contact-hero-title reveal-item">
-            For those who value <br />
-            <i>legacy over pixels.</i>
+            {contactContent.heroTitleMain} <br />
+            <i>{contactContent.heroTitleHighlight}</i>
           </h1>
 
           <div className="contact-attitude-body reveal-item">
             <p className="attitude-p-bold">
-              We do not accommodate traditional wedding checklists. We do not manufacture fake poses. 
+              {contactContent.pBold} 
             </p>
             <p className="attitude-p-light">
-              We exist exclusively for couples who view their celebration as an uninhibited editorial work of art. 
-              Our visual signature is raw, cinematic, and unapologetic. We capture the high-fashion drama, 
-              the unscripted whispers, and the grand architectural scaling of your love. 
+              {contactContent.pLight} 
             </p>
             <p className="attitude-p-gold">
-              If you are ready to move past standard imagery and immortalize your history as a living masterpiece, let’s begin.
+              {contactContent.pGold}
             </p>
           </div>
 
           {/* Majestic Image Frame with offset borders */}
           <div className="contact-image-frame reveal-item">
-            <div className="contact-image-vertical-label">HIGH END EDITORIAL // RAW EMOTION</div>
+            <div className="contact-image-vertical-label">{contactContent.verticalLabel}</div>
             <div className="contact-image-backdrop"></div>
             <div className="contact-image-wrapper">
-              <img src={contactImg} alt="High-Fashion Editorial Narrative" />
+              <img src={contactContent.contactImg} alt="High-Fashion Editorial Narrative" />
             </div>
           </div>
 
@@ -105,12 +120,12 @@ ${form.vision}`
           <div className="contact-direct-blocks reveal-item">
             <div className="direct-item">
               <span className="direct-label">THE STUDIO</span>
-              <p className="direct-value">Bengaluru, India // Global Commissions</p>
+              <p className="direct-value">{contactContent.studioInfo}</p>
             </div>
             <div className="direct-item">
               <span className="direct-label">DIRECT CHANNELS</span>
-              <a href="mailto:shootatsightweddings@gmail.com" className="direct-link">shootatsightweddings@gmail.com</a>
-              <a href="tel:+919900233338" className="direct-link">+91 9900233338</a>
+              <a href={`mailto:${contactContent.email}`} className="direct-link">{contactContent.email}</a>
+              <a href={`tel:${contactContent.phone}`} className="direct-link">{contactContent.phone}</a>
             </div>
           </div>
 
@@ -121,8 +136,8 @@ ${form.vision}`
           <div className="contact-form-glass-card">
             
             <div className="form-card-header">
-              <h2 className="form-card-title">Start a Conversation</h2>
-              <p className="form-card-sub">We accept limited bookings annually to protect our artistic devotion.</p>
+              <h2 className="form-card-title">{contactContent.formTitle}</h2>
+              <p className="form-card-sub">{contactContent.formSub}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="premium-contact-form">

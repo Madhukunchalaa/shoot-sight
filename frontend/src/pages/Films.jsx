@@ -1,37 +1,47 @@
 import { useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { useSiteConfig } from '../context/SiteConfigContext';
 import './Films.css';
-
-const films = [
-  {
-    id: 'E6mpqvgMyUY',
-    label: "DIRECTOR'S CUT",
-    location: "DUBAI",
-    num: "01"
-  },
-  {
-    id: 'wLqHwzM9ABo',
-    label: "CINEMATIC ESSENCE",
-    location: "INDIA",
-    num: "02"
-  },
-  {
-    id: 'a94LGkUt3Pg',
-    label: "THE SYMPHONY",
-    location: "INDIA",
-    num: "03"
-  },
-  {
-    id: 'b58Iizh8Dfg',
-    label: "ETERNAL NARRATIVE",
-    location: "INDIA",
-    num: "04"
-  }
-];
 
 const Films = () => {
   const [activeFilm, setActiveFilm] = useState(null);
+  const { config } = useSiteConfig();
+
+  const filmsContent = config?.films_page || {
+    tagline: '03 // FEATURED FILMS',
+    headingMain: 'Cinematic',
+    headingHighlight: 'Poetry',
+    description: 'Experience the raw emotion, the fleeting glances, and the symphony of love in motion. Click any film to watch with full audio.',
+    list: [
+      {
+        id: 'E6mpqvgMyUY',
+        label: "DIRECTOR'S CUT",
+        location: 'DUBAI',
+        num: '01'
+      },
+      {
+        id: 'wLqHwzM9ABo',
+        label: 'CINEMATIC ESSENCE',
+        location: 'INDIA',
+        num: '02'
+      },
+      {
+        id: 'a94LGkUt3Pg',
+        label: 'THE SYMPHONY',
+        location: 'INDIA',
+        num: '03'
+      },
+      {
+        id: 'b58Iizh8Dfg',
+        label: 'ETERNAL NARRATIVE',
+        location: 'INDIA',
+        num: '04'
+      }
+    ]
+  };
+
+  const films = filmsContent.list || [];
 
   useGSAP(() => {
     gsap.from('.film-card', {
@@ -41,7 +51,7 @@ const Films = () => {
       stagger: 0.15,
       ease: 'power3.out',
     });
-  }, []);
+  }, [films]);
 
   const openFilm = (film) => {
     setActiveFilm(film);
@@ -57,11 +67,12 @@ const Films = () => {
     <div className="films-page section-padding">
       <div className="container">
         <div className="films-page-header">
-          <span className="subtitle-accent">03 // FEATURED FILMS</span>
-          <h1 className="section-title-large">Cinematic <i>Poetry</i></h1>
+          <span className="subtitle-accent">{filmsContent.tagline}</span>
+          <h1 className="section-title-large">
+            {filmsContent.headingMain} <i>{filmsContent.headingHighlight}</i>
+          </h1>
           <p className="films-page-desc">
-            Experience the raw emotion, the fleeting glances, and the symphony of love in motion.
-            Click any film to watch with full audio.
+            {filmsContent.description}
           </p>
         </div>
 

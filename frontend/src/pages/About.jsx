@@ -2,16 +2,65 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-const teamImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/team.webp";
-const founderImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/founder%20(1).webp";
-const aboutHeroBg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC01641_-_Copy.webp";
-const philosophyBg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/camera_lens_detail.webp";
+import { useSiteConfig } from '../context/SiteConfigContext';
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const container = useRef();
+  const { config } = useSiteConfig();
+
+  const aboutContent = config?.about_page || {
+    heroBg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC01641_-_Copy.webp',
+    heroTitleMain: 'The Story Behind',
+    heroTitleHighlight: 'The Light',
+    heroTagline: 'SHOOT @ SIGHT // ARCHITECTS OF TIMELESS MEMORIES',
+    founderImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/founder%20(1).webp',
+    founderTagline: 'CREATIVE DIRECTOR // PAVITRA',
+    founderName: 'Pavithra',
+    founderSub: 'Lead Visual Director & Founder',
+    founderQuote: 'We do not merely take photographs. We curate the timeless',
+    founderQuoteHighlight: 'poetry',
+    founderQuoteEnd: 'of your celebration.',
+    founderBio1: 'As the visionary behind Shoot @ Sight, Pavithra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.',
+    founderBio2: 'Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavithra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.',
+    pillar1Title: 'Cinematic Intuition',
+    pillar1Desc: 'Reading the room, anticipating micro-moments, and capturing raw, unposed emotions.',
+    pillar2Title: 'Editorial Polish',
+    pillar2Desc: 'Crafting stylized, Vogue-ready portraits on-site that feel elegant and modern.',
+    signatureTitle: 'FOUNDER // SHOOT @ SIGHT',
+    studioTagline: '02 // THE STUDIO',
+    studioTitleMain: 'Curating',
+    studioTitleHighlight: 'Legacy',
+    studioTitleEnd: 'Through Light.',
+    studioDesc: 'Founded in 2018, Shoot @ Sight is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.',
+    teamImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/team.webp',
+    teamCaption: 'The Shoot @ Sight Creative Collective, 2026',
+    philosophyBg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/camera_lens_detail.webp',
+    philosophyTagline: 'INTENTIONAL // TIMING // RAW',
+    philosophyTitleMain: 'The',
+    philosophyTitleHighlight: 'Philosophy',
+    philosophyPillars: [
+      {
+        num: '01 /',
+        title: 'Intentionality',
+        desc: 'We do not believe in spray-and-pray. Every single frame is composed with meticulous purpose, ensuring a cohesive, editorial fine-art narrative throughout your entire collection.'
+      },
+      {
+        num: '02 /',
+        title: 'Fidelity',
+        desc: 'Utilizing state-of-the-art lossless processing and color curation, we ensure that natural skin tones, fine fabric textures, and raw emotions remain true to life for generations.'
+      },
+      {
+        num: '03 /',
+        title: 'Timelessness',
+        desc: 'We completely avoid fleeting, heavily-filtered coloring trends. Our classic, cinematic styling guarantees your gallery looks as breathtaking in fifty years as it does today.'
+      }
+    ],
+    closingQuote: 'Photography is the only language that can be understood anywhere in the world.',
+    closingSignature: 'Shoot @ Sight'
+  };
 
   useGSAP(() => {
     // 0. Fullscreen Hero Entrance & Parallax
@@ -124,7 +173,7 @@ const About = () => {
         once: true
       }
     });
-  }, { scope: container, dependencies: [] });
+  }, { scope: container, dependencies: [aboutContent] });
 
   return (
     <div ref={container} className="about-page-editorial">
@@ -132,13 +181,15 @@ const About = () => {
       {/* Fullscreen Hero Section with Parallax Background */}
       <section className="about-fullscreen-hero">
         <div className="about-hero-bg-wrapper">
-          <img src={aboutHeroBg} alt="The Story Behind The Light" className="about-hero-bg-img" />
+          <img src={aboutContent.heroBg} alt="The Story Behind The Light" className="about-hero-bg-img" />
           <div className="about-hero-overlay"></div>
         </div>
         <div className="about-hero-centered-content">
           <span className="subtitle-accent-white">BEHIND THE LENS</span>
-          <h1 className="about-hero-title">The Story Behind <br /><i>The Light</i></h1>
-          <p className="about-hero-tagline">SHOOT @ SIGHT // ARCHITECTS OF TIMELESS MEMORIES</p>
+          <h1 className="about-hero-title">
+            {aboutContent.heroTitleMain} <br /><i>{aboutContent.heroTitleHighlight}</i>
+          </h1>
+          <p className="about-hero-tagline">{aboutContent.heroTagline}</p>
           <div className="scroll-indicator-boutique white-indicator">
             <span className="line"></span>
             <span className="txt">DISCOVER OUR JOURNEY</span>
@@ -153,27 +204,29 @@ const About = () => {
 
             <div className="founder-image-col">
               <div className="founder-card-container">
-                <div className="founder-vertical-tag">CREATIVE DIRECTOR // PAVITRA</div>
+                <div className="founder-vertical-tag">{aboutContent.founderTagline}</div>
                 <div className="founder-backdrop-frame"></div>
                 <div className="founder-img-wrapper">
-                  <img src={founderImg} alt="Pavithra — Founder & Director" />
+                  <img src={aboutContent.founderImg} alt="Pavithra — Founder & Director" />
                 </div>
               </div>
             </div>
 
             <div className="founder-content-col">
               <span className="subtitle-accent">MEET THE FOUNDER</span>
-              <h2 className="founder-main-title">Pavithra</h2>
-              <p className="founder-sub-headline">Lead Visual Director & Founder</p>
+              <h2 className="founder-main-title">{aboutContent.founderName}</h2>
+              <p className="founder-sub-headline">{aboutContent.founderSub}</p>
 
-              <h3 className="founder-quote">"We do not merely take photographs. We curate the timeless <i>poetry</i> of your celebration."</h3>
+              <h3 className="founder-quote">
+                "{aboutContent.founderQuote} <i>{aboutContent.founderQuoteHighlight}</i> {aboutContent.founderQuoteEnd}"
+              </h3>
 
               <div className="founder-bio">
                 <p className="bio-paragraph dropcap-para">
-                  As the visionary behind Shoot @ Sight, Pavithra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.
+                  {aboutContent.founderBio1}
                 </p>
                 <p className="bio-paragraph">
-                  Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavithra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.
+                  {aboutContent.founderBio2}
                 </p>
               </div>
 
@@ -181,22 +234,22 @@ const About = () => {
                 <div className="pillar-item">
                   <span className="pillar-num">01 /</span>
                   <div className="pillar-info">
-                    <span className="pillar-title">Cinematic Intuition</span>
-                    <span className="pillar-desc">Reading the room, anticipating micro-moments, and capturing raw, unposed emotions.</span>
+                    <span className="pillar-title">{aboutContent.pillar1Title}</span>
+                    <span className="pillar-desc">{aboutContent.pillar1Desc}</span>
                   </div>
                 </div>
                 <div className="pillar-item">
                   <span className="pillar-num">02 /</span>
                   <div className="pillar-info">
-                    <span className="pillar-title">Editorial Polish</span>
-                    <span className="pillar-desc">Crafting stylized, Vogue-ready portraits on-site that feel elegant and modern.</span>
+                    <span className="pillar-title">{aboutContent.pillar2Title}</span>
+                    <span className="pillar-desc">{aboutContent.pillar2Desc}</span>
                   </div>
                 </div>
               </div>
 
               <div className="founder-signature-block">
-                <span className="founder-name">Pavithra</span>
-                <span className="founder-title">FOUNDER // SHOOT @ SIGHT</span>
+                <span className="founder-name">{aboutContent.founderName}</span>
+                <span className="founder-title">{aboutContent.signatureTitle}</span>
               </div>
             </div>
 
@@ -208,13 +261,13 @@ const About = () => {
       <section className="about-hero-spread container section-padding">
         <div className="about-hero-grid">
           <div className="about-hero-text">
-            <span className="subtitle-accent">02 // THE STUDIO</span>
+            <span className="subtitle-accent">{aboutContent.studioTagline}</span>
             <h1 className="about-main-title">
-              <span className="about-title-word">Curating <i>Legacy</i></span><br/>
-              <span className="about-title-word">Through Light.</span>
+              <span className="about-title-word">{aboutContent.studioTitleMain} <i>{aboutContent.studioTitleHighlight}</i></span><br/>
+              <span className="about-title-word">{aboutContent.studioTitleEnd}</span>
             </h1>
             <p className="about-hero-desc about-title-word">
-              Founded in 2018, Shoot @ Sight is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.
+              {aboutContent.studioDesc}
             </p>
           </div>
 
@@ -223,10 +276,10 @@ const About = () => {
               <div className="about-team-vertical-tag">CREATIVE COLLECTIVE // EST. 2018</div>
               <div className="about-team-backdrop"></div>
               <div className="about-img-mask">
-                <img src={teamImg} alt="Shoot @ Sight Studio Team" />
+                <img src={aboutContent.teamImg} alt="Shoot @ Sight Studio Team" />
               </div>
             </div>
-            <div className="img-caption">The Shoot @ Sight Creative Collective, 2026</div>
+            <div className="img-caption">{aboutContent.teamCaption}</div>
           </div>
         </div>
       </section>
@@ -242,42 +295,28 @@ const About = () => {
               <div className="philosophy-portrait-backdrop"></div>
               
               <div className="philosophy-portrait-mask">
-                <img src={philosophyBg} alt="Fine art lighting and details" className="philosophy-portrait-img" />
+                <img src={aboutContent.philosophyBg} alt="Fine art lighting and details" className="philosophy-portrait-img" />
               </div>
               
-              <div className="philosophy-portrait-tag">INTENTIONAL // TIMING // RAW</div>
+              <div className="philosophy-portrait-tag">{aboutContent.philosophyTagline}</div>
             </div>
           </div>
 
           {/* Right Column: Highly Highlighted Content Stack */}
           <div className="philosophy-content-col">
             <span className="subtitle-accent">OUR CORE PILLARS</span>
-            <h2 className="philosophy-split-title">The <i>Philosophy</i></h2>
+            <h2 className="philosophy-split-title">{aboutContent.philosophyTitleMain} <i>{aboutContent.philosophyTitleHighlight}</i></h2>
             
             <div className="philosophy-vertical-stack">
-              <div className="philosophy-stack-item">
-                <span className="philosophy-stack-num">01 /</span>
-                <div className="philosophy-stack-info">
-                  <h3 className="philosophy-stack-title">Intentionality</h3>
-                  <p className="philosophy-stack-desc">We do not believe in spray-and-pray. Every single frame is composed with meticulous purpose, ensuring a cohesive, editorial fine-art narrative throughout your entire collection.</p>
+              {aboutContent.philosophyPillars && aboutContent.philosophyPillars.map((pillar, idx) => (
+                <div key={idx} className="philosophy-stack-item">
+                  <span className="philosophy-stack-num">{pillar.num}</span>
+                  <div className="philosophy-stack-info">
+                    <h3 className="philosophy-stack-title">{pillar.title}</h3>
+                    <p className="philosophy-stack-desc">{pillar.desc}</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="philosophy-stack-item">
-                <div className="philosophy-stack-num">02 /</div>
-                <div className="philosophy-stack-info">
-                  <h3 className="philosophy-stack-title">Fidelity</h3>
-                  <p className="philosophy-stack-desc">Utilizing state-of-the-art lossless processing and color curation, we ensure that natural skin tones, fine fabric textures, and raw emotions remain true to life for generations.</p>
-                </div>
-              </div>
-
-              <div className="philosophy-stack-item">
-                <div className="philosophy-stack-num">03 /</div>
-                <div className="philosophy-stack-info">
-                  <h3 className="philosophy-stack-title">Timelessness</h3>
-                  <p className="philosophy-stack-desc">We completely avoid fleeting, heavily-filtered coloring trends. Our classic, cinematic styling guarantees your gallery looks as breathtaking in fifty years as it does today.</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
@@ -287,8 +326,8 @@ const About = () => {
       {/* Signature Closing */}
       <section className="about-signature-editorial section-padding">
         <div className="container text-center">
-          <p className="editorial-quote">"Photography is the only language that can be understood anywhere in the world."</p>
-          <div className="editorial-signature">Shoot @ Sight</div>
+          <p className="editorial-quote">"{aboutContent.closingQuote}"</p>
+          <div className="editorial-signature">{aboutContent.closingSignature}</div>
         </div>
       </section>
 
