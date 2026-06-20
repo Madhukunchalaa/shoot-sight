@@ -35,14 +35,9 @@ const Hero = () => {
       // Start transition state (dims the video)
       setFocusState('lens-zoom');
       
-      // After 1.2 seconds of dimming, swap focused state to fade video completely and show text
+      // After 1.2 seconds of dimming, swap focused state to show text overlay on top of the background video
       timerRef.current = setTimeout(() => {
         setFocusState('focused');
-        
-        // Wait 1 second for the CSS opacity transition to finish, then unmount video
-        timerRef.current = setTimeout(() => {
-          setShowVideo(false);
-        }, 1000);
       }, 1200);
     }, 12000);
   };
