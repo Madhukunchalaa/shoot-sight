@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { useSiteConfig } from '../context/SiteConfigContext';
 import './Services.css';
@@ -8,6 +9,7 @@ const Services = () => {
   const imageRef = useRef(null);
   const [activeImage, setActiveImage] = useState(null);
   const { config } = useSiteConfig();
+  const navigate = useNavigate();
 
   const servicesContent = config?.services || {
     tagline: 'CRAFT & MASTERY',
@@ -72,6 +74,21 @@ const Services = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const handleServiceClick = (service) => {
+    let cat = 'All';
+    const title = service.title.toLowerCase();
+    if (title.includes('wedding photography') || title.includes('photo')) {
+      cat = 'Wedding';
+    } else if (title.includes('cinematic') || title.includes('film') || title.includes('drone') || title.includes('aerial')) {
+      cat = 'Cinematic';
+    } else if (title.includes('pre-wedding') || title.includes('engagement')) {
+      cat = 'Pre-wedding';
+    } else {
+      cat = 'Editorial';
+    }
+    navigate(`/portfolio?category=${cat}`);
+  };
+
   const services = servicesContent.list;
 
   return (
@@ -103,6 +120,7 @@ const Services = () => {
               onMouseLeave={() => {
                 gsap.to(imageRef.current, { opacity: 0, scale: 0.8, duration: 0.4, ease: "power2.in" });
               }}
+              onClick={() => handleServiceClick(service)}
             >
               <div className="service-number">{service.num}</div>
               <div className="service-content">

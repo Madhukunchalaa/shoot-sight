@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { API_URL } from '../config';
@@ -47,12 +48,20 @@ const mockItems = [
 ];
 
 const Portfolio = () => {
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
   const [filter, setFilter] = useState('All');
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lightboxImage, setLightboxImage] = useState(null);
   const container = useRef();
 
+  useEffect(() => {
+    const validFilters = ['All', 'Wedding', 'Pre-wedding', 'Editorial', 'Cinematic', 'Recent Captures'];
+    if (categoryParam && validFilters.includes(categoryParam)) {
+      setFilter(categoryParam);
+    }
+  }, [categoryParam]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
