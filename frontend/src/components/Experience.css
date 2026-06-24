@@ -41,6 +41,12 @@
   gap: 100px;
 }
 
+/* Ensure cards are visible if GSAP scroll trigger hasn't fired */
+.exp-section-header,
+.exp-card {
+  will-change: transform, opacity;
+}
+
 /* ─── Single Card ─── */
 .exp-card {
   display: grid;

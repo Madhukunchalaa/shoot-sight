@@ -52,7 +52,8 @@ const Experience = () => {
       scrollTrigger: {
         trigger: '.exp-section-header',
         start: 'top 85%',
-        once: true,
+        toggleActions: 'play none none none',
+        invalidateOnRefresh: true,
       }
     });
 
@@ -66,11 +67,14 @@ const Experience = () => {
         scrollTrigger: {
           trigger: card,
           start: 'top 85%',
-          once: true,
+          toggleActions: 'play none none none',
+          invalidateOnRefresh: true,
         },
         delay: i * 0.1,
       });
     });
+
+    ScrollTrigger.refresh();
 
   }, { scope: containerRef, dependencies: [expContent] });
 
