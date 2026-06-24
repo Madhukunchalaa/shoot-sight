@@ -1,11 +1,11 @@
 .boutique-footer {
-  background: var(--bg-color); /* Light cream background */
+  background: #1e1813;
   padding: 100px 0 40px 0;
-  color: var(--text-primary); /* Dark chocolate brown text */
+  color: #fdf8f3;
   position: relative;
   z-index: 10;
   overflow: hidden;
-  border-top: 1px solid rgba(30, 24, 19, 0.08);
+  border-top: 1px solid rgba(253, 248, 243, 0.08);
 }
 
 .footer-top {
@@ -18,14 +18,14 @@
   height: 80px;
   margin-bottom: 20px;
   opacity: 0.9;
-  /* Removed inversion filters to show native dark luxury logo colors */
+  filter: invert(1) brightness(2);
 }
 
 .footer-slogan {
   font-family: var(--font-sans);
   font-size: 11px;
   letter-spacing: 5px;
-  color: var(--text-secondary);
+  color: rgba(253, 248, 243, 0.6);
   opacity: 0.8;
   margin-top: 15px;
 }
@@ -51,13 +51,13 @@
   letter-spacing: 1px;
   margin-bottom: 12px;
   text-decoration: none;
-  color: var(--text-secondary);
+  color: rgba(253, 248, 243, 0.6);
   font-weight: 400;
   transition: all 0.3s ease;
 }
 
 .footer-col a:hover {
-  color: var(--text-primary);
+  color: #fdf8f3;
   transform: translateX(5px);
 }
 
@@ -68,9 +68,9 @@
   line-height: 0.9;
   text-align: center;
   margin: 80px 0 60px 0;
-  color: var(--text-primary); /* Dark chocolate signature */
+  color: rgba(253, 248, 243, 0.03);
   letter-spacing: -3px;
-  border-top: 1px solid rgba(30, 24, 19, 0.08);
+  border-top: 1px solid rgba(253, 248, 243, 0.08);
   padding-top: 80px;
   white-space: nowrap;
 }
@@ -90,7 +90,7 @@
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(30, 24, 19, 0.08);
+  border-top: 1px solid rgba(253, 248, 243, 0.08);
   padding-top: 30px;
 }
 
@@ -100,7 +100,7 @@
   font-family: var(--font-sans);
   font-size: 9px;
   letter-spacing: 3px;
-  color: var(--text-secondary);
+  color: rgba(253, 248, 243, 0.5);
   opacity: 0.8;
   text-transform: uppercase;
 }
