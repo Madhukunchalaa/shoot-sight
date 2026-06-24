@@ -43,38 +43,56 @@ const Experience = () => {
   };
 
   useGSAP(() => {
-    // Simple scroll-reveal for the section header
-    gsap.from('.exp-section-header', {
-      y: 60,
-      opacity: 0,
-      duration: 1.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.exp-section-header',
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-        invalidateOnRefresh: true,
-      }
-    });
+    const header = containerRef.current?.querySelector('.exp-section-header');
+    const cards = gsap.utils.toArray('.exp-card', containerRef.current);
 
-    // Staggered reveal for each card
-    gsap.utils.toArray('.exp-card', containerRef.current).forEach((card, i) => {
-      gsap.from(card, {
-        y: 80,
-        opacity: 0,
+    // Set visible by default — GSAP only adds the motion, never hides permanently
+    gsap.set([header, ...cards], { opacity: 1 });
+
+    gsap.fromTo(header,
+      { y: 60, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
         duration: 1.2,
         ease: 'power3.out',
         scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
+          trigger: header,
+          start: 'top 90%',
           toggleActions: 'play none none none',
           invalidateOnRefresh: true,
-        },
-        delay: i * 0.1,
-      });
+          onEnter: () => gsap.set(header, { clearProps: 'all' }),
+        }
+      }
+    );
+
+    cards.forEach((card, i) => {
+      gsap.fromTo(card,
+        { y: 80, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: 'power3.out',
+          delay: i * 0.1,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+            invalidateOnRefresh: true,
+            onEnter: () => gsap.set(card, { clearProps: 'all' }),
+          }
+        }
+      );
     });
 
-    ScrollTrigger.refresh();
+    // Fallback: if after 3s anything is still invisible, force show everything
+    const fallback = setTimeout(() => {
+      gsap.set([header, ...cards], { clearProps: 'all' });
+      ScrollTrigger.refresh();
+    }, 3000);
+
+    return () => clearTimeout(fallback);
 
   }, { scope: containerRef, dependencies: [expContent] });
 

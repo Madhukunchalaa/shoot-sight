@@ -41,9 +41,10 @@
   gap: 100px;
 }
 
-/* Ensure cards are visible if GSAP scroll trigger hasn't fired */
+/* Safety net: content always visible; GSAP animates on top */
 .exp-section-header,
 .exp-card {
+  opacity: 1;
   will-change: transform, opacity;
 }
 
