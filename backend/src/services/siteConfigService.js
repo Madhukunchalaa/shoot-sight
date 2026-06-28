@@ -11,7 +11,7 @@ const defaultConfigs = [
       line2Main: 'We Preserve',
       line2Highlight: 'Emotions',
       line2End: 'Forever.',
-      videoUrl: 'uJYT8dm1YKg',
+      videoUrl: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Naveen%20%26%20Kate%204K%20Teaser.mp4',
       bgImage: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC2178_-_Copy.webp'
     }
   },
