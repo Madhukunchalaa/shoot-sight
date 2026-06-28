@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSiteConfig } from '../context/SiteConfigContext';
+import useSEO from '../hooks/useSEO';
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -10,6 +11,11 @@ gsap.registerPlugin(ScrollTrigger);
 const About = () => {
   const container = useRef();
   const { config } = useSiteConfig();
+
+  useSEO({
+    title: 'Our Story & Philosophy',
+    description: 'Learn about Pavithra and the creative philosophy behind Shoot @ Sight. Discover our approach to capturing cinematic wedding stories and high-end editorial portfolios.',
+  });
 
   const aboutContent = config?.about_page || {
     heroBg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC01641_-_Copy.webp',

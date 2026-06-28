@@ -1,10 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
+import useSEO from '../hooks/useSEO';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+
+  useSEO({
+    title: 'Admin Dashboard Portal',
+    noindex: true
+  });
+
   const [activeTab, setActiveTab] = useState('list'); // 'list', 'create', 'blogs-list', 'create-blog'
   const [shoots, setShoots] = useState([]);
   const [loadingList, setLoadingList] = useState(true);

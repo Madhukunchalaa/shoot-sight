@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
+import useSEO from '../hooks/useSEO';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
@@ -9,6 +10,11 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useSEO({
+    title: 'Admin Secure Login',
+    noindex: true
+  });
 
 
   useEffect(() => {

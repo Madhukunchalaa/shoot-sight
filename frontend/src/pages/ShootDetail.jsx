@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { API_URL } from '../config';
+import useSEO from '../hooks/useSEO';
 import './ShootDetail.css';
 
 const hero1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
@@ -147,6 +148,12 @@ const ShootDetail = () => {
   const [shoot, setShoot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lightboxImage, setLightboxImage] = useState(null);
+
+  useSEO({
+    title: shoot ? `${shoot.title} Collection` : 'Gallery Collection',
+    description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot @ Sight.',
+    ogImage: shoot ? shoot.hero : null,
+  });
 
 
   useEffect(() => {

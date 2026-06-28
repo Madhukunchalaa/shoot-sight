@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSiteConfig } from '../context/SiteConfigContext';
+import useSEO from '../hooks/useSEO';
 import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -10,6 +11,11 @@ gsap.registerPlugin(ScrollTrigger);
 const Contact = () => {
   const container = useRef();
   const { config } = useSiteConfig();
+
+  useSEO({
+    title: 'Start a Conversation',
+    description: 'Connect with Shoot @ Sight to book luxury wedding photography and custom visual narratives. Inquire about availability and bespoke packages.',
+  });
   
   const contactContent = config?.contact_page || {
     contactImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp',

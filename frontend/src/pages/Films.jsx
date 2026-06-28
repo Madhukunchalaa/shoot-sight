@@ -2,11 +2,17 @@ import { useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useSiteConfig } from '../context/SiteConfigContext';
+import useSEO from '../hooks/useSEO';
 import './Films.css';
 
 const Films = () => {
   const [activeFilm, setActiveFilm] = useState(null);
   const { config } = useSiteConfig();
+
+  useSEO({
+    title: 'Cinematic Films',
+    description: 'Watch luxury wedding films and cinematic highlights created by Shoot @ Sight. Explore raw emotions and high-end editorial film-making.',
+  });
 
   const filmsContent = config?.films_page || {
     tagline: '03 // FEATURED FILMS',

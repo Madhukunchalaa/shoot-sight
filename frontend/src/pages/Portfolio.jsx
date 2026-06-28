@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { API_URL } from '../config';
 import RecentShoots from '../components/RecentShoots';
+import useSEO from '../hooks/useSEO';
 import './Portfolio.css';
 
 const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
@@ -49,6 +50,12 @@ const mockItems = [
 
 const Portfolio = () => {
   const [searchParams] = useSearchParams();
+  
+  useSEO({
+    title: 'Portfolio & Work Gallery',
+    description: 'Explore the portfolio collections of Shoot @ Sight. High-end editorial wedding, pre-wedding, and fashion photography capturing candidate moments and legacy stories.',
+  });
+
   const categoryParam = searchParams.get('category');
   const [filter, setFilter] = useState('All');
   const [items, setItems] = useState([]);

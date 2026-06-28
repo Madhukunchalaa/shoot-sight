@@ -9,9 +9,15 @@ import FlyingDrone from '../components/FlyingDrone';
 import Testimonials from '../components/Testimonials';
 import { Link } from 'react-router-dom';
 import { useSiteConfig } from '../context/SiteConfigContext';
+import useSEO from '../hooks/useSEO';
 
 const Home = () => {
   const { config } = useSiteConfig();
+
+  useSEO({
+    title: 'High-End Editorial Wedding Photography & Films',
+    description: 'Bespoke editorial wedding photography and cinematic films for luxury celebrations worldwide. Based in Bangalore, capturing the quiet emotions and poetry of your story.',
+  });
 
   const featuredFilmContent = config?.featured_film || {
     filmId: 'a94LGkUt3Pg',

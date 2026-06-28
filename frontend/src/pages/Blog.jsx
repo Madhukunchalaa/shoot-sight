@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { API_URL } from '../config';
+import useSEO from '../hooks/useSEO';
 import './Blog.css';
 
 const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp";
@@ -68,6 +69,11 @@ const initialPosts = [
 const Blog = () => {
   const container = useRef();
   const [activePost, setActivePost] = useState(null);
+
+  useSEO({
+    title: 'Journal & Stories',
+    description: 'Read the latest stories, photography guides, and wedding inspiration from the Shoot @ Sight journal.',
+  });
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
