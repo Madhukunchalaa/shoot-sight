@@ -1,6 +1,6 @@
 import './FlyingDrone.css';
 
-const whatsappUrl = "https://wa.me/919900233338?text=Hello%20Shoot%20%40%20Sight!%20I'd%20love%20to%20start%20a%20conversation%20about%20our%20celebration.";
+const whatsappUrl = "https://wa.me/919900233338?text=Hello%20Shoot%20at%20Sight%20Weddings!%20I'd%20love%20to%20start%20a%20conversation%20about%20our%20celebration.";
 
 const FlyingDrone = () => {
   return (
