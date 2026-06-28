@@ -155,15 +155,74 @@
   font-style: italic;
 }
 
+/* Mobile Scroll Arrows (Hidden by default on Desktop) */
+.mobile-scroll-arrows {
+  display: none;
+}
+
 @media (max-width: 768px) {
-  .horizontal-item {
-    width: 280px;
+  .horizontal-shoots-section {
+    overflow: visible;
   }
+
   .horizontal-scroll-container {
+    width: auto;
+    max-width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
     padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 25px;
     gap: 30px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
   }
+
+  .horizontal-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .horizontal-item {
+    width: 260px;
+  }
+
   .horizontal-item-link:nth-child(even) {
-    margin-top: 30px;
+    margin-top: 0; /* Align them evenly on mobile for clean scrolling */
+  }
+
+  .mobile-scroll-arrows {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .scroll-arrow-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid rgba(60, 48, 36, 0.12);
+    color: var(--text-primary);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+  }
+
+  .scroll-arrow-btn:active {
+    transform: scale(0.92);
+    background: var(--bg-secondary);
+  }
+
+  .scroll-arrow-btn svg {
+    width: 20px;
+    height: 20px;
+    display: block;
   }
 }

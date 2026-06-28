@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-const logo = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/logo_1.webp";
+const logo = "/logo_white_red.webp";
 import './Footer.css';
 
 const Footer = () => {

@@ -65,6 +65,10 @@
   will-change: transform;
 }
 
+.story-img-wrapper.type-1 img {
+  object-position: center bottom;
+}
+
 /* CONTENT ON THE RIGHT */
 .story-content-new {
   position: relative;

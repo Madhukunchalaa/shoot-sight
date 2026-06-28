@@ -6,7 +6,7 @@ import { API_URL } from '../config';
 import RecentShoots from '../components/RecentShoots';
 import './Portfolio.css';
 
-const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_4201.webp";
+const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
 const img2 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A3065.webp";
 const img3 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC06362.webp";
 const img4 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4849-2.webp";
