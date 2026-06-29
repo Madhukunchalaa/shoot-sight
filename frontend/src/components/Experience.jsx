@@ -129,7 +129,13 @@ const Experience = () => {
                     </div>
                     <div className="exp-card__image">
                       <div className="img-reveal-wrapper">
-                        <img src={phase.img} alt={phase.heading} loading="lazy" decoding="async" />
+                        <img 
+                          src={phase.img} 
+                          alt={phase.heading} 
+                          loading="lazy" 
+                          decoding="async" 
+                          className={idx === 2 ? 'heirloom-img' : ''} 
+                        />
                       </div>
                     </div>
                   </>
@@ -137,7 +143,13 @@ const Experience = () => {
                   <>
                     <div className="exp-card__image">
                       <div className="img-reveal-wrapper">
-                        <img src={phase.img} alt={phase.heading} loading="lazy" decoding="async" />
+                        <img 
+                          src={phase.img} 
+                          alt={phase.heading} 
+                          loading="lazy" 
+                          decoding="async" 
+                          className={idx === 2 ? 'heirloom-img' : ''} 
+                        />
                       </div>
                     </div>
                     <div className="exp-card__text">
