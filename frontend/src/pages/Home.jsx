@@ -80,6 +80,7 @@ const Home = () => {
               tabIndex="-1"
               aria-hidden="true"
             />
+            <div className="landing-film-blocker" style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'transparent' }} />
           </div>
 
           <div className="landing-film-overlay">
