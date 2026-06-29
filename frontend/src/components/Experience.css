@@ -143,7 +143,7 @@
 }
 
 .img-reveal-wrapper img.heirloom-img {
-  object-position: center 82%;
+  object-position: center bottom;
 }
 
 .exp-card:hover .img-reveal-wrapper img {
