@@ -146,6 +146,10 @@
   object-position: center bottom;
 }
 
+.img-reveal-wrapper img.capture-img {
+  object-position: center 20%;
+}
+
 .exp-card:hover .img-reveal-wrapper img {
   transform: scale(1.04);
 }

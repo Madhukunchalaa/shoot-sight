@@ -134,7 +134,7 @@ const Experience = () => {
                           alt={phase.heading} 
                           loading="lazy" 
                           decoding="async" 
-                          className={idx === 2 ? 'heirloom-img' : ''} 
+                          className={idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''} 
                         />
                       </div>
                     </div>
@@ -148,7 +148,7 @@ const Experience = () => {
                           alt={phase.heading} 
                           loading="lazy" 
                           decoding="async" 
-                          className={idx === 2 ? 'heirloom-img' : ''} 
+                          className={idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''} 
                         />
                       </div>
                     </div>
