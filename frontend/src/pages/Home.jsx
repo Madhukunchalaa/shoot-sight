@@ -20,7 +20,7 @@ const Home = () => {
   });
 
   const featuredFilmContent = config?.featured_film || {
-    filmId: 'a94LGkUt3Pg',
+    filmId: 'to6ek5xQXrM',
     tagline: '03 // FEATURED FILMS',
     headingMain: 'Cinematic',
     headingHighlight: 'Poetry',

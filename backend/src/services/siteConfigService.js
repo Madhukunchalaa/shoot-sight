@@ -103,7 +103,7 @@ const defaultConfigs = [
   {
     sectionKey: 'featured_film',
     content: {
-      filmId: 'a94LGkUt3Pg',
+      filmId: 'to6ek5xQXrM',
       tagline: '03 // FEATURED FILMS',
       headingMain: 'Cinematic',
       headingHighlight: 'Poetry',

@@ -48,6 +48,11 @@
   align-items: center;
 }
 
+/* Brand tagline below logo — hidden on desktop, shown on mobile */
+.nav-brand-tagline {
+  display: none;
+}
+
 /* LEFT SIDE - LOGO */
 .nav-logo {
   height: 90px; /* Big and bold at start */
@@ -196,6 +201,28 @@
   }
   .nav-logo {
     height: 44px !important;
+  }
+
+  /* Tagline below logo on mobile */
+  .nav-brand-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+  }
+
+  .nav-brand-tagline {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    text-align: center;
+    opacity: 0.75;
+    white-space: nowrap;
   }
 
   /* LUXURY HORIZONTAL HAMBURGER BUTTON */

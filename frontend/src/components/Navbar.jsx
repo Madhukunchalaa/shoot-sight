@@ -46,6 +46,7 @@ const Navbar = () => {
           <div className="nav-left">
             <Link to="/" className="nav-brand-link">
               <img src={logo} alt="Shoot @ Sight" className="nav-logo" />
+              <span className="nav-brand-tagline">WEDDING PHOTOGRAPHERS & FILMMAKERS</span>
             </Link>
           </div>
 
