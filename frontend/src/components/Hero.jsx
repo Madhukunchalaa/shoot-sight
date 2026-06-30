@@ -40,27 +40,44 @@ const Hero = () => {
     };
   }, []);
 
+  const mobileVideoUrl = 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Low%20Bitrate.mp4';
+
   return (
     <section ref={containerRef} className="hero-full">
       <div className="hero-video-container">
-        {isDirectVideo ? (
-          <video
-            src={videoUrl}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="hero-html-video"
-          />
-        ) : (
-          <iframe
-            src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${videoUrl}&playsinline=1&start=0`}
-            title="Hero Background Video"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
-        )}
+
+        {/* Desktop video */}
+        <div className="hero-desktop-video">
+          {isDirectVideo ? (
+            <video
+              src={videoUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="hero-html-video"
+            />
+          ) : (
+            <iframe
+              src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${videoUrl}&playsinline=1&start=0`}
+              title="Hero Background Video"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          )}
+        </div>
+
+        {/* Mobile reel video */}
+        <video
+          src={mobileVideoUrl}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hero-mobile-video"
+        />
+
         <div className="hero-video-blocker" />
       </div>
     </section>
