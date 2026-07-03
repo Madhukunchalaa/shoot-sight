@@ -13,15 +13,6 @@ const login = async (email, password) => {
     throw err;
   }
 
-  // Hardcoded Fallback bypass
-  const hardcodedEmail = process.env.ADMIN_EMAIL || 'admin@shootsight.com';
-  const hardcodedPassword = process.env.ADMIN_PASSWORD || 'ShootSight2026!';
-  
-  if (email === hardcodedEmail && password === hardcodedPassword) {
-    const token = signToken('hardcoded-admin-id');
-    return { token, admin: { id: 'hardcoded-admin-id', email } };
-  }
-
   try {
     const admin = await Admin.findOne({ email });
     if (!admin || !(await admin.comparePassword(password))) {
@@ -33,8 +24,9 @@ const login = async (email, password) => {
     const token = signToken(admin._id);
     return { token, admin: { id: admin._id, email: admin.email } };
   } catch (dbErr) {
-    const err = new Error('Database offline. Only default hardcoded admin is available.');
-    err.statusCode = 401;
+    if (dbErr.statusCode === 401) throw dbErr;
+    const err = new Error('Unable to connect to database. Please try again later.');
+    err.statusCode = 503;
     throw err;
   }
 };
