@@ -76,8 +76,8 @@ const Hero = () => {
 
         {/* Footer Area */}
         <div className="carousel-footer-area">
-          <span className="carousel-footer-script">unscripted</span>
-          
+
+
           <div className="carousel-text-nav">
             <button onClick={handlePrev}>PREV</button>
             <span className="nav-divider">/</span>
