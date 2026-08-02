@@ -131,7 +131,8 @@
   max-height: 480px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.09);
+  background: transparent;
+  box-shadow: none;
 }
 
 .img-reveal-wrapper img {
@@ -140,6 +141,7 @@
   max-height: 480px;
   display: block;
   object-fit: contain;
+  background: transparent;
   border-radius: 16px;
   transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
