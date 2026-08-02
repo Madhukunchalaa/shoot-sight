@@ -128,14 +128,16 @@
 .img-reveal-wrapper {
   width: 100%;
   height: auto;
+  max-height: 480px;
   border-radius: 16px;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.09);
 }
 
 .img-reveal-wrapper img {
   width: 100%;
   height: auto;
+  max-height: 480px;
   display: block;
   object-fit: contain;
   border-radius: 16px;
@@ -195,7 +197,7 @@
   }
 
   .img-reveal-wrapper {
-    height: auto;
+    max-height: 380px;
   }
 }
 
@@ -236,7 +238,7 @@
   }
 
   .img-reveal-wrapper {
-    height: auto;
+    max-height: 300px;
     border-radius: 12px;
   }
 }
