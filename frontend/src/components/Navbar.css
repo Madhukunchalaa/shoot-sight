@@ -25,6 +25,12 @@
   pointer-events: none;
 }
 
+.nav-logo-only .nav-left {
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
 /* FULL VISIBLE STATE (On Scroll) */
 .nav-full-visible {
   padding: 15px 0;
@@ -54,6 +60,10 @@
 }
 
 /* LEFT SIDE - LOGO */
+.nav-left {
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .nav-logo {
   height: 90px; /* Big and bold at start */
   width: auto;
