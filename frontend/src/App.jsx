@@ -9,6 +9,7 @@ import ShootDetail from './pages/ShootDetail';
 import Portfolio from './pages/Portfolio';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
+import FAQ from './pages/FAQ';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
@@ -47,6 +48,7 @@ function App() {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
           
           {/* Admin Portal */}
           <Route path="/admin" element={<AdminDashboard />} />

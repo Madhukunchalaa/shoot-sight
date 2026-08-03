@@ -10,7 +10,30 @@ const Footer = () => {
         <div className="footer-top">
           <div className="footer-brand">
             <img src={logo} alt="Shoot @ Sight" className="footer-logo" />
-            <p className="footer-slogan">PRESERVING THE UNSPOKEN</p>
+
+            {/* Brand tagline block */}
+            <div className="footer-brand-block">
+              <span className="footer-brand-weddings">WEDDINGS</span>
+
+              <div className="footer-brand-divider">
+                <span className="footer-divider-line" />
+                <span className="footer-divider-ornament">❧</span>
+                <span className="footer-divider-line" />
+              </div>
+
+              <span className="footer-brand-script">Trigger your memories<span className="footer-heart">♡</span></span>
+
+              <span className="footer-brand-floral">✿</span>
+
+              <div className="footer-brand-traits">
+                <span>ARTFUL</span>
+                <span className="footer-trait-sep">|</span>
+                <span>NATURAL</span>
+                <span className="footer-trait-sep">|</span>
+                <span>TIMELESS</span>
+              </div>
+            </div>
+
           </div>
           <div className="footer-nav">
             <div className="footer-col">

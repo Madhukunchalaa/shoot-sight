@@ -47,15 +47,17 @@ const Contact = () => {
   };
 
   useGSAP(() => {
-    // Elegant entrance reveal
-    gsap.from('.reveal-item', {
-      y: 50,
-      opacity: 0,
-      duration: 1.4,
-      stagger: 0.15,
-      ease: 'power4.out',
-      delay: 0.2
-    });
+    // Entrance reveal - only y movement, no opacity hide (prevents blank page)
+    gsap.fromTo('.reveal-item',
+      { y: 40 },
+      {
+        y: 0,
+        duration: 1.2,
+        stagger: 0.12,
+        ease: 'power3.out',
+        delay: 0.1
+      }
+    );
 
     // Image card zoom effect
     gsap.from('.contact-image-wrapper img', {
@@ -64,7 +66,7 @@ const Contact = () => {
       ease: 'power3.out'
     });
 
-  }, { scope: container, dependencies: [contactContent] });
+  }, { scope: container });
 
   const handleSubmit = (e) => {
     e.preventDefault();

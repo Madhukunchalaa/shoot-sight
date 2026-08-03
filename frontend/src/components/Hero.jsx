@@ -7,22 +7,23 @@ const triads = [
   [
     "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/2S9A9106__4__jpg.webp",
     "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/DSC06041_3__1___2__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_7295_jpg.webp"
+    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9557__3__jpg.webp"
   ],
   [
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9557__3__jpg.webp",
     "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9878__2__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9878__3__jpg.webp"
+    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9878__3__jpg.webp",
+    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SASP4766__2__jpg.webp"
   ],
   [
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SASP4766__2__jpg.webp",
     "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SAS_2092__2__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SYD08443__5__jpg.webp"
+    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SYD08443__5__jpg.webp",
+    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp"
   ]
 ];
 
 const Hero = () => {
   const [triadIndex, setTriadIndex] = useState(0);
+  const [sliding, setSliding] = useState(false);
 
   // Set scroll restoration and reset scroll position early
   useLayoutEffect(() => {
@@ -32,22 +33,25 @@ const Hero = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const goTo = (nextIndex) => {
+    if (sliding) return;
+    setSliding(true);
+    setTimeout(() => {
+      setTriadIndex(nextIndex);
+      setSliding(false);
+    }, 500);
+  };
+
   // Auto transition slides every 6 seconds
   useEffect(() => {
     const timer = setInterval(() => {
-      setTriadIndex((prev) => (prev + 1) % triads.length);
+      goTo((triadIndex + 1) % triads.length);
     }, 6000);
-
     return () => clearInterval(timer);
-  }, []);
+  }, [triadIndex]);
 
-  const handlePrev = () => {
-    setTriadIndex((prev) => (prev === 0 ? triads.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setTriadIndex((prev) => (prev + 1) % triads.length);
-  };
+  const handlePrev = () => goTo(triadIndex === 0 ? triads.length - 1 : triadIndex - 1);
+  const handleNext = () => goTo((triadIndex + 1) % triads.length);
 
   return (
     <section className="hero-full">
@@ -64,7 +68,7 @@ const Hero = () => {
 
         {/* White Card Framed Container */}
         <div className="carousel-frame-container">
-          <div className="carousel-grid-row" key={triadIndex}>
+          <div className={`carousel-grid-row${sliding ? ' carousel-sliding-out' : ''}`} key={sliding ? 'sliding' : triadIndex}>
             {triads[triadIndex].map((url, idx) => (
               <div key={idx} className="carousel-grid-img-wrapper">
                 <img src={url} alt={`Featured Image ${idx + 1}`} loading={idx === 0 ? "eager" : "lazy"} />

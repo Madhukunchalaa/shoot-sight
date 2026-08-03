@@ -1,9 +1,20 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useSEO from "../hooks/useSEO";
 import "./Portfolio.css";
 
-const weddingPhotoImg   = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp";
-const weddingFilmImg    = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp";
+// Hero banner images (portrait photos from R2)
+const heroImages = [
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08292.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7441.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A8309.webp",
+];
+
+// Collection section data
+const weddingPhotoImg    = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp";
+const weddingFilmImg     = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp";
 const preWeddingPhotoImg = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/KRP_9777.webp";
 const preWeddingFilmImg  = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_I3A6612.webp";
 
@@ -38,11 +49,19 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio-collections-page">
-      <div className="portfolio-page-header">
-        <span className="portfolio-page-eyebrow">01 // COLLECTIONS</span>
-        <h1 className="portfolio-page-title">The <i>Archives</i></h1>
+
+      {/* ── Hero Banner ── */}
+      <div className="portfolio-hero-banner">
+          <div className="portfolio-hero-strip">
+          {[...heroImages, ...heroImages].map((img, i) => (
+            <div key={i} className="portfolio-hero-frame">
+              <img src={img} alt={`Portfolio highlight ${i + 1}`} loading={i < 6 ? "eager" : "lazy"} />
+            </div>
+          ))}
+        </div>
       </div>
 
+      {/* ── Collections ── */}
       <div className="portfolio-collections-wrapper">
         {collections.map((col) => (
           <section key={col.id} className="collection-section">

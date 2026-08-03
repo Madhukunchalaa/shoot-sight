@@ -16,17 +16,83 @@
 
 .footer-logo {
   height: 80px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   opacity: 0.9;
 }
 
-.footer-slogan {
+/* ── Brand tagline block ── */
+.footer-brand-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.footer-brand-weddings {
   font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 7px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.footer-brand-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.footer-divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(60, 48, 36, 0.2);
+  display: block;
+}
+
+.footer-divider-ornament {
+  font-size: 13px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.footer-brand-script {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.footer-heart {
+  color: var(--accent);
+  font-style: normal;
+  margin-left: 2px;
+}
+
+.footer-brand-floral {
+  font-size: 13px;
+  color: rgba(60, 48, 36, 0.35);
+  line-height: 1;
+}
+
+.footer-brand-traits {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(60, 48, 36, 0.65);
+}
+
+.footer-trait-sep {
+  color: rgba(60, 48, 36, 0.25);
   font-size: 11px;
-  letter-spacing: 5px;
-  color: rgba(60, 48, 36, 0.55);
-  opacity: 0.8;
-  margin-top: 15px;
 }
 
 .footer-nav {
@@ -50,7 +116,7 @@
   letter-spacing: 1px;
   margin-bottom: 12px;
   text-decoration: none;
-  color: rgba(60, 48, 36, 0.6);
+  color: rgba(60, 48, 36, 0.85);
   font-weight: 400;
   transition: all 0.3s ease;
 }
@@ -73,8 +139,7 @@
   font-family: var(--font-sans);
   font-size: 9px;
   letter-spacing: 3px;
-  color: rgba(60, 48, 36, 0.45);
-  opacity: 0.8;
+  color: rgba(60, 48, 36, 0.7);
   text-transform: uppercase;
 }
 

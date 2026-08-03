@@ -1,5 +1,5 @@
 .contact-page-editorial-dark {
-  background-color: var(--bg-color); /* Maintain cohesive warm-sand background */
+  background-color: var(--bg-color);
   min-height: 100vh;
   padding: 120px 0 100px 0;
   color: var(--text-primary);
@@ -7,6 +7,13 @@
   overflow-x: hidden;
   position: relative;
 }
+
+/* Safety net: always visible; GSAP animates on top */
+.reveal-item {
+  opacity: 1;
+  will-change: transform, opacity;
+}
+
 
 /* Luxury Accent line at top of page */
 .contact-page-editorial-dark::before {
