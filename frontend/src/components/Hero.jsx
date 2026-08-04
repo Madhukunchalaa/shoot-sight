@@ -1,93 +1,80 @@
-import { useEffect, useState, useLayoutEffect } from 'react';
-import './Hero.css';
+﻿import { useEffect, useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSiteConfig } from "../context/SiteConfigContext";
+import "./Hero.css";
 
-const logo = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/logo_1.webp";
-
-const triads = [
-  [
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/2S9A9106__4__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/DSC06041_3__1___2__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9557__3__jpg.webp"
-  ],
-  [
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9878__2__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/KRP_9878__3__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SASP4766__2__jpg.webp"
-  ],
-  [
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SAS_2092__2__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/hero-banner/SYD08443__5__jpg.webp",
-    "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp"
-  ]
-];
+gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
-  const [triadIndex, setTriadIndex] = useState(0);
-  const [sliding, setSliding] = useState(false);
+  const containerRef = useRef(null);
+  const { config } = useSiteConfig();
+
+  const heroContent = config?.hero || {
+    videoUrl: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Naveen%20%26%20Kate%204K%20Teaser.mp4"
+  };
+
+  const videoUrl = heroContent.videoUrl || "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Naveen%20%26%20Kate%204K%20Teaser.mp4";
+  const isDirectVideo = videoUrl.startsWith("http") || videoUrl.includes(".mp4");
 
   // Set scroll restoration and reset scroll position early
   useLayoutEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
     }
     window.scrollTo(0, 0);
+    ScrollTrigger.clearScrollMemory();
   }, []);
 
-  const goTo = (nextIndex) => {
-    if (sliding) return;
-    setSliding(true);
-    setTimeout(() => {
-      setTriadIndex(nextIndex);
-      setSliding(false);
-    }, 500);
-  };
-
-  // Auto transition slides every 6 seconds
   useEffect(() => {
-    const timer = setInterval(() => {
-      goTo((triadIndex + 1) % triads.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [triadIndex]);
+    window.scrollTo(0, 0);
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+    return () => {
+      clearTimeout(refreshTimer);
+    };
+  }, []);
 
-  const handlePrev = () => goTo(triadIndex === 0 ? triads.length - 1 : triadIndex - 1);
-  const handleNext = () => goTo((triadIndex + 1) % triads.length);
+  const mobileVideoUrl = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Low%20Bitrate.mp4";
 
   return (
-    <section className="hero-full">
-      {/* Faint watermark background of the active slide */}
-      <div className="carousel-bg-watermark">
-        <img src={triads[triadIndex][0]} alt="Background Watermark" key={triadIndex} />
-      </div>
+    <section ref={containerRef} className="hero-full">
+      <div className="hero-video-container">
 
-      <div className="portfolio-hero-carousel">
-        {/* Logo Masthead Header */}
-        <div className="carousel-header-area">
-          <img src={logo} alt="Shoot @ Sight Logo" className="carousel-brand-logo" />
+        {/* Desktop video */}
+        <div className="hero-desktop-video">
+          {isDirectVideo ? (
+            <video
+              src={videoUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="hero-html-video"
+            />
+          ) : (
+            <iframe
+              src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${videoUrl}&playsinline=1&start=0`}
+              title="Hero Background Video"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          )}
         </div>
 
-        {/* White Card Framed Container */}
-        <div className="carousel-frame-container">
-          <div className={`carousel-grid-row${sliding ? ' carousel-sliding-out' : ''}`} key={sliding ? 'sliding' : triadIndex}>
-            {triads[triadIndex].map((url, idx) => (
-              <div key={idx} className="carousel-grid-img-wrapper">
-                <img src={url} alt={`Featured Image ${idx + 1}`} loading={idx === 0 ? "eager" : "lazy"} />
-              </div>
-            ))}
-          </div>
+        {/* Mobile reel video */}
+        <video
+          src={mobileVideoUrl}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hero-mobile-video"
+        />
 
-        </div>
-
-        {/* Footer Area */}
-        <div className="carousel-footer-area">
-
-
-          <div className="carousel-text-nav">
-            <button onClick={handlePrev}>PREV</button>
-            <span className="nav-divider">/</span>
-            <button onClick={handleNext}>NEXT</button>
-          </div>
-        </div>
+        <div className="hero-video-blocker" />
       </div>
     </section>
   );
