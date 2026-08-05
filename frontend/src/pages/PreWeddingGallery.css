@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
 
 /* ════════════════════════════════════════
    PRE-WEDDING GALLERY PAGE
@@ -101,43 +101,40 @@
 .pwg-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  gap: 32px;
 }
 
 .pwg-grid-cell {
   display: flex;
   flex-direction: column;
-  gap: 14px;
   cursor: pointer;
 }
 
 .pwg-cell-img-wrap {
   width: 100%;
-  aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 4px;
   position: relative;
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .pwg-cell-img-wrap img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 25%;
+  height: auto;
   display: block;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .pwg-grid-cell:hover .pwg-cell-img-wrap img {
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 .pwg-cell-zoom {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: rgba(18, 18, 18, 0.75);
+  background: rgba(18, 18, 18, 0.85);
   backdrop-filter: blur(10px);
   color: #ffffff;
   font-family: var(--font-sans);
@@ -156,28 +153,6 @@
   transform: translateY(0);
 }
 
-.pwg-cell-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.pwg-cell-category {
-  font-family: var(--font-sans);
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.pwg-cell-title {
-  font-family: var(--font-serif);
-  font-size: 20px;
-  font-weight: 400;
-  color: var(--text-primary);
-  margin: 0;
-  font-style: italic;
-}
 
 /* ── Lightbox Modal ── */
 .pwg-lightbox-modal {

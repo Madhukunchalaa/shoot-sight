@@ -9,50 +9,42 @@ import "./PreWeddingGallery.css";
 const curatedPreWeddingFrames = [
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/KRP_9777.webp",
-    title: "Ethereal Sunset Promenade",
-    category: "Sunset & Nature"
+    title: "Ethereal Sunset Promenade"
   },
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_I3A6612.webp",
-    title: "Heritage Doorway Reflection",
-    category: "Architecture"
-  },
-  {
-    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6607.webp",
-    title: "Graceful Royal Portrait",
-    category: "Editorial"
+    title: "Heritage Doorway Reflection"
   },
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp",
-    title: "Intimate Canopy Moment",
-    category: "Intimate"
+    title: "Intimate Canopy Moment"
   },
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A3065.webp",
-    title: "Royal Courtyard Walk",
-    category: "Architecture"
+    title: "Royal Courtyard Walk"
   },
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4849-2.webp",
-    title: "Candlelit Garden Whispers",
-    category: "Night & Romance"
+    title: "Candlelit Garden Whispers"
   },
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4961.webp",
-    title: "Golden Hour Embrace",
-    category: "Golden Hour"
+    title: "Golden Hour Embrace"
   },
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp",
-    title: "Royal Palace Archway",
-    category: "Heritage"
+    title: "Royal Palace Archway"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp",
+    title: "Editorial Sunset Walk"
   }
 ];
 
 const PreWeddingGallery = () => {
   useSEO({
     title: "Pre-Wedding Collection | Shoot @ Sight",
-    description: "Explore our pre-wedding photography collection — capturing love\'s first glance with editorial polish and raw emotion.",
+    description: "Explore our pre-wedding photography collection — capturing love's first glance with editorial polish and raw emotion.",
   });
 
   const navigate = useNavigate();
@@ -141,7 +133,7 @@ const PreWeddingGallery = () => {
         </div>
       )}
 
-      {/* ── Curated Fine Art Pre-Wedding Grid ── */}
+      {/* ── Curated Fine Art Pre-Wedding Grid (Pure Image Grid, No Text) ── */}
       <div className="pwg-curated-section">
         <div className="pwg-curated-header">
           <span className="pwg-curated-tag">EDITORIAL LOOKBOOK</span>
@@ -156,17 +148,22 @@ const PreWeddingGallery = () => {
               onClick={() => openLightbox(idx)}
             >
               <div className="pwg-cell-img-wrap">
-                <img src={frame.url} alt={frame.title} loading="lazy" />
+                <img 
+                  src={frame.url} 
+                  alt={frame.title} 
+                  loading="lazy" 
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/KRP_9777.webp";
+                  }}
+                />
                 <div className="pwg-cell-zoom">EXPLORE FULLSCREEN</div>
-              </div>
-              <div className="pwg-cell-info">
-                <span className="pwg-cell-category">{frame.category}</span>
-                <h3 className="pwg-cell-title">{frame.title}</h3>
               </div>
             </div>
           ))}
         </div>
       </div>
+
 
       {/* ── Fullscreen Lightbox ── */}
       {lightboxIndex !== null && (
