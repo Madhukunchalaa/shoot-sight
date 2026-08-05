@@ -55,7 +55,6 @@ const Navbar = () => {
               <Link to="/" className="nav-link-item">HOME</Link>
               <Link to="/about" className="nav-link-item">ABOUT</Link>
               <Link to="/portfolio" className="nav-link-item">PORTFOLIO</Link>
-              <Link to="/films" className="nav-link-item">FILMS</Link>
               <Link to="/blog" className="nav-link-item">BLOG</Link>
               <Link to="/faq" className="nav-link-item">FAQ</Link>
               <Link to="/contact" className="nav-link-item">CONTACT</Link>
@@ -98,19 +97,17 @@ const Navbar = () => {
             <Link to="/portfolio" className="mobile-menu-link-item" onClick={toggleMenu}>
               <span>03 //</span> PORTFOLIO
             </Link>
-            <Link to="/films" className="mobile-menu-link-item" onClick={toggleMenu}>
-              <span>04 //</span> FILMS
-            </Link>
             <Link to="/blog" className="mobile-menu-link-item" onClick={toggleMenu}>
-              <span>05 //</span> BLOG
+              <span>04 //</span> BLOG
             </Link>
             <Link to="/faq" className="mobile-menu-link-item" onClick={toggleMenu}>
-              <span>06 //</span> FAQ
+              <span>05 //</span> FAQ
             </Link>
             <Link to="/contact" className="mobile-menu-link-item" onClick={toggleMenu}>
-              <span>07 //</span> CONTACT
+              <span>06 //</span> CONTACT
             </Link>
           </div>
+
 
           <div className="mobile-menu-footer">
             <span className="mobile-menu-tagline">NOW BOOKING 2026 / 2027</span>

@@ -65,15 +65,16 @@
 }
 
 .nav-logo {
-  height: 90px; /* Big and bold at start */
+  height: 52px; /* Refined luxury sizing */
   width: auto;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
 }
 
 .nav-full-visible .nav-logo {
-  height: 60px; /* Scales down on scroll */
+  height: 42px; /* Scales gracefully on scroll */
 }
+
 
 /* RIGHT SIDE */
 .nav-right {

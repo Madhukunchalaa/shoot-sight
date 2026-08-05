@@ -23,14 +23,15 @@ const About = () => {
     heroTitleHighlight: 'The Light',
     heroTagline: 'SHOOT @ SIGHT // ARCHITECTS OF TIMELESS MEMORIES',
     founderImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/founder%20(1).webp',
-    founderTagline: 'CREATIVE DIRECTOR // PAVITRA',
-    founderName: 'Pavithra',
-    founderSub: 'Lead Visual Director & Founder',
-    founderQuote: 'We do not merely take photographs. We curate the timeless',
-    founderQuoteHighlight: 'poetry',
-    founderQuoteEnd: 'of your celebration.',
-    founderBio1: 'As the visionary behind Shoot @ Sight, Pavithra has spent nearly a decade redefining high-end wedding storytelling. Merging the aesthetics of global fashion editorial with the deep emotion of candid photojournalism, she crafts a cinematic lookbook for couples who view their celebration as a living legacy.',
-    founderBio2: 'Her signature methodology is marked by an intuitive anticipation of candid glances, true-to-life processing, and a mastery over natural, ethereal lighting. With camera in hand, Pavithra blends seamlessly into the architecture of your day, capturing whispers that would otherwise be lost to time.',
+    founderTagline: 'CREATIVE DIRECTOR // PAVITHRA ARUN KUMAR',
+    founderName: 'Pavithra Arun Kumar',
+    founderSub: 'Founder & Lead Visual Storyteller',
+    founderQuote: 'Every journey begins with a single moment of passion. Mine began with a phone camera.',
+    founderBio1: 'Five years ago, I started capturing everyday moments during my travels—without any professional equipment, just an eye for stories and emotions. Friends and family often told me, "You don\'t just take photos—you capture feelings. Every picture tells a story." Those words inspired me to keep learning, experimenting, and creating.',
+    founderBio2: 'What started as a hobby soon became a calling. As I stepped into wedding photography, I discovered something special. Every smile, every tear, every heartfelt embrace felt personal. When a couple cried with joy, I found myself emotional too. When they laughed, I celebrated with them. I wasn\'t just documenting a wedding—I was living those moments alongside them.',
+    founderBio3: 'That\'s when I realized I had found my purpose.',
+    founderBio4: 'Today, through Shoot At Sight Weddings, our purpose is simple—to preserve the emotions you\'ll never want to forget. Every wedding tells a different love story, and we believe it deserves to be captured with honesty, creativity, and heart. Because photography isn\'t just about creating beautiful images—it\'s about preserving the feelings, the people, and the moments you\'ll cherish for a lifetime.',
+
     pillar1Title: 'Cinematic Intuition',
     pillar1Desc: 'Reading the room, anticipating micro-moments, and capturing raw, unposed emotions.',
     pillar2Title: 'Editorial Polish',
@@ -220,11 +221,11 @@ const About = () => {
 
             <div className="founder-content-col">
               <span className="subtitle-accent">MEET THE FOUNDER</span>
-              <h2 className="founder-main-title">{aboutContent.founderName}</h2>
-              <p className="founder-sub-headline">{aboutContent.founderSub}</p>
+              <h2 className="founder-main-title">{aboutContent.founderName || "Pavithra Arun Kumar"}</h2>
+              <p className="founder-sub-headline">{aboutContent.founderSub || "Founder & Lead Visual Storyteller"}</p>
 
               <h3 className="founder-quote">
-                "{aboutContent.founderQuote} <i>{aboutContent.founderQuoteHighlight}</i> {aboutContent.founderQuoteEnd}"
+                "{aboutContent.founderQuote || 'Every journey begins with a single moment of passion. Mine began with a phone camera.'}"
               </h3>
 
               <div className="founder-bio">
@@ -234,6 +235,16 @@ const About = () => {
                 <p className="bio-paragraph">
                   {aboutContent.founderBio2}
                 </p>
+                {aboutContent.founderBio3 && (
+                  <p className="bio-paragraph highlight-purpose">
+                    {aboutContent.founderBio3}
+                  </p>
+                )}
+                {aboutContent.founderBio4 && (
+                  <p className="bio-paragraph">
+                    {aboutContent.founderBio4}
+                  </p>
+                )}
               </div>
 
               <div className="founder-pillars">

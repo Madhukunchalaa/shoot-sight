@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 const Admin = require('../models/Admin');
+const dns = require('dns');
+
+// Configure Node to use Google Public DNS to prevent local DNS SRV resolution issues (ECONNREFUSED)
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const connectDB = async () => {
   try {

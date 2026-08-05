@@ -360,6 +360,16 @@
   color: var(--accent);
 }
 
+.bio-paragraph.highlight-purpose {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--accent);
+  margin: 6px 0;
+  letter-spacing: 0.2px;
+}
+
+
 /* Core Attribute Pillars */
 .founder-pillars {
   display: flex;

@@ -1,66 +1,141 @@
-import { Link } from 'react-router-dom';
-const logo = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/logo_1.webp";
-import './Footer.css';
+import { Link, useLocation } from "react-router-dom";
+import "./Footer.css";
+
+const portfolioStrips = [
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08292.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/KRP_9777.webp",
+];
+
+const navLinks = [
+  { to: "/",         label: "HOME" },
+  { to: "/about",    label: "ABOUT" },
+  { to: "/portfolio",label: "PORTFOLIO" },
+  { to: "/blog",     label: "BLOG" },
+  { to: "/faq",      label: "FAQ" },
+  { to: "/contact",  label: "CONTACT" },
+];
+
 
 const Footer = () => {
+  const location = useLocation();
+  const path = location.pathname;
+
+  let themeClass = "theme-maroon";
+
+  if (path.includes("/films")) {
+    themeClass = "theme-midnight";
+  } else if (path.includes("/about")) {
+    themeClass = "theme-plum";
+  } else if (path.includes("/blog")) {
+    themeClass = "theme-olive";
+  } else if (path.includes("/faq")) {
+    themeClass = "theme-charcoal";
+  } else if (path.includes("/contact")) {
+    themeClass = "theme-velvet";
+  } else if (path.includes("/shoot")) {
+    themeClass = "theme-burgundy";
+  } else if (path === "/") {
+    themeClass = "theme-espresso";
+  } else {
+    // portfolio / portfolio/wedding
+    themeClass = "theme-maroon";
+  }
+
   return (
-    <footer className="boutique-footer">
-      <div className="container">
-        
-        <div className="footer-top">
-          <div className="footer-brand">
-            <img src={logo} alt="Shoot @ Sight" className="footer-logo" />
+    <footer className={`ft-root ${themeClass}`}>
 
-            {/* Brand tagline block */}
-            <div className="footer-brand-block">
-              <span className="footer-brand-weddings">WEDDINGS</span>
-
-              <div className="footer-brand-divider">
-                <span className="footer-divider-line" />
-                <span className="footer-divider-ornament">❧</span>
-                <span className="footer-divider-line" />
-              </div>
-
-              <span className="footer-brand-script">Trigger your memories<span className="footer-heart">♡</span></span>
-
-              <span className="footer-brand-floral">✿</span>
-
-              <div className="footer-brand-traits">
-                <span>ARTFUL</span>
-                <span className="footer-trait-sep">|</span>
-                <span>NATURAL</span>
-                <span className="footer-trait-sep">|</span>
-                <span>TIMELESS</span>
-              </div>
-            </div>
-
-          </div>
-          <div className="footer-nav">
-            <div className="footer-col">
-              <h4>EXPLORE</h4>
-              <Link to="/portfolio">Collections</Link>
-              <Link to="/blog">Blog</Link>
-              <Link to="/about">Our Story</Link>
-            </div>
-            <div className="footer-col">
-              <h4>CONNECT</h4>
-              <a href="https://www.instagram.com/shootatsightweddings" target="_blank" rel="noreferrer">Instagram</a>
-              <a href="https://www.youtube.com/@shootatsightweddings" target="_blank" rel="noreferrer">Youtube</a>
-              <a href="mailto:hello@shootatsight.com">Email Us</a>
-            </div>
-          </div>
+      {/* ── Brand Logo Header Block ── */}
+      <div className="ft-brand-header">
+        <div className="ft-brand-logo-wrap">
+          <img
+            src="https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/logo_1.webp"
+            alt="Shoot @ Sight"
+            className="ft-main-logo"
+          />
+          <span className="ft-brand-weddings">WEDDINGS</span>
         </div>
 
-
-
-        <div className="footer-bottom">
-          <div className="footer-info">
-            <p className="copyright">© 2026 SHOOT @ SIGHT. ALL RIGHTS RESERVED.</p>
-            <p className="location">BENGALURU / GLOBAL</p>
-          </div>
+        <div className="ft-brand-divider">
+          <span className="ft-divider-line" />
+          <span className="ft-divider-ornament">❖</span>
+          <span className="ft-divider-line" />
         </div>
 
+        <span className="ft-brand-script">
+          Trigger your memories
+        </span>
+
+        <span className="ft-brand-floral">✿</span>
+
+        <div className="ft-brand-traits">
+          <span>ARTFUL</span>
+          <span className="ft-trait-sep">|</span>
+          <span>NATURAL</span>
+          <span className="ft-trait-sep">|</span>
+          <span>TIMELESS</span>
+        </div>
       </div>
+
+      {/* ── Quote ── */}
+      <p className="ft-quote">
+        Documenting the moments you&apos;ll cherish forever — because every glance,<br />
+        every tear, every laugh deserves to live on beautifully.
+      </p>
+
+      {/* ── Horizontal nav ── */}
+      <nav className="ft-nav">
+        {navLinks.map((l) => (
+          <Link key={l.to} to={l.to} className="ft-nav-link">{l.label}</Link>
+        ))}
+      </nav>
+
+      {/* ── Photo strips + social ── */}
+      <div className="ft-media-row">
+
+        {/* Rotated instagram handle */}
+        <span className="ft-handle">@SHOOTATSIGHTWEDDINGS</span>
+
+        {/* 4 portrait strips */}
+        <div className="ft-strips">
+          {portfolioStrips.map((img, i) => (
+            <div key={i} className="ft-strip">
+              <img src={img} alt={`Portfolio ${i + 1}`} loading="lazy" />
+            </div>
+          ))}
+        </div>
+
+        {/* Social icons */}
+        <div className="ft-socials">
+          <a href="https://www.instagram.com/shootatsightweddings" target="_blank" rel="noreferrer" className="ft-social" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@shootatsightweddings" target="_blank" rel="noreferrer" className="ft-social" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="4"/><polygon points="10,8.5 16,12 10,15.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.facebook.com/shootatsight" target="_blank" rel="noreferrer" className="ft-social" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://pin.it/shootatsight" target="_blank" rel="noreferrer" className="ft-social" aria-label="Pinterest">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      {/* ── Bottom tagline + copyright ── */}
+      <div className="ft-bottom">
+        <p className="ft-profession">Destination Wedding Photographers &amp; Cinematography Professionals</p>
+        <div className="ft-bottom-line" />
+        <div className="ft-copyright-row">
+          <span>© {new Date().getFullYear()} Shoot @ Sight</span>
+          <span className="ft-dot">·</span>
+          <span>Bengaluru / Global</span>
+          <span className="ft-dot">·</span>
+          <Link to="/contact" className="ft-contact-link">hello@shootatsight.com</Link>
+        </div>
+      </div>
+
     </footer>
   );
 };

@@ -7,6 +7,8 @@ import Films from './pages/Films';
 import About from './pages/About';
 import ShootDetail from './pages/ShootDetail';
 import Portfolio from './pages/Portfolio';
+import WeddingGallery from './pages/WeddingGallery';
+import PreWeddingGallery from './pages/PreWeddingGallery';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
@@ -46,7 +48,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/shoot/:id" element={<ShootDetail />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/portfolio/wedding" element={<WeddingGallery />} />
+          <Route path="/portfolio/pre-wedding" element={<PreWeddingGallery />} />
           <Route path="/blog" element={<Blog />} />
+
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
           

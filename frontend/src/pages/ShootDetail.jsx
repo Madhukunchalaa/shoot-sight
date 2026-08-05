@@ -146,6 +146,7 @@ const ShootDetail = () => {
   const { id } = useParams();
   const container = useRef();
   const [shoot, setShoot] = useState(null);
+  const [allShoots, setAllShoots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lightboxImage, setLightboxImage] = useState(null);
 
@@ -155,7 +156,6 @@ const ShootDetail = () => {
     ogImage: shoot ? shoot.hero : null,
   });
 
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -164,6 +164,19 @@ const ShootDetail = () => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const res = await fetch(`${API_URL}/shoots`);
+        const data = await res.json();
+        if (data.data && data.data.length > 0) {
+          setAllShoots(data.data);
+        }
+      } catch (err) {}
+    };
+    fetchAll();
   }, []);
 
   useEffect(() => {
@@ -199,7 +212,6 @@ const ShootDetail = () => {
     if (loading || !shoot) return;
 
     const ctx = gsap.context(() => {
-      // Title Entrance
       gsap.from(".exhibition-title-line", {
         y: 60,
         opacity: 0,
@@ -209,7 +221,6 @@ const ShootDetail = () => {
         delay: 0.2
       });
 
-      // Hero Image Reveal
       gsap.from(".exhibition-hero-img-wrapper", {
         scale: 0.95,
         opacity: 0,
@@ -218,7 +229,6 @@ const ShootDetail = () => {
         delay: 0.5
       });
 
-      // Gallery Scroll reveal
       gsap.utils.toArray('.exhibition-gallery-item', container.current).forEach(item => {
         gsap.from(item, {
           y: 100,
@@ -233,7 +243,6 @@ const ShootDetail = () => {
       });
     }, container);
 
-    // Refresh ScrollTrigger parameters on the next tick to ensure dynamic layout offsets are computed correctly
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 150);
@@ -244,6 +253,11 @@ const ShootDetail = () => {
     };
   }, [loading, shoot]);
 
+  const currentIndex = allShoots.findIndex((s) => s.slug === id || s._id === id);
+  const nextShoot = allShoots.length > 0
+    ? allShoots[(currentIndex + 1 + allShoots.length) % allShoots.length]
+    : null;
+
   if (loading || !shoot) {
     return (
       <div className="shoot-exhibition-page" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -253,58 +267,56 @@ const ShootDetail = () => {
   }
 
   return (
-    <div ref={container} className="shoot-exhibition-page">
-      
-      {/* Minimalist Header */}
-      <header className="exhibition-header container">
-        <div className="exhibition-meta exhibition-title-line">
-          <span>{shoot.location}</span>
-          <span className="meta-dot">•</span>
-          <span>{shoot.date}</span>
-        </div>
-        <h1 className="exhibition-title exhibition-title-line">
-          {shoot.title}
-        </h1>
-      </header>
-
-      {/* Hero Feature */}
-      <section className="exhibition-hero container">
-        <div 
-          className="exhibition-hero-img-wrapper lightbox-trigger" 
-          onClick={() => setLightboxImage(shoot.hero)}
-        >
-          <img src={shoot.hero} alt={shoot.title} />
-          <div className="zoom-indicator">EXPLORE FULLSCREEN</div>
-        </div>
-      </section>
-
-      {/* The Narrative Split */}
-      <section className="exhibition-narrative container section-padding">
-        <div className="narrative-grid">
-          <div className="narrative-label">
-            <h2>The Story</h2>
-          </div>
-          <div className="narrative-content">
-            <p className="narrative-text">{shoot.desc}</p>
-            <div className="narrative-tags">
-              <span className="n-tag">Editorial</span>
-              <span className="n-tag">Documentary</span>
-              <span className="n-tag">Cinematic</span>
+    <div className="shoot-detail-page exhibition-theme" ref={container}>
+      {/* ── 2-Column Split: Left Image, Right Story Content ── */}
+      {shoot && (
+        <section className="sd-hero-split-section container">
+          <div className="sd-split-grid">
+            
+            {/* Left Column: Full Uncropped Cover Image */}
+            <div className="sd-split-left">
+              <div className="sd-split-img-wrapper">
+                <img src={shoot.hero} alt={shoot.title} className="sd-split-img" />
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* The Gallery Asymmetric Collage */}
-      <section className="exhibition-gallery-collage container">
+            {/* Right Column: Title, Meta & Intimate Narrative */}
+            <div className="sd-split-right">
+              <div className="header-meta">
+                <span className="meta-item">{shoot.date}</span>
+                <span className="meta-divider">•</span>
+                <span className="meta-item">{shoot.location}</span>
+              </div>
+
+              <h1 className="exhibition-title display-serif">
+                {shoot.title}
+              </h1>
+
+              <div className="sd-split-story">
+                <h2 className="narrative-headline display-serif">The Intimate Narrative</h2>
+                <p className="narrative-body lead-text">
+                  {shoot.desc}
+                </p>
+
+
+                <div className="narrative-tags">
+                  <span className="n-tag">Editorial</span>
+                  <span className="n-tag">Documentary</span>
+                  <span className="n-tag">Cinematic</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      )}
+
+      {/* Main Gallery Exhibition */}
+      <section className="exhibition-gallery container">
         <div className="collage-grid-vintage">
-          {shoot.gallery.map((imgUrl, idx) => {
-            const cellClasses = ['cell-tall', 'cell-wide', 'cell-square', 'cell-portrait'];
-            const captions = ['Intentionality', 'Atmosphere', 'Composition', 'Legacy', 'Harmony', 'Raw Emotion', 'Elegance', 'Timeless', 'Vibrancy', 'Rhythm'];
-            const cellClass = cellClasses[idx % cellClasses.length];
-            const caption = captions[idx % captions.length];
+          {shoot && shoot.gallery.map((imgUrl, idx) => {
             return (
-              <div key={idx} className={`collage-cell ${cellClass} exhibition-gallery-item`}>
+              <div key={idx} className="collage-cell exhibition-gallery-item">
                 <div 
                   className="gallery-img-wrapper lightbox-trigger" 
                   onClick={() => setLightboxImage(imgUrl)}
@@ -312,17 +324,42 @@ const ShootDetail = () => {
                   <img src={imgUrl} alt={`Story Frame ${idx + 1}`} loading="lazy" />
                   <div className="zoom-indicator">EXPLORE FULLSCREEN</div>
                 </div>
-                <div className="gallery-caption">Frame {idx + 1 < 10 ? `0${idx + 1}` : idx + 1} // {caption}</div>
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* Footer Navigation */}
-      <div className="exhibition-footer section-padding container text-center">
-        <Link to="/portfolio" className="btn-premium">Return to Archives</Link>
-      </div>
+      {/* Next Story & Ending Transition Section */}
+      <section className="sd-ending-section">
+        <div className="sd-ending-divider">
+          <span className="sd-ending-line" />
+          <span className="sd-ending-diamond">✦</span>
+          <span className="sd-ending-line" />
+        </div>
+
+        {nextShoot && nextShoot.slug !== id && (
+          <div className="sd-next-block">
+            <span className="sd-next-subtitle">NEXT STORY</span>
+            <Link to={`/shoot/${nextShoot.slug}`} className="sd-next-card">
+              <div className="sd-next-img-wrap">
+                <img src={nextShoot.heroImage || nextShoot.hero} alt={nextShoot.title} />
+              </div>
+              <div className="sd-next-info">
+                <h3 className="sd-next-title">{nextShoot.title}</h3>
+                <span className="sd-next-location">{nextShoot.location}</span>
+                <span className="sd-next-btn">EXPLORE STORY &rarr;</span>
+              </div>
+            </Link>
+          </div>
+        )}
+
+        <div className="sd-back-archive-wrap">
+          <Link to="/portfolio" className="sd-back-archive-btn">
+            &larr; BACK TO ALL GALLERIES
+          </Link>
+        </div>
+      </section>
 
       {/* Fullscreen Lightbox Modal */}
       {lightboxImage && (
@@ -338,3 +375,4 @@ const ShootDetail = () => {
 };
 
 export default ShootDetail;
+

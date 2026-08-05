@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
+
+/* ── Page wrapper ── */
+.wg-page {
+  min-height: 100vh;
+  background: var(--bg-color);
+  padding-bottom: 100px;
+}
+
+/* ── Header ── */
+.wg-header {
+  padding: 100px 60px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.wg-back {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(60, 48, 36, 0.6);
+  text-decoration: none;
+  border: 1px solid rgba(60, 48, 36, 0.18);
+  padding: 10px 18px;
+  border-radius: 2px;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.wg-back:hover {
+  color: var(--text-primary);
+  border-color: rgba(60, 48, 36, 0.5);
+  background: rgba(60, 48, 36, 0.04);
+}
+
+.wg-title {
+  font-family: var(--font-sans);
+  font-size: clamp(22px, 3vw, 42px);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.wg-title-normal {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: normal;
+}
+
+.wg-title-script {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(30px, 4vw, 56px);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+/* ── 2-column couple grid ── */
+.wg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto 90px;
+  padding: 0 50px;
+}
+
+/* ── Single couple cell ── */
+.wg-cell {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 2px;
+}
+
+.wg-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wg-cell:hover img {
+  transform: scale(1.05);
+}
+
+/* ── Couple name overlay ── */
+.wg-cell-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    transparent 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 32px 36px;
+  transition: background 0.4s ease;
+}
+
+.wg-cell:hover .wg-cell-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.15) 50%,
+    transparent 100%
+  );
+}
+
+.wg-couple-name {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 2.2vw, 30px);
+  font-weight: 400;
+  font-style: italic;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  line-height: 1.2;
+  transition: letter-spacing 0.4s ease;
+}
+
+.wg-cell:hover .wg-couple-name {
+  letter-spacing: 0.03em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .wg-header {
+    padding: 90px 24px 40px;
+  }
+
+  .wg-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wg-cell {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* ── Loading spinner ── */
+.wg-loading {
+  display: flex;
+  justify-content: center;
+  padding: 100px 0;
+}
+
+.wg-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(60, 48, 36, 0.12);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: wgSpin 0.7s linear infinite;
+  display: block;
+}
+
+@keyframes wgSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Quote fill cell (when odd number of couples) ── */
+.wg-cell--quote {
+  cursor: default;
+  background: var(--text-primary);
+}
+
+.wg-cell--quote:hover img {
+  transform: none;
+}
+
+.wg-quote-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.wg-quote-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(16px, 2vw, 22px);
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  line-height: 1.6;
+}
