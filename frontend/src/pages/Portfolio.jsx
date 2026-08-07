@@ -4,13 +4,15 @@ import useSEO from "../hooks/useSEO";
 import "./Portfolio.css";
 
 
-/* ── Hero strip images (portrait format) ── */
-const heroImages = [
-  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp",
-  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08292.webp",
-  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp",
+/* ── Hero Carousel vertical images ── */
+const portfolioHeroImages = [
   "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/KRP_9777.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_I3A6612.webp",
   "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/2S9A3065.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4849-2.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/NGD_4961.webp",
+  "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp",
 ];
 
 /* ── Featured grid images (landscape format) ── */
@@ -120,21 +122,61 @@ const Portfolio = () => {
   const openLb = (images, index) => setLightbox({ images, index });
   const closeLb = useCallback(() => setLightbox(null), []);
 
+  const [activeIdx, setActiveIdx] = useState(2);
+
+  const prevHero = () => {
+    setActiveIdx((prev) => (prev - 1 + portfolioHeroImages.length) % portfolioHeroImages.length);
+  };
+
+  const nextHero = () => {
+    setActiveIdx((prev) => (prev + 1) % portfolioHeroImages.length);
+  };
+
+  // Helper to compute 5 visible items centered around activeIdx
+  const getVisibleItems = () => {
+    const total = portfolioHeroImages.length;
+    return [-2, -1, 0, 1, 2].map((offset) => {
+      const index = (activeIdx + offset + total) % total;
+      return {
+        img: portfolioHeroImages[index],
+        offset,
+        index,
+      };
+    });
+  };
+
   return (
     <div className="ptf-page">
 
-      {/* ── 1. HERO STRIP ── */}
-      <div className="ptf-hero-strip">
-        {heroImages.map((img, i) => (
-          <div
-            key={i}
-            className={`ptf-hero-frame ${i === 2 ? "ptf-hero-frame--center" : ""}`}
-            onClick={() => openLb(heroImages, i)}
-            style={{ cursor: "pointer" }}
-          >
-            <img src={img} alt={`Portfolio hero ${i + 1}`} loading={i < 3 ? "eager" : "lazy"} />
-          </div>
-        ))}
+      {/* ── 1. LUXURY 5-PANEL HERO CAROUSEL BANNER ── */}
+      <div className="ptf-hero-banner">
+
+        {/* 5 Vertical Panel Stage */}
+        <div className="ptf-hero-stage">
+          {getVisibleItems().map(({ img, offset, index }) => (
+            <div
+              key={`${index}-${offset}`}
+              className={`ptf-hero-card ptf-hero-card--${
+                offset === 0
+                  ? "center"
+                  : offset < 0
+                  ? `left-${Math.abs(offset)}`
+                  : `right-${offset}`
+              }`}
+              onClick={() => openLb(portfolioHeroImages, index)}
+            >
+              <img src={img} alt={`Portfolio frame ${index + 1}`} loading="eager" />
+            </div>
+          ))}
+        </div>
+
+        {/* Nav Controls */}
+        <button className="ptf-hero-nav ptf-hero-nav--prev" onClick={prevHero} aria-label="Previous image">
+          &larr;
+        </button>
+        <button className="ptf-hero-nav ptf-hero-nav--next" onClick={nextHero} aria-label="Next image">
+          &rarr;
+        </button>
       </div>
 
       {/* ── 2. COLLECTION SECTIONS ── */}

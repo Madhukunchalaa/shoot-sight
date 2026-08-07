@@ -127,34 +127,36 @@
 
 .img-reveal-wrapper {
   width: 100%;
-  height: auto;
-  max-height: 480px;
+  max-width: 440px;
+  height: 520px;
   border-radius: 16px;
   overflow: hidden;
-  background: transparent;
-  box-shadow: none;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  margin: 0 auto;
 }
 
-.img-reveal-wrapper img {
+.img-reveal-wrapper img,
+.img-reveal-wrapper video.exp-video {
   width: 100%;
-  height: auto;
-  max-height: 480px;
+  height: 100%;
   display: block;
-  object-fit: contain;
-  background: transparent;
+  object-fit: cover;
   border-radius: 16px;
   transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.img-reveal-wrapper img.heirloom-img {
-  object-position: center bottom;
+.img-reveal-wrapper img.heirloom-img,
+.img-reveal-wrapper video.heirloom-img {
+  object-position: center;
 }
 
-.img-reveal-wrapper img.capture-img {
+.img-reveal-wrapper img.capture-img,
+.img-reveal-wrapper video.capture-img {
   object-position: center 20%;
 }
 
-.exp-card:hover .img-reveal-wrapper img {
+.exp-card:hover .img-reveal-wrapper img,
+.exp-card:hover .img-reveal-wrapper video.exp-video {
   transform: scale(1.04);
 }
 

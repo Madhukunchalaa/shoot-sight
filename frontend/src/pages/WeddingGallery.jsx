@@ -13,6 +13,8 @@ const WeddingGallery = () => {
 
   const navigate = useNavigate();
   const [shoots, setShoots] = useState([]);
+  const [verticalShoots, setVerticalShoots] = useState([]);
+  const [horizontalShoots, setHorizontalShoots] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,11 +22,45 @@ const WeddingGallery = () => {
       try {
         const res = await fetch(`${API_URL}/shoots`);
         const data = await res.json();
-        // Filter only Wedding category shoots
         const weddingShoots = (data.data || []).filter(
           (s) => s.category?.toLowerCase() === "wedding"
         );
         setShoots(weddingShoots);
+
+        const verts = [];
+        const horizs = [];
+
+        await Promise.all(
+          weddingShoots.map((shoot) => {
+            return new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => {
+                if (img.naturalHeight > img.naturalWidth) {
+                  verts.push(shoot);
+                } else {
+                  horizs.push(shoot);
+                }
+                resolve();
+              };
+              img.onerror = () => {
+                if (
+                  shoot.title?.toLowerCase().includes("priyanka") ||
+                  shoot.title?.toLowerCase().includes("shipra") ||
+                  shoot.title?.toLowerCase().includes("raghu")
+                ) {
+                  verts.push(shoot);
+                } else {
+                  horizs.push(shoot);
+                }
+                resolve();
+              };
+              img.src = shoot.heroImage;
+            });
+          })
+        );
+
+        setVerticalShoots(verts);
+        setHorizontalShoots(horizs);
       } catch (err) {
         console.error("Failed to fetch shoots", err);
       } finally {
@@ -54,45 +90,70 @@ const WeddingGallery = () => {
         </div>
       )}
 
-      {/* 2-column couple grid */}
+      {/* Paired Orientation Sections */}
       {!loading && (
-        <div className="wg-grid">
-          {shoots.map((shoot) => (
-            <div
-              key={shoot.slug}
-              className="wg-cell"
-              onClick={() => navigate(`/shoot/${shoot.slug}`)}
-            >
-              <img
-                src={shoot.heroImage}
-                alt={shoot.title}
-                loading="lazy"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp";
-                }}
-              />
-              <div className="wg-cell-overlay">
-                <span className="wg-couple-name">{shoot.title}</span>
-              </div>
-            </div>
-          ))}
-
-          {/* If odd number — fill last cell with a quote */}
-          {shoots.length % 2 !== 0 && (
-            <div className="wg-cell wg-cell--quote">
-              <div className="wg-quote-inner">
-                <span className="wg-quote-text">&#8220;Every love story is beautiful, but yours is our favourite.&#8221;</span>
+        <div className="wg-sections-container">
+          
+          {/* Vertical Couples Pair Row (3-col portrait grid) */}
+          {verticalShoots.length > 0 && (
+            <div className="wg-pair-section">
+              <div className="wg-pair-grid wg-pair-grid--vertical">
+                {verticalShoots.map((shoot) => (
+                  <div
+                    key={shoot.slug}
+                    className="wg-cell wg-cell--vertical"
+                    onClick={() => navigate(`/shoot/${shoot.slug}`)}
+                  >
+                    <img
+                      src={shoot.heroImage}
+                      alt={shoot.title}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp";
+                      }}
+                    />
+                    <div className="wg-cell-overlay">
+                      <span className="wg-couple-name">{shoot.title}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
+
+          {/* Horizontal Couples Pair Row (2-col landscape grid) */}
+          {horizontalShoots.length > 0 && (
+            <div className="wg-pair-section">
+              <div className="wg-pair-grid wg-pair-grid--horizontal">
+                {horizontalShoots.map((shoot) => (
+                  <div
+                    key={shoot.slug}
+                    className="wg-cell wg-cell--horizontal"
+                    onClick={() => navigate(`/shoot/${shoot.slug}`)}
+                  >
+                    <img
+                      src={shoot.heroImage}
+                      alt={shoot.title}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp";
+                      }}
+                    />
+                    <div className="wg-cell-overlay">
+                      <span className="wg-couple-name">{shoot.title}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       )}
     </div>
   );
 };
-
-
-
 
 export default WeddingGallery;

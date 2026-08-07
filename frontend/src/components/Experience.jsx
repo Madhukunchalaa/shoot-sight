@@ -37,7 +37,8 @@ const Experience = () => {
         heading: 'The Heirloom',
         desc: 'Final delivery of high-fidelity, processed imagery designed to last for generations. Your legacy, preserved in light.',
         tags: ['Color Grading', 'Fine Art Prints', 'Digital Vault'],
-        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_8454.jpg.webp'
+        img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00045.webp',
+        video: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Naveen%20%26%20Kate%204K%20Teaser.mp4'
       }
     ]
   };
@@ -113,6 +114,8 @@ const Experience = () => {
         <div className="exp-cards-grid">
           {expContent.phases.map((phase, idx) => {
             const isReverse = idx % 2 === 0;
+            const currentVideo = phase.video || (idx === 2 || phase.num?.includes('03') ? "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Naveen%20%26%20Kate%204K%20Teaser.mp4" : null);
+
             return (
               <div key={idx} className={`exp-card ${isReverse ? 'exp-card--reverse' : ''}`}>
                 {isReverse ? (
@@ -129,13 +132,28 @@ const Experience = () => {
                     </div>
                     <div className="exp-card__image">
                       <div className="img-reveal-wrapper">
-                        <img 
-                          src={phase.img} 
-                          alt={phase.heading} 
-                          loading="lazy" 
-                          decoding="async" 
-                          className={idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''} 
-                        />
+                        {currentVideo ? (
+                          <video
+                            poster={phase.img}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className={`exp-video ${idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''}`}
+                          >
+                            <source src={currentVideo} type="video/mp4" />
+                            <source src="https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Low%20Bitrate.mp4" type="video/mp4" />
+                            <img src={phase.img} alt={phase.heading} />
+                          </video>
+                        ) : (
+                          <img 
+                            src={phase.img} 
+                            alt={phase.heading} 
+                            loading="lazy" 
+                            decoding="async" 
+                            className={idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''} 
+                          />
+                        )}
                       </div>
                     </div>
                   </>
@@ -143,13 +161,28 @@ const Experience = () => {
                   <>
                     <div className="exp-card__image">
                       <div className="img-reveal-wrapper">
-                        <img 
-                          src={phase.img} 
-                          alt={phase.heading} 
-                          loading="lazy" 
-                          decoding="async" 
-                          className={idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''} 
-                        />
+                        {currentVideo ? (
+                          <video
+                            poster={phase.img}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className={`exp-video ${idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''}`}
+                          >
+                            <source src={currentVideo} type="video/mp4" />
+                            <source src="https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Low%20Bitrate.mp4" type="video/mp4" />
+                            <img src={phase.img} alt={phase.heading} />
+                          </video>
+                        ) : (
+                          <img 
+                            src={phase.img} 
+                            alt={phase.heading} 
+                            loading="lazy" 
+                            decoding="async" 
+                            className={idx === 1 ? 'capture-img' : idx === 2 ? 'heirloom-img' : ''} 
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="exp-card__text">

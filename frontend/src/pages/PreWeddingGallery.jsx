@@ -38,6 +38,58 @@ const curatedPreWeddingFrames = [
   {
     url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_8213.webp",
     title: "Editorial Sunset Walk"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6607.webp",
+    title: "Poetic Grace & Silk"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A6987.webp",
+    title: "Golden Sun Reflection"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/ragini/_I3A7446.webp",
+    title: "Heritage Garden Stroll"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00045.webp",
+    title: "Intimate Forehead Kiss"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00167.webp",
+    title: "Warm Floral Festivity"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/srinidhi%20and%20ramya/DSC00236-Edit.webp",
+    title: "Misty Mountain Backdrop"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_6702.webp",
+    title: "Musical Harmony"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/4%20RAGHUDIXITH%20AND%20VARIJASHREE_WEBP/NGD_7085.webp",
+    title: "Traditional Ceremony Laughter"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08292.webp",
+    title: "High Fashion Architecture"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08325.webp",
+    title: "Royal Archway Portrait"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08510.webp",
+    title: "Twilight Lawn Stroll"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/KRP_7896.webp",
+    title: "Sparkler Fireworks Celebration"
+  },
+  {
+    url: "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/aishwarya%20and%20akshay/_DSC8119.webp",
+    title: "Palace Pillars Promenade"
   }
 ];
 

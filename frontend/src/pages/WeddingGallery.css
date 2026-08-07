@@ -58,36 +58,79 @@
   font-weight: 400;
 }
 
-/* ── 2-column couple grid ── */
-.wg-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+/* ── Paired Container ── */
+.wg-sections-container {
   max-width: 1200px;
   margin: 0 auto 90px;
   padding: 0 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
-/* ── Single couple cell ── */
-.wg-cell {
+.wg-pair-section {
+  width: 100%;
+}
+
+/* Vertical Pair Grid: 3-column portrait layout (increased size, 0% crop) */
+.wg-pair-grid--vertical {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.wg-cell--vertical {
+  width: 100%;
+  aspect-ratio: 3 / 4;
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 2px;
+  border-radius: 6px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
 }
 
-.wg-cell img {
+.wg-cell--vertical img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center;
   display: block;
   transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.wg-cell:hover img {
+.wg-cell--vertical:hover img {
+  transform: scale(1.05);
+}
+
+/* Horizontal Pair Grid: 2-column landscape layout (increased size, 0% crop) */
+.wg-pair-grid--horizontal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.wg-cell--horizontal {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.wg-cell--horizontal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wg-cell--horizontal:hover img {
   transform: scale(1.05);
 }
 
@@ -97,28 +140,29 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.45) 0%,
-    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
     transparent 100%
   );
   display: flex;
   align-items: flex-end;
-  padding: 32px 36px;
+  padding: 28px 32px;
   transition: background 0.4s ease;
 }
 
-.wg-cell:hover .wg-cell-overlay {
+.wg-cell--vertical:hover .wg-cell-overlay,
+.wg-cell--horizontal:hover .wg-cell-overlay {
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.15) 50%,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.18) 60%,
     transparent 100%
   );
 }
 
 .wg-couple-name {
   font-family: var(--font-serif);
-  font-size: clamp(18px, 2.2vw, 30px);
+  font-size: clamp(18px, 2.2vw, 28px);
   font-weight: 400;
   font-style: italic;
   color: #ffffff;
@@ -128,21 +172,35 @@
   transition: letter-spacing 0.4s ease;
 }
 
-.wg-cell:hover .wg-couple-name {
+.wg-cell--vertical:hover .wg-couple-name,
+.wg-cell--horizontal:hover .wg-couple-name {
   letter-spacing: 0.03em;
 }
 
 /* ── Responsive ── */
+@media (max-width: 1024px) {
+  .wg-pair-grid--vertical {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .wg-header {
     padding: 90px 24px 40px;
   }
 
-  .wg-grid {
-    grid-template-columns: 1fr;
+  .wg-sections-container {
+    padding: 0 24px;
   }
 
-  .wg-cell {
+  .wg-pair-grid--vertical,
+  .wg-pair-grid--horizontal {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .wg-cell--vertical,
+  .wg-cell--horizontal {
     aspect-ratio: 4 / 3;
   }
 }
@@ -166,32 +224,4 @@
 
 @keyframes wgSpin {
   to { transform: rotate(360deg); }
-}
-
-/* ── Quote fill cell (when odd number of couples) ── */
-.wg-cell--quote {
-  cursor: default;
-  background: var(--text-primary);
-}
-
-.wg-cell--quote:hover img {
-  transform: none;
-}
-
-.wg-quote-inner {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-}
-
-.wg-quote-text {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(16px, 2vw, 22px);
-  color: rgba(255, 255, 255, 0.85);
-  text-align: center;
-  line-height: 1.6;
 }

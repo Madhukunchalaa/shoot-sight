@@ -95,7 +95,8 @@ const defaultConfigs = [
           heading: 'The Heirloom',
           desc: 'Final delivery of high-fidelity, processed imagery designed to last for generations. Your legacy, preserved in light.',
           tags: ['Color Grading', 'Fine Art Prints', 'Digital Vault'],
-          img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_8454.jpg.webp'
+          img: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/shoot-sight-latest-images/DSC_8454.jpg.webp',
+          video: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/Naveen%20%26%20Kate%204K%20Teaser.mp4'
         }
       ]
     }
@@ -227,6 +228,17 @@ const defaultConfigs = [
       phone: '+91 9900233338',
       formTitle: 'Start a Conversation',
       formSub: 'We accept limited bookings annually to protect our artistic devotion.'
+    }
+  },
+  {
+    sectionKey: 'faq_page',
+    content: {
+      eyebrow: 'HAVE QUESTIONS?',
+      titleMain: 'Frequently Asked',
+      titleHighlight: 'Questions',
+      subtitle: 'Everything you need to know before we begin your story.',
+      ctaText: 'Still have questions? We would love to hear from you.',
+      ctaBtnText: 'Start a Conversation'
     }
   }
 ];

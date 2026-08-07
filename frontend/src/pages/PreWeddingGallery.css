@@ -97,37 +97,117 @@
   font-style: italic;
 }
 
-/* ── 2-Column High-Fashion Grid ── */
-.pwg-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+/* ── Featured Couples Section ── */
+.pwg-shoots-section {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 0 50px;
 }
 
-.pwg-grid-cell {
+.pwg-section-heading {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: 30px;
+  text-align: center;
+  font-style: italic;
+}
+
+.pwg-couples-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.pwg-couple-card {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.pwg-couple-img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.pwg-couple-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pwg-couple-card:hover .pwg-couple-img-wrap img {
+  transform: scale(1.05);
+}
+
+.pwg-couple-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 60%);
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  color: #fff;
+}
+
+.pwg-couple-name {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-style: italic;
+}
+
+.pwg-couple-link {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+/* ── Edge-to-Edge 4-Column Masonry Grid (Zero White Space Gaps, 0% Image Crop) ── */
+.pwg-grid {
+  column-count: 4;
+  column-gap: 20px;
+  width: 100%;
+}
+
+/* ── Grid cell frame ── */
+.pwg-grid-cell {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 20px;
+  break-inside: avoid;
+  position: relative;
+  height: auto;
   cursor: pointer;
 }
 
 .pwg-cell-img-wrap {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 4px;
   position: relative;
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
-  background: rgba(0, 0, 0, 0.02);
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .pwg-cell-img-wrap img {
   width: 100%;
   height: auto;
   display: block;
+  object-fit: contain;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.pwg-grid-cell:hover .pwg-cell-img-wrap img {
-  transform: scale(1.04);
+.pwg-grid-cell:hover img {
+  transform: scale(1.03);
 }
 
 .pwg-cell-zoom {
@@ -254,12 +334,43 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .pwg-grid-cell {
+    height: clamp(220px, 30vh, 290px);
+  }
+  .pwg-couples-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .pwg-grid {
+    column-count: 3;
+    column-gap: 18px;
+  }
+}
+
 @media (max-width: 768px) {
   .pwg-grid {
-    grid-template-columns: 1fr;
+    column-count: 2;
+    column-gap: 14px;
   }
+  .pwg-grid-cell {
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 640px) {
   .pwg-header,
-  .pwg-curated-section {
-    padding: 0 24px;
+  .pwg-curated-section,
+  .pwg-shoots-section {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pwg-grid {
+    column-count: 1;
   }
 }

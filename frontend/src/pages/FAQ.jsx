@@ -1,8 +1,9 @@
-﻿import { useState } from "react";
+import { useState } from "react";
+import { useSiteConfig } from "../context/SiteConfigContext";
 import useSEO from "../hooks/useSEO";
 import "./FAQ.css";
 
-const faqs = [
+const defaultFaqs = [
   {
     category: "BOOKINGS & AVAILABILITY",
     items: [
@@ -94,6 +95,20 @@ const FAQItem = ({ q, a }) => {
 };
 
 const FAQ = () => {
+  const { config } = useSiteConfig();
+
+  const faqContent = config?.faq_page || {
+    eyebrow: 'HAVE QUESTIONS?',
+    titleMain: 'Frequently Asked',
+    titleHighlight: 'Questions',
+    subtitle: 'Everything you need to know before we begin your story.',
+    ctaText: 'Still have questions? We would love to hear from you.',
+    ctaBtnText: 'Start a Conversation',
+    faqs: defaultFaqs
+  };
+
+  const activeFaqs = faqContent.faqs && faqContent.faqs.length > 0 ? faqContent.faqs : defaultFaqs;
+
   useSEO({
     title: "FAQ | Shoot @ Sight Weddings",
     description: "Frequently asked questions about Shoot @ Sight — bookings, photography style, delivery timelines, pricing and more.",
@@ -103,18 +118,20 @@ const FAQ = () => {
     <div className="faq-page">
       {/* Page Header */}
       <div className="faq-page-header">
-        <span className="faq-eyebrow">HAVE QUESTIONS?</span>
-        <h1 className="faq-title">Frequently Asked <i>Questions</i></h1>
-        <p className="faq-subtitle">Everything you need to know before we begin your story.</p>
+        <span className="faq-eyebrow">{faqContent.eyebrow}</span>
+        <h1 className="faq-title">
+          {faqContent.titleMain} <i>{faqContent.titleHighlight}</i>
+        </h1>
+        <p className="faq-subtitle">{faqContent.subtitle}</p>
       </div>
 
       {/* FAQ Sections */}
       <div className="faq-content">
-        {faqs.map((section) => (
+        {activeFaqs.map((section) => (
           <div key={section.category} className="faq-section">
             <h2 className="faq-section-title">{section.category}</h2>
             <div className="faq-list">
-              {section.items.map((item) => (
+              {section.items && section.items.map((item) => (
                 <FAQItem key={item.q} q={item.q} a={item.a} />
               ))}
             </div>
@@ -124,8 +141,8 @@ const FAQ = () => {
 
       {/* CTA Strip */}
       <div className="faq-cta-strip">
-        <p className="faq-cta-text">Still have questions? We would love to hear from you.</p>
-        <a href="/contact" className="faq-cta-btn">Start a Conversation</a>
+        <p className="faq-cta-text">{faqContent.ctaText}</p>
+        <a href="/contact" className="faq-cta-btn">{faqContent.ctaBtnText}</a>
       </div>
     </div>
   );

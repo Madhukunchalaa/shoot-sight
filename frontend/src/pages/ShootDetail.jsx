@@ -142,6 +142,25 @@ const mockShootData = {
   }
 };
 
+const ImageWithSkeleton = ({ src, alt, className = "", fetchPriority, loading = "lazy", onClick }) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div className={`img-skeleton-container ${loaded ? "is-loaded" : "is-loading"}`} onClick={onClick}>
+      {!loaded && <div className="img-skeleton-shimmer" />}
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        loading={loading}
+        decoding="async"
+        fetchPriority={fetchPriority}
+        onLoad={() => setLoaded(true)}
+      />
+    </div>
+  );
+};
+
 const ShootDetail = () => {
   const { id } = useParams();
   const container = useRef();
@@ -276,7 +295,13 @@ const ShootDetail = () => {
             {/* Left Column: Full Uncropped Cover Image */}
             <div className="sd-split-left">
               <div className="sd-split-img-wrapper">
-                <img src={shoot.hero} alt={shoot.title} className="sd-split-img" />
+                <ImageWithSkeleton
+                  src={shoot.hero}
+                  alt={shoot.title}
+                  className="sd-split-img"
+                  fetchPriority="high"
+                  loading="eager"
+                />
               </div>
             </div>
 
@@ -321,7 +346,11 @@ const ShootDetail = () => {
                   className="gallery-img-wrapper lightbox-trigger" 
                   onClick={() => setLightboxImage(imgUrl)}
                 >
-                  <img src={imgUrl} alt={`Story Frame ${idx + 1}`} loading="lazy" />
+                  <ImageWithSkeleton
+                    src={imgUrl}
+                    alt={`Story Frame ${idx + 1}`}
+                    loading="lazy"
+                  />
                   <div className="zoom-indicator">EXPLORE FULLSCREEN</div>
                 </div>
               </div>

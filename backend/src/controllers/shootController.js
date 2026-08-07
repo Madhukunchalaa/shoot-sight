@@ -33,9 +33,9 @@ const getR2Client = () =>
 // Optimize image to next-gen .webp format
 const optimizeImage = async (buffer) => {
   return sharp(buffer)
+    .rotate()                                          // auto-rotate camera orientation based on EXIF metadata
     .resize({ width: 2400, withoutEnlargement: true }) // cap at 2400px width
     .webp({ quality: 85 })                             // webp high-performance compression
-    .withMetadata(false)                               // strip metadata
     .toBuffer();
 };
 

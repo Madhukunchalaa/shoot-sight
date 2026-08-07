@@ -18,9 +18,9 @@ const getR2Client = () =>
 
 const optimizeImage = async (buffer) => {
   return sharp(buffer)
+    .rotate()                                          // auto-rotate camera orientation based on EXIF metadata
     .resize({ width: 2400, withoutEnlargement: true }) // cap at 2400px, never upscale
     .webp({ quality: 85 })                             // convert to webp, 85% quality
-    .withMetadata(false)                               // strip EXIF (GPS, camera info)
     .toBuffer();
 };
 

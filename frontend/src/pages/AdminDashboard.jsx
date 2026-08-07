@@ -1228,7 +1228,7 @@ const AdminDashboard = () => {
         {activeTab === 'site-editor' && (
           <div className="tab-content site-editor-tab" style={{ background: '#090909', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '30px', marginTop: '20px' }}>
             <div className="editor-sub-tabs" style={{ display: 'flex', gap: '15px', marginBottom: '30px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '10px' }}>
-              {['home', 'films', 'about', 'contact'].map(tab => (
+              {['home', 'films', 'about', 'contact', 'faq'].map(tab => (
                 <button
                   key={tab}
                   type="button"
@@ -2511,6 +2511,82 @@ const AdminDashboard = () => {
 
                       <button type="button" className="btn-premium-submit" style={{ marginTop: '20px' }} onClick={() => saveSectionConfig('contact_page')} disabled={editorSaving}>
                         {editorSaving ? 'Saving...' : 'Save Contact Page Changes'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* ─── SUB-TAB: FAQ PAGE ─── */}
+                {editorSubTab === 'faq' && (
+                  <div>
+                    <div className="edit-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '30px', marginBottom: '30px' }}>
+                      <h3 style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '20px' }}>01 // FAQ Page Header & Text</h3>
+                      
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Page Eyebrow Tagline (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.faq_page?.eyebrow || ''}
+                            onChange={(e) => handleConfigChange('faq_page', 'eyebrow', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Title Main Heading (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.faq_page?.titleMain || ''}
+                            onChange={(e) => handleConfigChange('faq_page', 'titleMain', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>Title Italic Highlight (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.faq_page?.titleHighlight || ''}
+                            onChange={(e) => handleConfigChange('faq_page', 'titleHighlight', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>Page Subtitle Description (max 150 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={150}
+                            value={siteConfig.faq_page?.subtitle || ''}
+                            onChange={(e) => handleConfigChange('faq_page', 'subtitle', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="form-double-column">
+                        <div className="input-group-chic">
+                          <label>CTA Strip Question Text (max 120 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={120}
+                            value={siteConfig.faq_page?.ctaText || ''}
+                            onChange={(e) => handleConfigChange('faq_page', 'ctaText', e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group-chic">
+                          <label>CTA Button Text (max 40 chars)</label>
+                          <input
+                            type="text"
+                            maxLength={40}
+                            value={siteConfig.faq_page?.ctaBtnText || ''}
+                            onChange={(e) => handleConfigChange('faq_page', 'ctaBtnText', e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <button type="button" className="btn-premium-submit" style={{ marginTop: '20px' }} onClick={() => saveSectionConfig('faq_page')} disabled={editorSaving}>
+                        {editorSaving ? 'Saving...' : 'Save FAQ Page Changes'}
                       </button>
                     </div>
                   </div>
