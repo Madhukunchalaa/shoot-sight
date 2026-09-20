@@ -17,6 +17,7 @@ const Home = () => {
   useSEO({
     title: 'High-End Editorial Wedding Photography & Films',
     description: 'Bespoke editorial wedding photography and cinematic films for luxury celebrations worldwide. Based in Bangalore, capturing the quiet emotions and poetry of your story.',
+    ogImage: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp'
   });
 
   const featuredFilmContent = config?.featured_film || {
