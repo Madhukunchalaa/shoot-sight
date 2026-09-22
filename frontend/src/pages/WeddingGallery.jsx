@@ -7,8 +7,8 @@ import "./WeddingGallery.css";
 
 const WeddingGallery = () => {
   useSEO({
-    title: "Wedding Photography | Shoot @ Sight",
-    description: "Explore our wedding photography portfolio — real emotions, intimate moments, and timeless memories.",
+    title: "Wedding Photography in Bangalore | Candid & Editorial | Shoot at Sight",
+    description: "Candid and editorial wedding photography in Bangalore and beyond. What is included, team size, deliverables and timelines.",
   });
 
   const navigate = useNavigate();

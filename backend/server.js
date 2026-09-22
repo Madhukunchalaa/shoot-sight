@@ -10,9 +10,11 @@ for (const key in process.env) {
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const connectDB = require('./src/config/db');
 const routes = require('./src/routes');
 const errorHandler = require('./src/middlewares/errorHandler');
+const Shoot = require('./src/models/Shoot');
 
 connectDB();
 
@@ -28,11 +30,94 @@ app.use('/api', routes);
 
 // Serve compiled React frontend statically in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  const DIST_DIR = path.join(__dirname, '../frontend/dist');
 
-  // Wildcard handler to serve index.html for React Router compatibility
-  app.get('/*splat', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html'));
+  // Every real client-side route. Static entries are prerendered to their
+  // own dist/<route>/index.html by scripts/prerender.mjs at build time;
+  // express.static below serves those directly. Admin routes are excluded
+  // from prerendering/sitemap/robots but must still resolve to the SPA
+  // shell so the client-side app can render them (see useSEO noindex).
+  const STATIC_ROUTES = new Set([
+    '/', '/films', '/about', '/portfolio', '/portfolio/wedding', '/portfolio/pre-wedding',
+    '/blog', '/contact', '/faq',
+  ]);
+  const ADMIN_ROUTES = new Set([
+    '/admin', '/admin/login', '/admin/dashboard', '/blog/admin-login',
+  ]);
+  const LOCAL_SHOOTS_PATH = path.join(__dirname, 'shoots-db.json');
+
+  const shootSlugExists = async (slug) => {
+    try {
+      const found = await Promise.race([
+        Shoot.exists({ slug }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500)),
+      ]);
+      if (found) return true;
+    } catch {
+      // fall through to local fallback below
+    }
+    try {
+      const local = JSON.parse(fs.readFileSync(LOCAL_SHOOTS_PATH, 'utf8'));
+      return local.some((s) => s.slug === slug);
+    } catch {
+      return false;
+    }
+  };
+
+  // Long-lived immutable cache for Vite's hashed /assets/* bundle files;
+  // short/no cache for HTML so deploys (and re-prerendered content) show up
+  // immediately instead of being served stale from a browser/CDN cache.
+  app.use(express.static(DIST_DIR, {
+    // Prerendered routes live at dist/<route>/index.html; without this,
+    // serve-static 301-redirects e.g. /about -> /about/ (directory
+    // resolution), adding a redirect hop this site otherwise doesn't have.
+    redirect: false,
+    setHeaders: (res, filePath) => {
+      if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else if (filePath.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      }
+    },
+  }));
+
+  // Mirrors scripts/prerender.mjs's routeToDistFile(): each route's own
+  // prerendered file, not the generic shell — with redirect:false above,
+  // express.static no longer resolves directory/index.html automatically,
+  // so this route explicitly serves the *matching* prerendered page.
+  const resolveRouteFile = (routePath) => (
+    routePath === '/'
+      ? path.join(DIST_DIR, 'index.html')
+      : path.join(DIST_DIR, routePath.replace(/^\//, ''), 'index.html')
+  );
+
+  const sendRoute = (res, routePath) => {
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    res.sendFile(resolveRouteFile(routePath), (err) => {
+      // Falls back to the generic shell only if that route's own prerender
+      // is missing (e.g. a fresh admin login, or a prerender failure).
+      if (err) res.sendFile(path.join(DIST_DIR, 'index.html'));
+    });
+  };
+
+  // Anything not served as a static/prerendered file above: serve the
+  // matching SPA page for known routes, and a real 404 for everything
+  // else — no more soft-404s where unknown URLs return HTTP 200.
+  app.get('/*splat', async (req, res) => {
+    const reqPath = (req.path.replace(/\/+$/, '') || '/');
+
+    if (STATIC_ROUTES.has(reqPath) || ADMIN_ROUTES.has(reqPath)) {
+      return sendRoute(res, reqPath);
+    }
+
+    const shootMatch = reqPath.match(/^\/shoot\/([a-z0-9-]+)$/i);
+    if (shootMatch && (await shootSlugExists(shootMatch[1]))) {
+      return sendRoute(res, reqPath);
+    }
+
+    res.status(404).sendFile(path.join(DIST_DIR, '404.html'), (err) => {
+      if (err) res.status(404).send('Not Found');
+    });
   });
 }
 

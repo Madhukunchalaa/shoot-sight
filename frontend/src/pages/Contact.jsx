@@ -12,11 +12,6 @@ const Contact = () => {
   const container = useRef();
   const { config } = useSiteConfig();
 
-  useSEO({
-    title: 'Start a Conversation',
-    description: 'Connect with Shoot @ Sight to book luxury wedding photography and custom visual narratives. Inquire about availability and bespoke packages.',
-  });
-  
   const contactContent = config?.contact_page || {
     contactImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp',
     tagline: '05 // THE INITIATION',
@@ -32,6 +27,12 @@ const Contact = () => {
     formTitle: 'Start a Conversation',
     formSub: 'We accept limited bookings annually to protect our artistic devotion.'
   };
+
+  useSEO({
+    title: 'Contact Shoot at Sight Weddings | Bangalore Wedding Photographers',
+    description: `Check your date and send your wedding details. Call ${contactContent.phone}, WhatsApp us, or email ${contactContent.email}.`,
+    ogImage: contactContent.contactImg,
+  });
 
   const [form, setForm] = useState({
     names: '',
@@ -133,7 +134,7 @@ ${form.vision}`
             <div className="direct-item">
               <span className="direct-label">DIRECT CHANNELS</span>
               <a href={`mailto:${contactContent.email}`} className="direct-link">{contactContent.email}</a>
-              <a href={`tel:${contactContent.phone}`} className="direct-link">{contactContent.phone}</a>
+              <a href={`tel:${contactContent.phone.replace(/[^\d+]/g, '')}`} className="direct-link">{contactContent.phone}</a>
             </div>
           </div>
 

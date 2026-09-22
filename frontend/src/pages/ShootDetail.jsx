@@ -169,10 +169,18 @@ const ShootDetail = () => {
   const [loading, setLoading] = useState(true);
   const [lightboxImage, setLightboxImage] = useState(null);
 
+  const shootSeoTitle = shoot
+    ? (id === 'raghudixith-varijashree'
+        ? 'Raghu Dixit & Varijashree Venugopal Wedding | Shoot at Sight'
+        : `${shoot.title} Wedding${shoot.location ? ` | ${shoot.location}` : ''} | Shoot at Sight`)
+    : 'Gallery Collection';
+
   useSEO({
-    title: shoot ? `${shoot.title} Collection` : 'Gallery Collection',
-    description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot @ Sight.',
+    title: shootSeoTitle,
+    description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot at Sight Weddings.',
     ogImage: shoot ? shoot.hero : null,
+    noindex: !shoot,
+    breadcrumbLabels: shoot ? { [`/shoot/${id}`]: shoot.title } : undefined,
   });
 
   useEffect(() => {

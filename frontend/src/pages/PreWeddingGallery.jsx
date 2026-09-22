@@ -95,8 +95,9 @@ const curatedPreWeddingFrames = [
 
 const PreWeddingGallery = () => {
   useSEO({
-    title: "Pre-Wedding Collection | Shoot @ Sight",
-    description: "Explore our pre-wedding photography collection — capturing love's first glance with editorial polish and raw emotion.",
+    title: "Pre-Wedding Shoots in Bangalore | Shoot at Sight",
+    description: "Pre-wedding and engagement shoots in Bangalore and on location. Concepts, best locations, and how to book.",
+    ogImage: curatedPreWeddingFrames[0]?.url,
   });
 
   const navigate = useNavigate();

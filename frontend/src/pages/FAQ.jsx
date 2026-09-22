@@ -109,9 +109,25 @@ const FAQ = () => {
 
   const activeFaqs = faqContent.faqs && faqContent.faqs.length > 0 ? faqContent.faqs : defaultFaqs;
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: activeFaqs.flatMap((category) =>
+      (category.items || []).map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.a,
+        },
+      }))
+    ),
+  };
+
   useSEO({
-    title: "FAQ | Shoot @ Sight Weddings",
-    description: "Frequently asked questions about Shoot @ Sight — bookings, photography style, delivery timelines, pricing and more.",
+    title: "Wedding Photography FAQ | Booking, Pricing & Delivery | Shoot at Sight",
+    description: "How far ahead to book, how many photographers attend, and when your photos and film are delivered.",
+    jsonLd: [faqJsonLd],
   });
 
   return (

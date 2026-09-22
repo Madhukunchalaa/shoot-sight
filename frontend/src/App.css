@@ -30,6 +30,29 @@
   pointer-events: none;
 }
 
+.landing-film-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  z-index: 2;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.landing-film-facade:hover .landing-film-play-icon {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: #ffffff;
+}
+
 .landing-film-section::after {
   content: "";
   position: absolute;

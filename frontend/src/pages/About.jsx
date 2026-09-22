@@ -12,11 +12,6 @@ const About = () => {
   const container = useRef();
   const { config } = useSiteConfig();
 
-  useSEO({
-    title: 'Our Story & Philosophy',
-    description: 'Learn about Pavithra and the creative philosophy behind Shoot @ Sight. Discover our approach to capturing cinematic wedding stories and high-end editorial portfolios.',
-  });
-
   const aboutContent = config?.about_page || {
     heroBg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC01641_-_Copy.webp',
     heroTitleMain: 'The Story Behind',
@@ -68,6 +63,12 @@ const About = () => {
     closingQuote: 'Photography is the only language that can be understood anywhere in the world.',
     closingSignature: 'Shoot @ Sight'
   };
+
+  useSEO({
+    title: 'About Pavithra & the Studio | Shoot at Sight Weddings, Bangalore',
+    description: 'Meet Pavithra, founder and lead visual director of Shoot at Sight Weddings, and the editorial philosophy behind 250+ weddings documented across India.',
+    ogImage: aboutContent.heroBg,
+  });
 
   useGSAP(() => {
     // 0. Fullscreen Hero Entrance & Parallax
@@ -279,10 +280,10 @@ const About = () => {
         <div className="about-hero-grid">
           <div className="about-hero-text">
             <span className="subtitle-accent">{aboutContent.studioTagline}</span>
-            <h1 className="about-main-title">
+            <h2 className="about-main-title">
               <span className="about-title-word">{aboutContent.studioTitleMain} <i>{aboutContent.studioTitleHighlight}</i></span><br/>
               <span className="about-title-word">{aboutContent.studioTitleEnd}</span>
-            </h1>
+            </h2>
             <p className="about-hero-desc about-title-word">
               {aboutContent.studioDesc}
             </p>

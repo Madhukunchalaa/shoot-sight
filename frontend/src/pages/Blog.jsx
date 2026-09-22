@@ -71,8 +71,8 @@ const Blog = () => {
   const [activePost, setActivePost] = useState(null);
 
   useSEO({
-    title: 'Journal & Stories',
-    description: 'Read the latest stories, photography guides, and wedding inspiration from the Shoot @ Sight journal.',
+    title: 'Wedding Photography Journal & Guides | Shoot at Sight',
+    description: 'Guides on planning your shoot, choosing locations around Bangalore and looking natural on camera, from Shoot at Sight Weddings.',
   });
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);

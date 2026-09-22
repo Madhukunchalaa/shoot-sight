@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Hero from '../components/Hero';
 import OurStory from '../components/OurStory';
@@ -13,10 +13,11 @@ import useSEO from '../hooks/useSEO';
 
 const Home = () => {
   const { config } = useSiteConfig();
+  const [featuredFilmPlaying, setFeaturedFilmPlaying] = useState(false);
 
   useSEO({
-    title: 'High-End Editorial Wedding Photography & Films',
-    description: 'Bespoke editorial wedding photography and cinematic films for luxury celebrations worldwide. Based in Bangalore, capturing the quiet emotions and poetry of your story.',
+    title: 'Editorial Wedding Photography & Cinematic Films in Bangalore | Shoot at Sight Weddings',
+    description: 'Bangalore wedding photographers shooting editorial, candid and cinematic weddings. 250+ weddings, 15+ cities. See the portfolio and get in touch.',
     ogImage: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp'
   });
 
@@ -72,16 +73,36 @@ const Home = () => {
 
         <section className="landing-film-section">
           <div className="landing-film-video">
-            <iframe
-              src={`https://www.youtube.com/embed/${filmId}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${filmId}&playsinline=1&start=1`}
-              title="Featured Shoot @ Sight film"
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              referrerPolicy="strict-origin-when-cross-origin"
-              tabIndex="-1"
-              aria-hidden="true"
-            />
-            <div className="landing-film-blocker" style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'transparent' }} />
+            {featuredFilmPlaying ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${filmId}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${filmId}&playsinline=1&start=1`}
+                title="Featured Shoot @ Sight film"
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            ) : (
+              <button
+                type="button"
+                className="landing-film-facade"
+                onClick={() => setFeaturedFilmPlaying(true)}
+                aria-label={`Play ${featuredFilmContent.headingMain} ${featuredFilmContent.headingHighlight} film`}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 0,
+                  padding: 0,
+                  cursor: 'pointer',
+                  backgroundImage: `url(https://img.youtube.com/vi/${filmId}/maxresdefault.jpg)`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
+                <span className="landing-film-play-icon" aria-hidden="true">&#9658;</span>
+              </button>
+            )}
           </div>
 
           <div className="landing-film-overlay">

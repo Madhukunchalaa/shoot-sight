@@ -10,8 +10,8 @@ const Films = () => {
   const { config } = useSiteConfig();
 
   useSEO({
-    title: 'Cinematic Films',
-    description: 'Watch luxury wedding films and cinematic highlights created by Shoot @ Sight. Explore raw emotions and high-end editorial film-making.',
+    title: 'Cinematic Wedding Films in Bangalore | Shoot at Sight',
+    description: 'Wedding films from short highlight reels to full documentary edits. Watch real films by Shoot at Sight Weddings.',
   });
 
   const filmsContent = config?.films_page || {
