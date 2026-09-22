@@ -171,13 +171,13 @@ const ShootDetail = () => {
 
   const shootSeoTitle = shoot
     ? (id === 'raghudixith-varijashree'
-        ? 'Raghu Dixit & Varijashree Venugopal Wedding | Shoot at Sight'
-        : `${shoot.title} Wedding${shoot.location ? ` | ${shoot.location}` : ''} | Shoot at Sight`)
+        ? 'Raghu Dixit & Varijashree Venugopal Wedding | Shoot At Sight'
+        : `${shoot.title} Wedding${shoot.location ? ` | ${shoot.location}` : ''} | Shoot At Sight`)
     : 'Gallery Collection';
 
   useSEO({
     title: shootSeoTitle,
-    description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot at Sight Weddings.',
+    description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot At Sight Weddings.',
     ogImage: shoot ? shoot.hero : null,
     noindex: !shoot,
     breadcrumbLabels: shoot ? { [`/shoot/${id}`]: shoot.title } : undefined,

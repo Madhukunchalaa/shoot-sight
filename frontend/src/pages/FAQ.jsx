@@ -64,7 +64,7 @@ const defaultFaqs = [
     items: [
       {
         q: "What are your packages and pricing?",
-        a: "Our packages are bespoke and tailored to the scale and vision of your celebration. Please visit our Contact page or reach out via WhatsApp to receive a customised quote based on your wedding details."
+        a: "Wedding photography and film packages start at ₹1.5 lakh, tailored to the scale and vision of your celebration. Please visit our Contact page or reach out via WhatsApp to receive a customised quote based on your wedding details."
       },
       {
         q: "Do you offer engagement or pre-wedding shoots?",
@@ -125,7 +125,7 @@ const FAQ = () => {
   };
 
   useSEO({
-    title: "Wedding Photography FAQ | Booking, Pricing & Delivery | Shoot at Sight",
+    title: "Wedding Photography FAQ | Booking, Pricing & Delivery | Shoot At Sight",
     description: "How far ahead to book, how many photographers attend, and when your photos and film are delivered.",
     jsonLd: [faqJsonLd],
   });

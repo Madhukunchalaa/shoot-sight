@@ -7,7 +7,7 @@ import "./WeddingGallery.css";
 
 const WeddingGallery = () => {
   useSEO({
-    title: "Wedding Photography in Bangalore | Candid & Editorial | Shoot at Sight",
+    title: "Wedding Photography in Bangalore | Candid & Editorial | Shoot At Sight",
     description: "Candid and editorial wedding photography in Bangalore and beyond. What is included, team size, deliverables and timelines.",
   });
 

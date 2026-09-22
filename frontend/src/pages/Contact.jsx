@@ -29,7 +29,7 @@ const Contact = () => {
   };
 
   useSEO({
-    title: 'Contact Shoot at Sight Weddings | Bangalore Wedding Photographers',
+    title: 'Contact Shoot At Sight Weddings | Bangalore Wedding Photographers',
     description: `Check your date and send your wedding details. Call ${contactContent.phone}, WhatsApp us, or email ${contactContent.email}.`,
     ogImage: contactContent.contactImg,
   });
@@ -73,7 +73,7 @@ const Contact = () => {
     e.preventDefault();
     const subject = encodeURIComponent(`New Wedding Enquiry - ${form.names}`);
     const body = encodeURIComponent(
-`New Wedding Enquiry - Shoot @ Sight
+`New Wedding Enquiry - Shoot At Sight Weddings
 
 Names: ${form.names}
 Email: ${form.email}

@@ -16,7 +16,7 @@ const Home = () => {
   const [featuredFilmPlaying, setFeaturedFilmPlaying] = useState(false);
 
   useSEO({
-    title: 'Editorial Wedding Photography & Cinematic Films in Bangalore | Shoot at Sight Weddings',
+    title: 'Editorial Wedding Photography & Cinematic Films in Bangalore | Shoot At Sight Weddings',
     description: 'Bangalore wedding photographers shooting editorial, candid and cinematic weddings. 250+ weddings, 15+ cities. See the portfolio and get in touch.',
     ogImage: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp'
   });
@@ -76,7 +76,7 @@ const Home = () => {
             {featuredFilmPlaying ? (
               <iframe
                 src={`https://www.youtube.com/embed/${filmId}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${filmId}&playsinline=1&start=1`}
-                title="Featured Shoot @ Sight film"
+                title="Featured Shoot At Sight Weddings film"
                 frameBorder="0"
                 allow="autoplay; encrypted-media"
                 referrerPolicy="strict-origin-when-cross-origin"

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 const SITE_URL = 'https://www.shootatsightweddings.com';
-const BRAND = 'Shoot at Sight Weddings';
+const BRAND = 'Shoot At Sight Weddings';
 const DEFAULT_OG_IMAGE = 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp';
 
 const setMetaByName = (name, content) => {

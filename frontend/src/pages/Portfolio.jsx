@@ -114,7 +114,7 @@ const Lightbox = ({ images, startIndex, onClose }) => {
 ══════════════════════════ */
 const Portfolio = () => {
   useSEO({
-    title: "Wedding & Pre-Wedding Portfolio | Shoot at Sight, Bangalore",
+    title: "Wedding & Pre-Wedding Portfolio | Shoot At Sight, Bangalore",
     description: "Browse real Bangalore and destination weddings, pre-wedding shoots and cinematic films, with venue, city and coverage detail for each.",
     ogImage: portfolioHeroImages[0],
   });

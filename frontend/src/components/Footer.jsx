@@ -51,7 +51,7 @@ const Footer = () => {
         <div className="ft-brand-logo-wrap">
           <img
             src="https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/logo_1.webp"
-            alt="Shoot @ Sight"
+            alt="Shoot At Sight Weddings"
             className="ft-main-logo"
           />
           <span className="ft-brand-weddings">WEDDINGS</span>
@@ -124,7 +124,7 @@ const Footer = () => {
         <p className="ft-profession">Destination Wedding Photographers &amp; Cinematography Professionals</p>
         <div className="ft-bottom-line" />
         <div className="ft-copyright-row">
-          <span>© {new Date().getFullYear()} Shoot @ Sight</span>
+          <span>© {new Date().getFullYear()} Shoot At Sight Weddings</span>
           <span className="ft-dot">·</span>
           <span>Bengaluru / Global</span>
           <span className="ft-dot">·</span>

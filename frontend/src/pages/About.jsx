@@ -36,9 +36,9 @@ const About = () => {
     studioTitleMain: 'Curating',
     studioTitleHighlight: 'Legacy',
     studioTitleEnd: 'Through Light.',
-    studioDesc: 'Founded in 2018, Shoot @ Sight is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.',
+    studioDesc: 'Founded in 2020, Shoot At Sight Weddings is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.',
     teamImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/team.webp',
-    teamCaption: 'The Shoot @ Sight Creative Collective, 2026',
+    teamCaption: 'The Shoot At Sight Weddings Creative Collective, 2026',
     philosophyBg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/camera_lens_detail.webp',
     philosophyTagline: 'INTENTIONAL // TIMING // RAW',
     philosophyTitleMain: 'The',
@@ -61,12 +61,12 @@ const About = () => {
       }
     ],
     closingQuote: 'Photography is the only language that can be understood anywhere in the world.',
-    closingSignature: 'Shoot @ Sight'
+    closingSignature: 'Shoot At Sight Weddings'
   };
 
   useSEO({
-    title: 'About Pavithra & the Studio | Shoot at Sight Weddings, Bangalore',
-    description: 'Meet Pavithra, founder and lead visual director of Shoot at Sight Weddings, and the editorial philosophy behind 250+ weddings documented across India.',
+    title: 'About Pavithra & the Studio | Shoot At Sight Weddings, Bangalore',
+    description: 'Meet Pavithra, founder and lead visual director of Shoot At Sight Weddings, and the editorial philosophy behind 250+ weddings documented across India.',
     ogImage: aboutContent.heroBg,
   });
 
@@ -294,7 +294,7 @@ const About = () => {
               <div className="about-team-vertical-tag">CREATIVE COLLECTIVE // EST. 2018</div>
               <div className="about-team-backdrop"></div>
               <div className="about-img-mask">
-                <img src={aboutContent.teamImg} alt="Shoot @ Sight Studio Team" />
+                <img src={aboutContent.teamImg} alt="Shoot At Sight Weddings Studio Team" />
               </div>
             </div>
             <div className="img-caption">{aboutContent.teamCaption}</div>
