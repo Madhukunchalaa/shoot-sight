@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSiteConfig } from "../context/SiteConfigContext";
 import useSEO from "../hooks/useSEO";
+import Breadcrumbs from "../components/Breadcrumbs";
 import "./FAQ.css";
 
 const defaultFaqs = [
@@ -83,10 +84,12 @@ const FAQItem = ({ q, a }) => {
 
   return (
     <div className={`faq-item ${open ? "faq-item--open" : ""}`}>
-      <button className="faq-question" onClick={() => setOpen(!open)} aria-expanded={open}>
-        <span>{q}</span>
-        <span className="faq-icon">{open ? "−" : "+"}</span>
-      </button>
+      <h3 className="faq-question-heading">
+        <button className="faq-question" onClick={() => setOpen(!open)} aria-expanded={open}>
+          <span>{q}</span>
+          <span className="faq-icon">{open ? "−" : "+"}</span>
+        </button>
+      </h3>
       <div className="faq-answer-wrapper" style={{ maxHeight: open ? "400px" : "0px" }}>
         <p className="faq-answer">{a}</p>
       </div>
@@ -132,6 +135,7 @@ const FAQ = () => {
 
   return (
     <div className="faq-page">
+      <Breadcrumbs />
       {/* Page Header */}
       <div className="faq-page-header">
         <span className="faq-eyebrow">{faqContent.eyebrow}</span>

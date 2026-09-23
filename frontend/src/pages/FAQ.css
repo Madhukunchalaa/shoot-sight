@@ -80,6 +80,11 @@
   border-bottom: 1px solid rgba(60, 48, 36, 0.08);
 }
 
+.faq-question-heading {
+  margin: 0;
+  font-weight: inherit;
+}
+
 .faq-question {
   width: 100%;
   display: flex;

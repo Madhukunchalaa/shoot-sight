@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { API_URL } from '../config';
 import useSEO from '../hooks/useSEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import './Blog.css';
 
 const img1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/_DSC3521_-_Copy.webp";
@@ -167,6 +168,7 @@ const Blog = () => {
 
   return (
     <div ref={container} className="blog-page">
+      <Breadcrumbs />
       <div className="blog-hero-section section-padding container">
         <div className="blog-header-stylish">
           <span className="subtitle-accent">04 // BLOG</span>

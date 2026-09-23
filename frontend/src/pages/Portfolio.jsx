@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import useSEO from "../hooks/useSEO";
+import Breadcrumbs from "../components/Breadcrumbs";
 import "./Portfolio.css";
 
 
@@ -183,6 +184,8 @@ const Portfolio = () => {
           &rarr;
         </button>
       </div>
+
+      <Breadcrumbs />
 
       {/* ── 2. COLLECTION SECTIONS ── */}
       {collections.map((col) => (

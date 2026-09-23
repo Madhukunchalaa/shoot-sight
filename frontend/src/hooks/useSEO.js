@@ -46,13 +46,19 @@ const buildBreadcrumbList = (pathname, labelOverrides = {}) => {
   let accPath = '';
   segments.forEach((seg, i) => {
     accPath += `/${seg}`;
-    const label = labelOverrides[accPath] ||
-      seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    const isLast = i === segments.length - 1;
+    // "/shoot" alone isn't a real route (only "/shoot/:id" is) — point that
+    // intermediate crumb at the actual listing page instead of a 404.
+    const isShootSegment = !isLast && seg === 'shoot';
+    const path = isShootSegment ? '/portfolio' : accPath;
+    const label = labelOverrides[accPath] || (isShootSegment
+      ? 'Portfolio'
+      : seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()));
     itemListElement.push({
       '@type': 'ListItem',
       position: i + 2,
       name: label,
-      item: `${SITE_URL}${accPath}`,
+      item: `${SITE_URL}${path}`,
     });
   });
   if (itemListElement.length < 2) return null;

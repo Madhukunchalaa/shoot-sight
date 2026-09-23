@@ -9,6 +9,7 @@ for (const key in process.env) {
 
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const path = require('path');
 const fs = require('fs');
 const connectDB = require('./src/config/db');
@@ -19,6 +20,33 @@ const Shoot = require('./src/models/Shoot');
 connectDB();
 
 const app = express();
+
+// HSTS, nosniff, frameguard, etc. enabled at their safe defaults. CSP is
+// report-only for now — YouTube embeds, Google Tag Manager/Ads, and the R2
+// media host make an enforced policy risky to get right blind; report-only
+// surfaces violations without breaking autoplay embeds or conversion
+// tracking. Tighten to enforced once a few days of reports come back clean.
+app.use(helmet({
+  // Off: require-corp (helmet's default) can silently block cross-origin
+  // YouTube iframes and R2-hosted media unless those origins send matching
+  // CORP headers, which we can't control or verify from here.
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: {
+    reportOnly: true,
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", 'https://www.googletagmanager.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      imgSrc: ["'self'", 'data:', 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev', 'https://img.youtube.com', 'https://www.googletagmanager.com', 'https://www.google.com'],
+      mediaSrc: ["'self'", 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+      frameSrc: ['https://www.youtube.com', 'https://www.youtube-nocookie.com'],
+      connectSrc: ["'self'", 'https://www.google-analytics.com', 'https://www.googletagmanager.com'],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+    },
+  },
+}));
 
 app.use(cors());
 app.use(express.json());

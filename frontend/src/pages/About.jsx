@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSiteConfig } from '../context/SiteConfigContext';
 import useSEO from '../hooks/useSEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -204,6 +205,8 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      <Breadcrumbs />
 
       {/* The Founder Section */}
       <section className="about-founder-section section-padding">

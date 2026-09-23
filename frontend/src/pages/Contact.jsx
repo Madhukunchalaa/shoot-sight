@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSiteConfig } from '../context/SiteConfigContext';
 import useSEO from '../hooks/useSEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import './Contact.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -89,7 +90,8 @@ ${form.vision}`
 
   return (
     <div ref={container} className="contact-page-editorial-dark" data-lenis-prevent>
-      
+      <Breadcrumbs />
+
       <div className="contact-main-grid container">
         
         {/* LEFT COLUMN: THE COUTURIER PHILOSOPHY & ATTITUDE */}

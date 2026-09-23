@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useSEO from "../hooks/useSEO";
+import Breadcrumbs from "../components/Breadcrumbs";
 import { API_URL } from "../config";
 import "./WeddingGallery.css";
 
@@ -11,7 +12,6 @@ const WeddingGallery = () => {
     description: "Candid and editorial wedding photography in Bangalore and beyond. What is included, team size, deliverables and timelines.",
   });
 
-  const navigate = useNavigate();
   const [shoots, setShoots] = useState([]);
   const [verticalShoots, setVerticalShoots] = useState([]);
   const [horizontalShoots, setHorizontalShoots] = useState([]);
@@ -72,6 +72,7 @@ const WeddingGallery = () => {
 
   return (
     <div className="wg-page">
+      <Breadcrumbs />
 
       {/* Header */}
       <div className="wg-header">
@@ -99,10 +100,10 @@ const WeddingGallery = () => {
             <div className="wg-pair-section">
               <div className="wg-pair-grid wg-pair-grid--vertical">
                 {verticalShoots.map((shoot) => (
-                  <div
+                  <Link
                     key={shoot.slug}
+                    to={`/shoot/${shoot.slug}`}
                     className="wg-cell wg-cell--vertical"
-                    onClick={() => navigate(`/shoot/${shoot.slug}`)}
                   >
                     <img
                       src={shoot.heroImage}
@@ -116,7 +117,7 @@ const WeddingGallery = () => {
                     <div className="wg-cell-overlay">
                       <span className="wg-couple-name">{shoot.title}</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -127,10 +128,10 @@ const WeddingGallery = () => {
             <div className="wg-pair-section">
               <div className="wg-pair-grid wg-pair-grid--horizontal">
                 {horizontalShoots.map((shoot) => (
-                  <div
+                  <Link
                     key={shoot.slug}
+                    to={`/shoot/${shoot.slug}`}
                     className="wg-cell wg-cell--horizontal"
-                    onClick={() => navigate(`/shoot/${shoot.slug}`)}
                   >
                     <img
                       src={shoot.heroImage}
@@ -144,7 +145,7 @@ const WeddingGallery = () => {
                     <div className="wg-cell-overlay">
                       <span className="wg-couple-name">{shoot.title}</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

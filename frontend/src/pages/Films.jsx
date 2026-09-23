@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useSiteConfig } from '../context/SiteConfigContext';
 import useSEO from '../hooks/useSEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import './Films.css';
 
 const Films = () => {
@@ -71,6 +72,7 @@ const Films = () => {
 
   return (
     <div className="films-page section-padding">
+      <Breadcrumbs />
       <div className="container">
         <div className="films-page-header">
           <span className="subtitle-accent">{filmsContent.tagline}</span>

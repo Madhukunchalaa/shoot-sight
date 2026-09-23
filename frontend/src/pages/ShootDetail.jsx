@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { API_URL } from '../config';
 import useSEO from '../hooks/useSEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import './ShootDetail.css';
 
 const hero1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
@@ -295,6 +296,7 @@ const ShootDetail = () => {
 
   return (
     <div className="shoot-detail-page exhibition-theme" ref={container}>
+      <Breadcrumbs currentLabel={shoot?.title} />
       {/* ── 2-Column Split: Left Image, Right Story Content ── */}
       {shoot && (
         <section className="sd-hero-split-section container">

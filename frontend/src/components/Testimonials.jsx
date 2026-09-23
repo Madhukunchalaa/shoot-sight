@@ -97,6 +97,14 @@ const Testimonials = () => {
           <div className="top-bar-title-wrap">
             <span className="subtitle-accent">04 // CLIENT KUDOS & REVIEWS</span>
             <h2 className="section-title-large">Testimonials</h2>
+            <a
+              href="https://www.wedmegood.com/profile/Shoot-At-Sight-Weddings-4600076"
+              target="_blank"
+              rel="noreferrer"
+              className="testimonials-trust-line"
+            >
+              ★ 5.0 from 83 reviews on WedMeGood
+            </a>
           </div>
         </div>
 

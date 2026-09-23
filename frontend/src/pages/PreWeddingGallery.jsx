@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useSEO from "../hooks/useSEO";
+import Breadcrumbs from "../components/Breadcrumbs";
 import { API_URL } from "../config";
 import "./PreWeddingGallery.css";
 
@@ -100,7 +101,6 @@ const PreWeddingGallery = () => {
     ogImage: curatedPreWeddingFrames[0]?.url,
   });
 
-  const navigate = useNavigate();
   const [shoots, setShoots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lightboxIndex, setLightboxIndex] = useState(null);
@@ -149,6 +149,7 @@ const PreWeddingGallery = () => {
 
   return (
     <div className="pwg-page">
+      <Breadcrumbs />
 
       {/* ── Header ── */}
       <div className="pwg-header">
@@ -168,10 +169,10 @@ const PreWeddingGallery = () => {
           <h2 className="pwg-section-heading">Featured Couples Stories</h2>
           <div className="pwg-couples-grid">
             {shoots.map((shoot) => (
-              <div
+              <Link
                 key={shoot.slug}
+                to={`/shoot/${shoot.slug}`}
                 className="pwg-couple-card"
-                onClick={() => navigate(`/shoot/${shoot.slug}`)}
               >
                 <div className="pwg-couple-img-wrap">
                   <img src={shoot.heroImage} alt={shoot.title} loading="lazy" />
@@ -180,7 +181,7 @@ const PreWeddingGallery = () => {
                   <span className="pwg-couple-name">{shoot.title}</span>
                   <span className="pwg-couple-link">EXPLORE STORY &#8594;</span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

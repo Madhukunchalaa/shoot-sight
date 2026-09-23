@@ -93,12 +93,20 @@ function routeToDistFile(routePath) {
 
 async function prerenderRoute(page, routePath) {
   const url = `${BASE_URL}${routePath}`;
-  // 'load' rather than 'networkidle': the homepage's looping autoplay hero
-  // video streams continuously, so the network never truly goes idle.
-  await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+  // networkidle everywhere except the homepage: some pages (e.g. the
+  // wedding gallery) classify each shoot by loading its hero image
+  // client-side before rendering cards, so snapshotting before those
+  // requests finish captures an empty grid. The homepage's looping
+  // autoplay hero video is the one page where network never truly goes
+  // idle, so it falls back to 'load' plus a longer fixed settle instead.
+  const isHomepage = routePath === '/';
+  await page.goto(url, {
+    waitUntil: isHomepage ? 'load' : 'networkidle',
+    timeout: 30000,
+  });
   // Extra settle time for GSAP/useEffect-driven content, the useSiteConfig
   // and useSEO fetch/effect calls, and useSEO's head mutations to finish.
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(isHomepage ? 4000 : 1500);
 
   const html = await page.content();
   const outFile = routeToDistFile(routePath);
