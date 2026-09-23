@@ -16,6 +16,7 @@ const connectDB = require('./src/config/db');
 const routes = require('./src/routes');
 const errorHandler = require('./src/middlewares/errorHandler');
 const Shoot = require('./src/models/Shoot');
+const Blog = require('./src/models/Blog');
 
 connectDB();
 
@@ -92,6 +93,33 @@ if (process.env.NODE_ENV === 'production') {
     }
   };
 
+  // The four articles hardcoded in frontend/src/data/localBlogPosts.js —
+  // always valid regardless of CMS/DB state, same list duplicated there.
+  const LOCAL_BLOG_SLUGS = new Set([
+    'finding-the-light-in-candid-moments',
+    'how-to-stay-natural-on-camera-5-essential-tips',
+    'behind-the-lens-designing-your-pre-wedding-moodboard',
+    'misty-mountains-capturing-love-in-ootys-valleys',
+  ]);
+
+  const blogSlugExists = async (slug) => {
+    if (LOCAL_BLOG_SLUGS.has(slug)) return true;
+    try {
+      const found = await Promise.race([
+        Blog.exists({ slug, isPublished: true }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 1500)),
+      ]);
+      return !!found;
+    } catch {
+      // DB unreachable and no local mirror for CMS posts to fall back to —
+      // fail closed (404) rather than 200 every /blog/* path, which is
+      // exactly the soft-404 pattern the audit flagged as critical. A real
+      // CMS post 404ing during a rare DB outage is an acceptable tradeoff
+      // for never training crawlers that unknown URLs return 200.
+      return false;
+    }
+  };
+
   // Long-lived immutable cache for Vite's hashed /assets/* bundle files;
   // short/no cache for HTML so deploys (and re-prerendered content) show up
   // immediately instead of being served stale from a browser/CDN cache.
@@ -140,6 +168,11 @@ if (process.env.NODE_ENV === 'production') {
 
     const shootMatch = reqPath.match(/^\/shoot\/([a-z0-9-]+)$/i);
     if (shootMatch && (await shootSlugExists(shootMatch[1]))) {
+      return sendRoute(res, reqPath);
+    }
+
+    const blogMatch = reqPath.match(/^\/blog\/([a-z0-9-]+)$/i);
+    if (blogMatch && (await blogSlugExists(blogMatch[1]))) {
       return sendRoute(res, reqPath);
     }
 

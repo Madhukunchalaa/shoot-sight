@@ -85,6 +85,29 @@ async function getShootSlugs() {
   }
 }
 
+const LOCAL_BLOG_SLUGS = [
+  'finding-the-light-in-candid-moments',
+  'how-to-stay-natural-on-camera-5-essential-tips',
+  'behind-the-lens-designing-your-pre-wedding-moodboard',
+  'misty-mountains-capturing-love-in-ootys-valleys',
+];
+
+async function getBlogSlugs() {
+  // Always include the 4 hardcoded articles (frontend/src/data/localBlogPosts.js)
+  // regardless of CMS state, plus whatever's published in the DB.
+  const slugs = LOCAL_BLOG_SLUGS.map((slug) => ({ slug, updatedAt: undefined }));
+  try {
+    const res = await fetch(`${BASE_URL}/api/blogs?limit=50`);
+    const data = await res.json();
+    if (data.success && Array.isArray(data.blogs)) {
+      data.blogs.forEach((b) => slugs.push({ slug: b.slug, updatedAt: b.updatedAt }));
+    }
+  } catch (err) {
+    console.warn('[prerender] Could not fetch /api/blogs (CMS posts skipped):', err.message);
+  }
+  return slugs;
+}
+
 function routeToDistFile(routePath) {
   if (routePath === '/') return path.join(DIST_DIR, 'index.html');
   const trimmed = routePath.replace(/^\/|\/$/g, '');
@@ -150,13 +173,23 @@ async function main() {
 
     const shoots = await getShootSlugs();
     console.log(`[prerender] Found ${shoots.length} shoot(s) to prerender.`);
+    const blogPosts = await getBlogSlugs();
+    console.log(`[prerender] Found ${blogPosts.length} blog post(s) to prerender.`);
 
-    const dynamicRoutes = shoots.map((s) => ({
-      path: `/shoot/${s.slug}`,
-      changefreq: 'monthly',
-      priority: '0.6',
-      lastmod: s.updatedAt,
-    }));
+    const dynamicRoutes = [
+      ...shoots.map((s) => ({
+        path: `/shoot/${s.slug}`,
+        changefreq: 'monthly',
+        priority: '0.6',
+        lastmod: s.updatedAt,
+      })),
+      ...blogPosts.map((b) => ({
+        path: `/blog/${b.slug}`,
+        changefreq: 'monthly',
+        priority: '0.5',
+        lastmod: b.updatedAt,
+      })),
+    ];
 
     const allRoutes = [...STATIC_ROUTES, ...dynamicRoutes];
 

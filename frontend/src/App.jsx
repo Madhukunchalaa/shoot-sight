@@ -10,6 +10,7 @@ import Portfolio from './pages/Portfolio';
 import WeddingGallery from './pages/WeddingGallery';
 import PreWeddingGallery from './pages/PreWeddingGallery';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import AdminLogin from './pages/AdminLogin';
@@ -51,6 +52,7 @@ function App() {
           <Route path="/portfolio/wedding" element={<WeddingGallery />} />
           <Route path="/portfolio/pre-wedding" element={<PreWeddingGallery />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
 
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
