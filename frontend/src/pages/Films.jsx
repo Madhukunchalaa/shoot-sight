@@ -10,11 +10,6 @@ const Films = () => {
   const [activeFilm, setActiveFilm] = useState(null);
   const { config } = useSiteConfig();
 
-  useSEO({
-    title: 'Cinematic Wedding Films in Bangalore | Shoot At Sight',
-    description: 'Wedding films from short highlight reels to full documentary edits. Watch real films by Shoot At Sight Weddings.',
-  });
-
   const filmsContent = config?.films_page || {
     tagline: '03 // FEATURED FILMS',
     headingMain: 'Cinematic',
@@ -25,30 +20,58 @@ const Films = () => {
         id: 'E6mpqvgMyUY',
         label: "DIRECTOR'S CUT",
         location: 'DUBAI',
-        num: '01'
+        num: '01',
+        youtubeTitle: 'Is Shoot at Sight Weddings the BEST Choice for Your Special Day?',
+        uploadDate: '2025-07-24',
       },
       {
         id: 'wLqHwzM9ABo',
         label: 'CINEMATIC ESSENCE',
         location: 'INDIA',
-        num: '02'
+        num: '02',
+        youtubeTitle: 'From Love to Forever | Jayanth & Pavithra’s Wedding Film',
+        uploadDate: '2026-01-12',
       },
       {
         id: 'a94LGkUt3Pg',
         label: 'THE SYMPHONY',
         location: 'INDIA',
-        num: '03'
+        num: '03',
+        youtubeTitle: 'Kiran & Thejaswi | A Love Story Told Cinematically | Concept - Pre-Wedding Film',
+        uploadDate: '2025-12-19',
       },
       {
         id: 'b58Iizh8Dfg',
         label: 'ETERNAL NARRATIVE',
         location: 'INDIA',
-        num: '04'
+        num: '04',
+        youtubeTitle: 'Shipra & Kalpesh | Dreamy Destination Pre-Wedding Shoot in Udupi | Shoot At Sight Weddings',
+        uploadDate: '2026-02-27',
       }
     ]
   };
 
   const films = filmsContent.list || [];
+
+  const videosJsonLd = films
+    .filter((film) => film.uploadDate)
+    .map((film) => ({
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: film.youtubeTitle || film.label,
+      description: `${film.youtubeTitle || film.label} — a wedding film by Shoot At Sight Weddings, ${film.location}.`,
+      thumbnailUrl: `https://img.youtube.com/vi/${film.id}/hqdefault.jpg`,
+      uploadDate: film.uploadDate,
+      contentUrl: `https://www.youtube.com/watch?v=${film.id}`,
+      embedUrl: `https://www.youtube.com/embed/${film.id}`,
+      publisher: { '@type': 'Organization', name: 'Shoot At Sight Weddings' },
+    }));
+
+  useSEO({
+    title: 'Cinematic Wedding Films in Bangalore | Shoot At Sight',
+    description: 'Wedding films from short highlight reels to full documentary edits. Watch real films by Shoot At Sight Weddings.',
+    jsonLd: videosJsonLd,
+  });
 
   useGSAP(() => {
     gsap.from('.film-card', {

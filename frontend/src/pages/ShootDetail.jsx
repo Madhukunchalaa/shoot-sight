@@ -176,12 +176,23 @@ const ShootDetail = () => {
         : `${shoot.title} Wedding${shoot.location ? ` | ${shoot.location}` : ''} | Shoot At Sight`)
     : 'Gallery Collection';
 
+  const imagesJsonLd = shoot
+    ? [shoot.hero, ...(shoot.gallery || [])].filter(Boolean).map((url) => ({
+        '@context': 'https://schema.org',
+        '@type': 'ImageObject',
+        contentUrl: url,
+        caption: `${shoot.title}${shoot.location ? ` — ${shoot.location}` : ''}`,
+        creator: { '@type': 'Organization', name: 'Shoot At Sight Weddings' },
+      }))
+    : [];
+
   useSEO({
     title: shootSeoTitle,
     description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot At Sight Weddings.',
     ogImage: shoot ? shoot.hero : null,
     noindex: !shoot,
     breadcrumbLabels: shoot ? { [`/shoot/${id}`]: shoot.title } : undefined,
+    jsonLd: imagesJsonLd,
   });
 
   useEffect(() => {

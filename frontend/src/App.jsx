@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, Suspense, lazy } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Home from './pages/Home';
@@ -13,14 +13,19 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SmoothScroll from './components/SmoothScroll';
 import MobileAppTabBar from './components/MobileAppTabBar';
 import { SiteConfigProvider } from './context/SiteConfigContext';
 import './App.css';
+
+// Lazy-loaded: the admin dashboard/login are internal-only, noindexed, and
+// were previously shipped to every visitor in the main bundle regardless of
+// whether they'd ever visit /admin. Splitting them into their own chunk
+// keeps the public-facing bundle (already flagged for its size) smaller.
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,12 +61,12 @@ function App() {
 
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
-          
-          {/* Admin Portal */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/blog/admin-login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+          {/* Admin Portal — lazy-loaded, its own chunk */}
+          <Route path="/admin" element={<Suspense fallback={null}><AdminDashboard /></Suspense>} />
+          <Route path="/admin/login" element={<Suspense fallback={null}><AdminLogin /></Suspense>} />
+          <Route path="/blog/admin-login" element={<Suspense fallback={null}><AdminLogin /></Suspense>} />
+          <Route path="/admin/dashboard" element={<Suspense fallback={null}><AdminDashboard /></Suspense>} />
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}

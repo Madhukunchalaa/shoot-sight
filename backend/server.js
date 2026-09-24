@@ -37,10 +37,10 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'", 'https://www.googletagmanager.com'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", 'data:', 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev', 'https://img.youtube.com', 'https://www.googletagmanager.com', 'https://www.google.com'],
       mediaSrc: ["'self'", 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+      fontSrc: ["'self'", 'data:'],
       frameSrc: ['https://www.youtube.com', 'https://www.youtube-nocookie.com'],
       connectSrc: ["'self'", 'https://www.google-analytics.com', 'https://www.googletagmanager.com'],
       objectSrc: ["'none'"],
