@@ -7,9 +7,22 @@ import RecentShoots from '../components/RecentShoots';
 import Experience from '../components/Experience';
 import FlyingDrone from '../components/FlyingDrone';
 import Testimonials from '../components/Testimonials';
+import RealReviews from '../components/RealReviews';
 import { Link } from 'react-router-dom';
 import { useSiteConfig } from '../context/SiteConfigContext';
 import useSEO from '../hooks/useSEO';
+import { realReviews, SOURCE_URL } from '../data/realReviews';
+
+const reviewsJsonLd = realReviews.map((r) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Review',
+  itemReviewed: { '@type': 'LocalBusiness', name: 'Shoot At Sight Weddings' },
+  author: { '@type': 'Person', name: r.name },
+  reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5 },
+  reviewBody: r.quote,
+  datePublished: r.approxDate,
+  publisher: { '@type': 'Organization', name: 'WedMeGood', url: SOURCE_URL },
+}));
 
 const Home = () => {
   const { config } = useSiteConfig();
@@ -18,7 +31,8 @@ const Home = () => {
   useSEO({
     title: 'Editorial Wedding Photography & Cinematic Films in Bangalore | Shoot At Sight Weddings',
     description: 'Bangalore wedding photographers shooting editorial, candid and cinematic weddings. 250+ weddings, 15+ cities. See the portfolio and get in touch.',
-    ogImage: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp'
+    ogImage: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/NAVEEN%20AND%20KATE/SYD08467.webp',
+    jsonLd: reviewsJsonLd,
   });
 
   const featuredFilmContent = config?.featured_film || {
@@ -118,6 +132,7 @@ const Home = () => {
         </section>
 
         <Testimonials />
+        <RealReviews />
 
         <section 
           className="cta-section section-padding"
