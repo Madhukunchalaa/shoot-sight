@@ -135,7 +135,7 @@ const Footer = () => {
           <span className="ft-dot">·</span>
           <span>Bengaluru / Global</span>
           <span className="ft-dot">·</span>
-          <Link to="/contact" className="ft-contact-link">shootatsightweddings@gmail.com</Link>
+          <a href="mailto:connect@shootatsightweddings.com" className="ft-contact-link">connect@shootatsightweddings.com</a>
         </div>
       </div>
 
