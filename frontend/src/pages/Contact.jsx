@@ -23,7 +23,7 @@ const Contact = () => {
     pGold: 'If you are ready to move past standard imagery and immortalize your history as a living masterpiece, let’s begin.',
     verticalLabel: 'HIGH END EDITORIAL // RAW EMOTION',
     studioInfo: 'Bengaluru, India // Global Commissions',
-    email: 'shootatsightweddings@gmail.com',
+    email: 'connect@shootatsightweddings.com',
     phone: '+91 9900233338',
     formTitle: 'Start a Conversation',
     formSub: 'We accept limited bookings annually to protect our artistic devotion.'
