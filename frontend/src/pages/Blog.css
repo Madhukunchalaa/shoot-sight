@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+/* 'EB Garamond' and 'Playfair Display' are self-hosted — see src/fonts.css */
 
 .blog-page {
   background: var(--bg-color);

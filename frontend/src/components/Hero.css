@@ -57,6 +57,86 @@
   pointer-events: none;
 }
 
+/* Hero heading overlay: H1 + trust line + CTAs over the video */
+.hero-heading-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+  color: #ffffff;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+}
+
+.hero-h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  max-width: 900px;
+}
+
+.hero-trust-line {
+  margin: 0 0 22px;
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-cta {
+  padding: 12px 26px;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hero-cta--primary {
+  background: #ffffff;
+  color: #111111;
+}
+
+.hero-cta--primary:hover {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.hero-cta--secondary {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #ffffff;
+}
+
+.hero-cta--secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 640px) {
+  .hero-heading-overlay {
+    bottom: 18%;
+  }
+  .hero-cta {
+    padding: 10px 20px;
+    font-size: 0.7rem;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero-desktop-video {

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import useSEO from "../hooks/useSEO";
+import Breadcrumbs from "../components/Breadcrumbs";
 import "./Portfolio.css";
 
 
@@ -114,8 +115,9 @@ const Lightbox = ({ images, startIndex, onClose }) => {
 ══════════════════════════ */
 const Portfolio = () => {
   useSEO({
-    title: "Portfolio | Shoot @ Sight Weddings",
-    description: "Explore Wedding Photography, Wedding Films, Pre-Wedding Photography and Pre-Wedding Films by Shoot @ Sight.",
+    title: "Wedding & Pre-Wedding Portfolio | Shoot At Sight, Bangalore",
+    description: "Browse real Bangalore and destination weddings, pre-wedding shoots and cinematic films, with venue, city and coverage detail for each.",
+    ogImage: portfolioHeroImages[0],
   });
 
   const [lightbox, setLightbox] = useState(null);
@@ -151,6 +153,10 @@ const Portfolio = () => {
       {/* ── 1. LUXURY 5-PANEL HERO CAROUSEL BANNER ── */}
       <div className="ptf-hero-banner">
 
+        <div className="ptf-hero-heading-wrap">
+          <h1 className="ptf-hero-heading">Wedding &amp; Pre-Wedding Portfolio in Bangalore</h1>
+        </div>
+
         {/* 5 Vertical Panel Stage */}
         <div className="ptf-hero-stage">
           {getVisibleItems().map(({ img, offset, index }) => (
@@ -178,6 +184,8 @@ const Portfolio = () => {
           &rarr;
         </button>
       </div>
+
+      <Breadcrumbs />
 
       {/* ── 2. COLLECTION SECTIONS ── */}
       {collections.map((col) => (

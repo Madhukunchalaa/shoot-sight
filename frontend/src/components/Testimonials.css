@@ -22,6 +22,18 @@
   flex-direction: column;
 }
 
+.testimonials-trust-line {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary, #8c8c8c);
+  text-decoration: none;
+}
+
+.testimonials-trust-line:hover {
+  text-decoration: underline;
+}
+
 .layout-switcher-group {
   display: flex;
   align-items: center;

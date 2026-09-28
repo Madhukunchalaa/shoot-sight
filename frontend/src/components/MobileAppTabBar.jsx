@@ -47,7 +47,7 @@ const MobileAppTabBar = () => {
             <line x1="14.31" y1="16" x2="2.83" y2="16" strokeLinecap="round" strokeLinejoin="round"/>
             <line x1="16.62" y1="12" x2="10.88" y2="21.94" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span className="tab-label">Gallery</span>
+          <span className="tab-label">Portfolio</span>
         </Link>
 
         {/* Tab 4: BLOG */}

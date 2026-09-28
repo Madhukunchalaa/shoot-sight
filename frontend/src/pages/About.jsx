@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSiteConfig } from '../context/SiteConfigContext';
 import useSEO from '../hooks/useSEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import './About.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,11 +12,6 @@ gsap.registerPlugin(ScrollTrigger);
 const About = () => {
   const container = useRef();
   const { config } = useSiteConfig();
-
-  useSEO({
-    title: 'Our Story & Philosophy',
-    description: 'Learn about Pavithra and the creative philosophy behind Shoot @ Sight. Discover our approach to capturing cinematic wedding stories and high-end editorial portfolios.',
-  });
 
   const aboutContent = config?.about_page || {
     heroBg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/DSC01641_-_Copy.webp',
@@ -41,9 +37,9 @@ const About = () => {
     studioTitleMain: 'Curating',
     studioTitleHighlight: 'Legacy',
     studioTitleEnd: 'Through Light.',
-    studioDesc: 'Founded in 2018, Shoot @ Sight is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.',
+    studioDesc: 'Founded in 2020, Shoot At Sight Weddings is a boutique photography studio specializing in high-end, editorial wedding narratives. We believe your story deserves to be told with the intentionality of fine art.',
     teamImg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/team.webp',
-    teamCaption: 'The Shoot @ Sight Creative Collective, 2026',
+    teamCaption: 'The Shoot At Sight Weddings Creative Collective, 2026',
     philosophyBg: 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/camera_lens_detail.webp',
     philosophyTagline: 'INTENTIONAL // TIMING // RAW',
     philosophyTitleMain: 'The',
@@ -66,8 +62,14 @@ const About = () => {
       }
     ],
     closingQuote: 'Photography is the only language that can be understood anywhere in the world.',
-    closingSignature: 'Shoot @ Sight'
+    closingSignature: 'Shoot At Sight Weddings'
   };
+
+  useSEO({
+    title: 'About Pavithra & the Studio | Shoot At Sight Weddings, Bangalore',
+    description: 'Meet Pavithra, founder and lead visual director of Shoot At Sight Weddings, and the editorial philosophy behind 250+ weddings documented across India.',
+    ogImage: aboutContent.heroBg,
+  });
 
   useGSAP(() => {
     // 0. Fullscreen Hero Entrance & Parallax
@@ -204,6 +206,8 @@ const About = () => {
         </div>
       </section>
 
+      <Breadcrumbs />
+
       {/* The Founder Section */}
       <section className="about-founder-section section-padding">
         <div className="container">
@@ -279,10 +283,10 @@ const About = () => {
         <div className="about-hero-grid">
           <div className="about-hero-text">
             <span className="subtitle-accent">{aboutContent.studioTagline}</span>
-            <h1 className="about-main-title">
+            <h2 className="about-main-title">
               <span className="about-title-word">{aboutContent.studioTitleMain} <i>{aboutContent.studioTitleHighlight}</i></span><br/>
               <span className="about-title-word">{aboutContent.studioTitleEnd}</span>
-            </h1>
+            </h2>
             <p className="about-hero-desc about-title-word">
               {aboutContent.studioDesc}
             </p>
@@ -293,7 +297,7 @@ const About = () => {
               <div className="about-team-vertical-tag">CREATIVE COLLECTIVE // EST. 2018</div>
               <div className="about-team-backdrop"></div>
               <div className="about-img-mask">
-                <img src={aboutContent.teamImg} alt="Shoot @ Sight Studio Team" />
+                <img src={aboutContent.teamImg} alt="Shoot At Sight Weddings Studio Team" />
               </div>
             </div>
             <div className="img-caption">{aboutContent.teamCaption}</div>

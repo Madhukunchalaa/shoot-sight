@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSiteConfig } from "../context/SiteConfigContext";
 import useSEO from "../hooks/useSEO";
+import Breadcrumbs from "../components/Breadcrumbs";
 import "./FAQ.css";
 
 const defaultFaqs = [
@@ -64,7 +65,7 @@ const defaultFaqs = [
     items: [
       {
         q: "What are your packages and pricing?",
-        a: "Our packages are bespoke and tailored to the scale and vision of your celebration. Please visit our Contact page or reach out via WhatsApp to receive a customised quote based on your wedding details."
+        a: "Wedding photography and film packages start at ₹1.5 lakh, tailored to the scale and vision of your celebration. Please visit our Contact page or reach out via WhatsApp to receive a customised quote based on your wedding details."
       },
       {
         q: "Do you offer engagement or pre-wedding shoots?",
@@ -83,10 +84,12 @@ const FAQItem = ({ q, a }) => {
 
   return (
     <div className={`faq-item ${open ? "faq-item--open" : ""}`}>
-      <button className="faq-question" onClick={() => setOpen(!open)} aria-expanded={open}>
-        <span>{q}</span>
-        <span className="faq-icon">{open ? "−" : "+"}</span>
-      </button>
+      <h3 className="faq-question-heading">
+        <button className="faq-question" onClick={() => setOpen(!open)} aria-expanded={open}>
+          <span>{q}</span>
+          <span className="faq-icon">{open ? "−" : "+"}</span>
+        </button>
+      </h3>
       <div className="faq-answer-wrapper" style={{ maxHeight: open ? "400px" : "0px" }}>
         <p className="faq-answer">{a}</p>
       </div>
@@ -109,13 +112,30 @@ const FAQ = () => {
 
   const activeFaqs = faqContent.faqs && faqContent.faqs.length > 0 ? faqContent.faqs : defaultFaqs;
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: activeFaqs.flatMap((category) =>
+      (category.items || []).map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.a,
+        },
+      }))
+    ),
+  };
+
   useSEO({
-    title: "FAQ | Shoot @ Sight Weddings",
-    description: "Frequently asked questions about Shoot @ Sight — bookings, photography style, delivery timelines, pricing and more.",
+    title: "Wedding Photography FAQ | Booking, Pricing & Delivery | Shoot At Sight",
+    description: "How far ahead to book, how many photographers attend, and when your photos and film are delivered.",
+    jsonLd: [faqJsonLd],
   });
 
   return (
     <div className="faq-page">
+      <Breadcrumbs />
       {/* Page Header */}
       <div className="faq-page-header">
         <span className="faq-eyebrow">{faqContent.eyebrow}</span>

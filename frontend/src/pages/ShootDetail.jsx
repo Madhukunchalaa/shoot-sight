@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { API_URL } from '../config';
 import useSEO from '../hooks/useSEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import './ShootDetail.css';
 
 const hero1 = "https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev/common/SAS_3280.webp";
@@ -169,10 +170,29 @@ const ShootDetail = () => {
   const [loading, setLoading] = useState(true);
   const [lightboxImage, setLightboxImage] = useState(null);
 
+  const shootSeoTitle = shoot
+    ? (id === 'raghudixith-varijashree'
+        ? 'Raghu Dixit & Varijashree Venugopal Wedding | Shoot At Sight'
+        : `${shoot.title} Wedding${shoot.location ? ` | ${shoot.location}` : ''} | Shoot At Sight`)
+    : 'Gallery Collection';
+
+  const imagesJsonLd = shoot
+    ? [shoot.hero, ...(shoot.gallery || [])].filter(Boolean).map((url) => ({
+        '@context': 'https://schema.org',
+        '@type': 'ImageObject',
+        contentUrl: url,
+        caption: `${shoot.title}${shoot.location ? ` — ${shoot.location}` : ''}`,
+        creator: { '@type': 'Organization', name: 'Shoot At Sight Weddings' },
+      }))
+    : [];
+
   useSEO({
-    title: shoot ? `${shoot.title} Collection` : 'Gallery Collection',
-    description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot @ Sight.',
+    title: shootSeoTitle,
+    description: shoot ? shoot.desc : 'Explore the editorial wedding and pre-wedding galleries by Shoot At Sight Weddings.',
     ogImage: shoot ? shoot.hero : null,
+    noindex: !shoot,
+    breadcrumbLabels: shoot ? { [`/shoot/${id}`]: shoot.title } : undefined,
+    jsonLd: imagesJsonLd,
   });
 
   useEffect(() => {
@@ -287,6 +307,7 @@ const ShootDetail = () => {
 
   return (
     <div className="shoot-detail-page exhibition-theme" ref={container}>
+      <Breadcrumbs currentLabel={shoot?.title} />
       {/* ── 2-Column Split: Left Image, Right Story Content ── */}
       {shoot && (
         <section className="sd-hero-split-section container">
