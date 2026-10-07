@@ -42,7 +42,7 @@ app.use(helmet({
       mediaSrc: ["'self'", 'https://pub-53f55a87e6f64c51862dbd0fa933eee1.r2.dev'],
       fontSrc: ["'self'", 'data:'],
       frameSrc: ['https://www.youtube.com', 'https://www.youtube-nocookie.com'],
-      connectSrc: ["'self'", 'https://www.google-analytics.com', 'https://www.googletagmanager.com'],
+      connectSrc: ["'self'", 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://www.googletagmanager.com'],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
     },
