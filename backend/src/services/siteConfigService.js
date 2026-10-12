@@ -135,25 +135,33 @@ const defaultConfigs = [
           id: 'E6mpqvgMyUY',
           label: "DIRECTOR'S CUT",
           location: 'DUBAI',
-          num: '01'
+          num: '01',
+          youtubeTitle: 'Is Shoot at Sight Weddings the BEST Choice for Your Special Day?',
+          uploadDate: '2025-07-24'
         },
         {
           id: 'wLqHwzM9ABo',
           label: 'CINEMATIC ESSENCE',
           location: 'INDIA',
-          num: '02'
+          num: '02',
+          youtubeTitle: 'From Love to Forever | Jayanth & Pavithra’s Wedding Film',
+          uploadDate: '2026-01-12'
         },
         {
           id: 'a94LGkUt3Pg',
           label: 'THE SYMPHONY',
           location: 'INDIA',
-          num: '03'
+          num: '03',
+          youtubeTitle: 'Kiran & Thejaswi | A Love Story Told Cinematically | Concept - Pre-Wedding Film',
+          uploadDate: '2025-12-19'
         },
         {
           id: 'b58Iizh8Dfg',
           label: 'ETERNAL NARRATIVE',
           location: 'INDIA',
-          num: '04'
+          num: '04',
+          youtubeTitle: 'Shipra & Kalpesh | Dreamy Destination Pre-Wedding Shoot in Udupi | Shoot At Sight Weddings',
+          uploadDate: '2026-02-27'
         }
       ]
     }

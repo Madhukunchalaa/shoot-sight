@@ -55,6 +55,7 @@ const Navbar = () => {
               <Link to="/" className="nav-link-item">HOME</Link>
               <Link to="/about" className="nav-link-item">ABOUT</Link>
               <Link to="/portfolio" className="nav-link-item">PORTFOLIO</Link>
+              <Link to="/films" className="nav-link-item">FILMS</Link>
               <Link to="/blog" className="nav-link-item">BLOG</Link>
               <Link to="/faq" className="nav-link-item">FAQ</Link>
               <Link to="/contact" className="nav-link-item">CONTACT</Link>
@@ -97,14 +98,17 @@ const Navbar = () => {
             <Link to="/portfolio" className="mobile-menu-link-item" onClick={toggleMenu}>
               <span>03 //</span> PORTFOLIO
             </Link>
+            <Link to="/films" className="mobile-menu-link-item" onClick={toggleMenu}>
+              <span>04 //</span> FILMS
+            </Link>
             <Link to="/blog" className="mobile-menu-link-item" onClick={toggleMenu}>
-              <span>04 //</span> BLOG
+              <span>05 //</span> BLOG
             </Link>
             <Link to="/faq" className="mobile-menu-link-item" onClick={toggleMenu}>
-              <span>05 //</span> FAQ
+              <span>06 //</span> FAQ
             </Link>
             <Link to="/contact" className="mobile-menu-link-item" onClick={toggleMenu}>
-              <span>06 //</span> CONTACT
+              <span>07 //</span> CONTACT
             </Link>
           </div>
 

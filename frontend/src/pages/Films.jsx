@@ -51,21 +51,46 @@ const Films = () => {
     ]
   };
 
-  const films = filmsContent.list || [];
+const DEFAULT_FILM_METADATA = {
+  'E6mpqvgMyUY': {
+    youtubeTitle: 'Is Shoot at Sight Weddings the BEST Choice for Your Special Day?',
+    uploadDate: '2025-07-24',
+  },
+  'wLqHwzM9ABo': {
+    youtubeTitle: 'From Love to Forever | Jayanth & Pavithra’s Wedding Film',
+    uploadDate: '2026-01-12',
+  },
+  'a94LGkUt3Pg': {
+    youtubeTitle: 'Kiran & Thejaswi | A Love Story Told Cinematically | Concept - Pre-Wedding Film',
+    uploadDate: '2025-12-19',
+  },
+  'b58Iizh8Dfg': {
+    youtubeTitle: 'Shipra & Kalpesh | Dreamy Destination Pre-Wedding Shoot in Udupi | Shoot At Sight Weddings',
+    uploadDate: '2026-02-27',
+  }
+};
 
-  const videosJsonLd = films
-    .filter((film) => film.uploadDate)
-    .map((film) => ({
-      '@context': 'https://schema.org',
-      '@type': 'VideoObject',
-      name: film.youtubeTitle || film.label,
-      description: `${film.youtubeTitle || film.label} — a wedding film by Shoot At Sight Weddings, ${film.location}.`,
-      thumbnailUrl: `https://img.youtube.com/vi/${film.id}/hqdefault.jpg`,
-      uploadDate: film.uploadDate,
-      contentUrl: `https://www.youtube.com/watch?v=${film.id}`,
-      embedUrl: `https://www.youtube.com/embed/${film.id}`,
-      publisher: { '@type': 'Organization', name: 'Shoot At Sight Weddings' },
-    }));
+  const films = (filmsContent.list || []).map((film) => {
+    const meta = DEFAULT_FILM_METADATA[film.id] || {};
+    return {
+      ...meta,
+      ...film,
+      youtubeTitle: film.youtubeTitle || meta.youtubeTitle || film.label,
+      uploadDate: film.uploadDate || meta.uploadDate || '2025-01-01',
+    };
+  });
+
+  const videosJsonLd = films.map((film) => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: film.youtubeTitle || film.label,
+    description: `${film.youtubeTitle || film.label} — a wedding film by Shoot At Sight Weddings, ${film.location}.`,
+    thumbnailUrl: `https://img.youtube.com/vi/${film.id}/hqdefault.jpg`,
+    uploadDate: film.uploadDate,
+    contentUrl: `https://www.youtube.com/watch?v=${film.id}`,
+    embedUrl: `https://www.youtube.com/embed/${film.id}`,
+    publisher: { '@type': 'Organization', name: 'Shoot At Sight Weddings' },
+  }));
 
   useSEO({
     title: 'Cinematic Wedding Films in Bangalore | Shoot At Sight',

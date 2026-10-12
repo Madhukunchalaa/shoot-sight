@@ -14,33 +14,40 @@
   display: none;
 }
 
-/* LOGO ONLY STATE (Initial) */
+/* INITIAL STATE (Immediate 100% Visibility On Load) */
 .nav-logo-only {
   background: transparent;
 }
 
 .nav-logo-only .nav-right {
-  opacity: 0;
-  transform: translateX(20px);
-  pointer-events: none;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 .nav-logo-only .nav-left {
-  opacity: 0;
-  transform: translateX(-20px);
-  pointer-events: none;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 /* FULL VISIBLE STATE (On Scroll) */
 .nav-full-visible {
   padding: 15px 0;
-  background: rgba(253, 248, 243, 0.9); /* Luxury Frosted Cream */
+  background: rgba(253, 248, 243, 0.95); /* Luxury Frosted Cream */
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(60, 48, 36, 0.05);
   box-shadow: 0 10px 40px rgba(0,0,0,0.05);
 }
 
 .nav-full-visible .nav-right {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.nav-full-visible .nav-left {
   opacity: 1;
   transform: translateX(0);
   pointer-events: auto;
