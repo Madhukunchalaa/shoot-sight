@@ -18,7 +18,7 @@ const defaultFaqs = [
       },
       {
         q: "How do we confirm our booking?",
-        a: "A booking is confirmed with a signed contract and a retainer fee (typically 30% of the total package). The remaining balance is due 30 days before your wedding date."
+        a: "A booking is confirmed with a signed contract and an initial payment of 30% of the total package. The remaining balance follows in two parts: 60% on the event day, and the final 10% before the raw images are delivered."
       },
     ],
   },
