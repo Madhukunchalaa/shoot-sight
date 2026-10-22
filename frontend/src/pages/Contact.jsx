@@ -229,9 +229,7 @@ ${form.vision}`
                   required
                 >
                   <option value="" disabled>Select Your Curation Tier</option>
-                  <option value="Signature Photo Journal (Starting at $8,000)">Signature Photo Journal (Starting at $8,000)</option>
-                  <option value="Editorial Photo + Cinema Curation (Starting at $14,000)">Editorial Photo + Cinema Curation (Starting at $14,000)</option>
-                  <option value="Multi-day Global Archive (Starting at $25,000)">Multi-day Global Archive (Starting at $25,000)</option>
+                  <option value="Wedding Package (₹1.7 Lakh)">Wedding Package (₹1.7 Lakh)</option>
                 </select>
               </div>
 
