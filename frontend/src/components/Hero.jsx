@@ -85,7 +85,7 @@ const Hero = () => {
               />
             ) : (
               <iframe
-                src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${videoUrl}&playsinline=1&start=0`}
+                src={`https://www.youtube.com/embed/${videoUrl}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${videoUrl}&playsinline=1&start=0&cc_load_policy=0&cc_lang_pref=none`}
                 title="Hero Background Video"
                 frameBorder="0"
                 allow="autoplay; encrypted-media"

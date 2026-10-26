@@ -89,7 +89,7 @@ const Home = () => {
           <div className="landing-film-video">
             {featuredFilmPlaying ? (
               <iframe
-                src={`https://www.youtube.com/embed/${filmId}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${filmId}&playsinline=1&start=1`}
+                src={`https://www.youtube.com/embed/${filmId}?autoplay=1&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&loop=1&playlist=${filmId}&playsinline=1&start=1&cc_load_policy=0&cc_lang_pref=none`}
                 title="Featured Shoot At Sight Weddings film"
                 frameBorder="0"
                 allow="autoplay; encrypted-media"
