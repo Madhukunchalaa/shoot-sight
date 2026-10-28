@@ -183,6 +183,8 @@ const ShootDetail = () => {
         contentUrl: url,
         caption: `${shoot.title}${shoot.location ? ` — ${shoot.location}` : ''}`,
         creator: { '@type': 'Organization', name: 'Shoot At Sight Weddings' },
+        copyrightNotice: `© ${new Date().getFullYear()} Shoot At Sight Weddings`,
+        creditText: 'Shoot At Sight Weddings',
       }))
     : [];
 
