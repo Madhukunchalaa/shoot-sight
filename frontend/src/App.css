@@ -25,7 +25,7 @@
   left: 50%;
   width: max(100vw, 177.78vh);
   height: max(56.25vw, 100vh);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -46%) scale(1.15);
   border: 0;
   pointer-events: none;
 }

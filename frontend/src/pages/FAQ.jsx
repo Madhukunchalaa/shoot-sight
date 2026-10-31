@@ -65,7 +65,7 @@ const defaultFaqs = [
     items: [
       {
         q: "What are your packages and pricing?",
-        a: "Wedding photography and film packages start at ₹1.5 lakh, tailored to the scale and vision of your celebration. Please visit our Contact page or reach out via WhatsApp to receive a customised quote based on your wedding details."
+        a: "Wedding photography and film packages start at ₹1.7 lakh, tailored to the scale and vision of your celebration. Please visit our Contact page or reach out via WhatsApp to receive a customised quote based on your wedding details."
       },
       {
         q: "Do you offer engagement or pre-wedding shoots?",

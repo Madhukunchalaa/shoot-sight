@@ -220,7 +220,7 @@ ${form.vision}`
               </div>
 
               <div className="form-input-group">
-                <label className="form-input-label">Investment Range</label>
+                <label className="form-input-label">Package</label>
                 <select
                   name="investment"
                   value={form.investment}
@@ -228,7 +228,7 @@ ${form.vision}`
                   className="select-contact-chic"
                   required
                 >
-                  <option value="" disabled>Select Your Curation Tier</option>
+                  <option value="" disabled>Select Package</option>
                   <option value="Wedding Package (₹1.7 Lakh)">Wedding Package (₹1.7 Lakh)</option>
                 </select>
               </div>
