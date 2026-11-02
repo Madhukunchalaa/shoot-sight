@@ -3,3 +3,5 @@ node_modules
 images/
 backend/uploads/
 shoot_at_sight_qr.png
+
+*.pdf
